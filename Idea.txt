@@ -1,0 +1,9 @@
+Main idea:
+
+    Develop an AI model that is able to drive a car round a track
+
+Development:
+
+    1. Make the car take the optimal racing line
+    2. This can be developed to have 'power ups' and possibly compete against other cars on the same track
+    3. Test it on different circuits
