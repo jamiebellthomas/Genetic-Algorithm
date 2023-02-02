@@ -1,0 +1,4 @@
+gymnasium
+gymnasium[box2d]
+numpy
+stable_baselines3[extra] 

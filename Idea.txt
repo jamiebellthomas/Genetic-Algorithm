@@ -5,6 +5,10 @@ Main idea:
 Development:
 
     1. Make the car take the optimal racing line
-    2. This can be developed to have 'power ups' and possibly compete against other cars on the same track (compare against
-    different path finding algorithms/random agent)
+    2. This can be developed to have 'power ups' and possibly compete against other cars on the same track
     3. Test it on different circuits
+
+
+Comparison between Open AI gym and Unity ML agents:
+https://www.reddit.com/r/reinforcementlearning/comments/ih0cy5/open_ai_gym_vs_unity_ml_agent/
+
