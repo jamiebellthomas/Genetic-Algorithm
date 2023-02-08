@@ -1,0 +1,19 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+Selector [fillcolor=cyan, fontcolor=black, fontsize=9, label=Selector, shape=octagon, style=filled];
+disperse [fillcolor=gray, fontcolor=black, fontsize=9, label=disperse, shape=ellipse, style=filled];
+Selector -> disperse;
+"MedianX < -30" [fillcolor=gray, fontcolor=black, fontsize=9, label="MedianX < -30", shape=ellipse, style=filled];
+Selector -> "MedianX < -30";
+"MedianY > -16" [fillcolor=gray, fontcolor=black, fontsize=9, label="MedianY > -16", shape=ellipse, style=filled];
+Selector -> "MedianY > -16";
+"disperse*" [fillcolor=gray, fontcolor=black, fontsize=9, label="disperse*", shape=ellipse, style=filled];
+Selector -> "disperse*";
+"MedianX < -30*" [fillcolor=gray, fontcolor=black, fontsize=9, label="MedianX < -30*", shape=ellipse, style=filled];
+Selector -> "MedianX < -30*";
+"MedianX < -30**" [fillcolor=gray, fontcolor=black, fontsize=9, label="MedianX < -30**", shape=ellipse, style=filled];
+Selector -> "MedianX < -30**";
+}
