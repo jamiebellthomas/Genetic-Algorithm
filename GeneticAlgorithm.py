@@ -23,6 +23,7 @@ class NeuralNetwork():
         model.add(output_layer)
 
         # Create random weights
+        # Sets random weights to the model's weights and biases
         weights = model.get_weights()
         weights = [np.random.rand(*w.shape) for w in weights]
         model.set_weights(weights)
