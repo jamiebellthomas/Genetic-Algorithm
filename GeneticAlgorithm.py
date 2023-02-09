@@ -84,6 +84,13 @@ class GeneticAlgorithm():
 
         return max_individual, max_fitness
 
+    def flatten(self,individual):
+        """ Mutation """
+        # Flatten weights
+        flattened_weights = individual.model.get_weights()
+        flattened_weights = [w.flatten() for w in flattened_weights]
+        flattened_weights = np.concatenate(flattened_weights)
+        return flattened_weights
 
     def selection(self):
         """ Selection """
@@ -97,6 +104,11 @@ class GeneticAlgorithm():
 
     def mutation(self, individual):
         """ Mutation """
+        # Flatten weights
+        weights = individual.model.get_weights()
+        weights = [w.flatten() for w in weights]
+        
+
         
         
         pass
