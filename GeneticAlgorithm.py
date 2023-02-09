@@ -159,27 +159,41 @@ class GeneticAlgorithm():
             return selected_population
 
 
-    def crossover(self, parent1, parent2):
+    def crossover(self, selected_population):
         """ Crossover
-        input: index of arrays required for crossover
-        output: arrays of crossover children
+        input: index for selected agents for crossover
+        output: arrays of weights for crossed over agents
         
          """
-        offspring = []
-        self.population[parent1].model.get_weights()
-        self.population[parent2].model.get_weights()
+        offspring1 = []
+        offspring2 = []
+       
+       # This section loops through whole population and selects two parents at random, and does for every pair
+        # for i in range(len(selected_population)//2):
+        #     parent1 = random.randint(0,len(selected_population)-1)
+        #     parent2 = random.randint(0,len(selected_population)-1)
+        #     if parent1 == parent2:
+        #         parent2 = random.randint(0,len(selected_population)-1)
+
+        # This selects two parents at random from the selected population
+        parent1 = np.random.choice(selected_population, 1, replace=False)
+        parent2 = np.random.choice(selected_population, 1, replace=False)
+        parent1 = self.population[parent1]
+        parent2 = self.population[parent2]
+
+        # This flattens the weights of the parents
         parent1 = self.flatten(parent1)
         parent2 = self.flatten(parent2)
 
+        # This selects a point at random to split the parents
         split = random.ragendint(0,len(parent1)-1)
+        # This creates the children by combining the parents
         child1_genes = np.array(parent1[0:split].tolist() + parent2[split:].tolist())
-        child2_genes = np.array(parent1[0:split].tolist() + parent2[split:].tolist())
+        child2_genes = np.array(parent2[0:split].tolist() + parent1[split:].tolist())
                 
-        # child1.neural_network.weights = unflatten(child1_genes,shapes)
-        # child2.neural_network.weights = unflatten(child2_genes,shapes)
-        
-        offspring1.append(child1)
-        offspring2.append(child2)
+        # append the children to the offspring list
+        offspring1.append(child1_genes)
+        offspring2.append(child2_genes)
             # agents.extend(offspring)
             # return agents
         # pass
@@ -212,8 +226,10 @@ class GeneticAlgorithm():
             max_individual, max_fitness = self.fitness(self.population)
             
             # Perform selection
+            selected_population = self.selection('roulette_wheel')
 
             # Perform crossover
+            offspring1, offspring2 = self.crossover(selected_population)
 
             # Perform mutation
             ga.max_individual = self.mutation(ga.max_individual)
