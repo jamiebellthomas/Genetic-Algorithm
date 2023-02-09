@@ -29,9 +29,6 @@ class NeuralNetwork():
 
         self.model = model
 
-
-
-
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
     def __init__(self, population_size, mutation_rate, crossover_rate, environment):
@@ -59,31 +56,6 @@ class GeneticAlgorithm():
         
         self.population = agentPopulation
 
-
-    def fitness(self, population):
-        """ Fitness function 
-        :param individual: individual neural network
-        """
-        max_fitness = 0
-        for index, individual in enumerate(population):
-            print('Status: {}/{}'.format(index, len(population)))
-            env = self.environment
-            env = gym.make(env)
-            observation = env.reset()
-            done = False
-            fitness = 0
-
-            while not done:
-                action = np.argmax(individual.model.predict(observation.reshape(1, -1)))
-                observation, reward, done, info = env.step(action)
-                fitness += reward
-
-            if fitness > max_fitness:
-                max_fitness = fitness
-                max_individual = individual
-
-        return max_individual, max_fitness
-
     def flatten(self,individual):
         """ Mutation """
         # Flatten weights
@@ -91,11 +63,6 @@ class GeneticAlgorithm():
         flattened_weights = [w.flatten() for w in flattened_weights]
         flattened_weights = np.concatenate(flattened_weights)
         return flattened_weights
-
-    def selection(self):
-        """ Selection """
-        pass
-
 
     def crossover(self, parent1, parent2):
         """ Crossover
@@ -118,46 +85,30 @@ class GeneticAlgorithm():
         
         offspring1.append(child1)
         offspring2.append(child2)
-            # agents.extend(offspring)
-            # return agents
+        # agents.extend(offspring)
+        # return agents
         # pass
         return offspring1, offspring2
-
-
-    def mutation(self, individual):
-        """ Mutation """
-        # Flatten weights
-        weights = individual.model.get_weights()
-        weights = [w.flatten() for w in weights]
-        
-
-        
-        
-        pass
-
 
     def run(self, num_generations):
         """ Run the genetic algorithm 
         :param num_generations: number of generations
-        """
+            """
         gen = 0
         while gen < num_generations:
             # Initialize population
             self.init_population()
 
             # Evaluate fitness
-            max_individual, max_fitness = self.fitness(self.population)
+            # max_individual, max_fitness = self.fitness(self.population)
             
             # Perform selection
 
             # Perform crossover
 
             # Perform mutation
-            ga.max_individual = self.mutation(ga.max_individual)
-            gen += 1
-
-        
-
+            # ga.max_individual = self.mutation(ga.max_individual)
+            # gen += 1
 
 
 if __name__ == "__main__":
