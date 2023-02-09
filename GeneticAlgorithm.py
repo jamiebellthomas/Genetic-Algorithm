@@ -1,5 +1,5 @@
 import numpy as np
-
+import random
 import gym
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Flatten, Input
@@ -12,6 +12,7 @@ class NeuralNetwork():
         :param output_size: size of the output layer
         """
         # Input layer with input_size nodes, dense layer with 5 nodes and output layer with output_size nodes
+
         input_layer  = Input(input_size)
         dense_layer1 = Dense(5, activation="relu")
         output_layer = Dense(output_size, activation="linear")
@@ -28,7 +29,7 @@ class NeuralNetwork():
         model.set_weights(weights)
 
         self.model = model
-
+        self.layers = model.layers
 
 
 
@@ -102,11 +103,12 @@ class GeneticAlgorithm():
         pass
 
 
-    def mutation(self, individual):
+    def mutate(self,flattened_weights):
         """ Mutation """
-        # Flatten weights
-        weights = individual.model.get_weights()
-        weights = [w.flatten() for w in weights]
+        # Mutate weights
+        for i in range(len(flattened_weights)):
+            flattened_weights[i] *= 1+(random.uniform(-self.mutation_rate, self.mutation_rate))
+        return flattened_weights
         
 
         
