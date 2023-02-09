@@ -93,36 +93,51 @@ class GeneticAlgorithm():
 
     def selection(self, selection_type):
         ''' 
-        :param selection_type: type of selection 
-        '''
-        if selection_type == 'roulette_wheel':
-            """Roulette wheel selection
+            :param selection_type: type of selection
             :param self.population: population of neural networks
             :param self.population_fitness: fitness values of the population
 
-            :return: new_population
+            :return: selected_population
+            :return: selected_individual
+        '''
+        # initializing a new population
+        selected_population = []
+
+        if selection_type == 'roulette_wheel':
+            """
+            Roulette wheel selection 
+            The probability of selecting an individual is proportional to its fitness value.
             """
             # computing probabilities for each individual
             fitness_sum = sum(self.population_fitness)
             self.selection_probs = [fitness / fitness_sum for fitness in self.population_fitness]
 
-            # generating a random number between 0 and 1
+            # generating a random number between 0 and 1 for the population selection
             random_number = np.random.rand()
 
-            # initializing a new population
-            new_population = []
+            # selecting the population based on the random number
+            def selection(self, random_number=random_number):
+                for index, prob in enumerate(self.selection_probs):
+                    random_number -= prob
+                    # all the individuals with a probability greater than the random number are selected
+                    if random_number <= 0:
+                        selected_population.append(self.population[index])
 
-            # selecting the individual based on the random number
-            for index, prob in enumerate(self.selection_probs):
-                random_number -= prob
-                if random_number <= 0:
-                    new_population.append(self.population[index])
+                    return selected_population
 
-            return new_population
+            selected_population = selection(self)
+
+            return selected_population
+
         
         elif selection_type == 'tournament':
+            """
+            Tournament selection
+            Selects the best individual from a random sample of individuals.
+            """
 
-            return new_population
+
+            return selected_population
 
 
     def crossover(self, parent1, parent2):
