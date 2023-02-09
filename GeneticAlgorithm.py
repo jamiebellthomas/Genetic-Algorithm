@@ -163,8 +163,30 @@ class GeneticAlgorithm():
 
 
     def crossover(self, parent1, parent2):
-        """ Crossover """
-        pass
+        """ Crossover
+        input: index of arrays required for crossover
+        output: arrays of crossover children
+        
+         """
+        offspring = []
+        self.population[parent1].model.get_weights()
+        self.population[parent2].model.get_weights()
+        parent1 = self.flatten(parent1)
+        parent2 = self.flatten(parent2)
+
+        split = random.ragendint(0,len(parent1)-1)
+        child1_genes = np.array(parent1[0:split].tolist() + parent2[split:].tolist())
+        child2_genes = np.array(parent1[0:split].tolist() + parent2[split:].tolist())
+                
+        # child1.neural_network.weights = unflatten(child1_genes,shapes)
+        # child2.neural_network.weights = unflatten(child2_genes,shapes)
+        
+        offspring1.append(child1)
+        offspring2.append(child2)
+            # agents.extend(offspring)
+            # return agents
+        # pass
+        return offspring1, offspring2
 
 
     def mutate(self,flattened_weights):
@@ -220,3 +242,4 @@ if __name__ == "__main__":
 
     # Run genetic algorithm
     ga.run(1)
+
