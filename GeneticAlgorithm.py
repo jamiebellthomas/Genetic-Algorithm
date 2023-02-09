@@ -130,7 +130,7 @@ class GeneticAlgorithm():
                     random_number -= prob
                     # all the individuals with a probability greater than the random number are selected
                     if random_number <= 0:
-                        selected_population.append(self.population[index])
+                        selected_population.append(index)
 
                     return selected_population
 
@@ -145,17 +145,20 @@ class GeneticAlgorithm():
             Tournament selection
             Selects the best individual from a random sample of individuals.
             """
+            # chosen size to be around 20% of the population - can be changed
             def selection(self, t_size=len(self.population)//5):
-                # selecting a random sample of individuals
-                sample = np.random.choice(self.population, t_size, replace=False)
-                # selecting the best individual from the sample
-                selected_individual = max(sample, key=lambda x: x.fitness)
-                selected_population.append(selected_individual)
-                return selected_population
+                # selecting a random sample of indexes of individuals 
+                selected_individuals = random.sample(range(len(self.population)), t_size)
+
+                # selecting the best individual from the random sample
+                selected_individual = max(selected_individuals, key=lambda x: self.population_fitness[x])
+
+                return selected_individual
             
             for _ in range(len(self.population)):
-                selected_population = selection(self)
+                selected_population.append(selection(self))
 
+            # a list of indices of the selected individuals from the original population
             return selected_population
 
 
@@ -227,6 +230,12 @@ class GeneticAlgorithm():
             
             # Perform selection
             selected_population = self.selection('roulette_wheel')
+            '''
+            Example of selection types:
+            selected_population = self.selection('roulette_wheel')
+            selected_population = self.selection('tournament')
+            '''
+
 
             # Perform crossover
             offspring1, offspring2 = self.crossover(selected_population)
