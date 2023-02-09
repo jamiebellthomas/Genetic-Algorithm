@@ -136,6 +136,7 @@ class GeneticAlgorithm():
 
             selected_population = selection(self)
 
+            # a list of indices of the selected individuals from the original population
             return selected_population
 
         
