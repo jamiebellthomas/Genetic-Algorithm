@@ -193,6 +193,12 @@ class GeneticAlgorithm():
             max_individual, max_fitness = self.fitness(self.population)
             
             # Perform selection
+            '''
+            Example of selection types:
+            selected_population = self.selection('roulette_wheel')
+            selected_population = self.selection('tournament')
+            '''
+
 
             # Perform crossover
 
