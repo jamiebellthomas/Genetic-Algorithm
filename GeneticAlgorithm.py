@@ -91,15 +91,38 @@ class GeneticAlgorithm():
         return max_individual, max_fitness
 
 
-    def selection(self):
-        """ Selection 
-        Roulette wheel selection
-        :param self.population: population of neural networks
-        :param self.population_fitness: fitness values of the population
-        """
+    def selection(self, selection_type):
+        ''' 
+        :param selection_type: type of selection 
+        '''
+        if selection_type == 'roulette_wheel':
+            """Roulette wheel selection
+            :param self.population: population of neural networks
+            :param self.population_fitness: fitness values of the population
 
+            :return: new_population
+            """
+            # computing probabilities for each individual
+            fitness_sum = sum(self.population_fitness)
+            self.selection_probs = [fitness / fitness_sum for fitness in self.population_fitness]
 
-        pass
+            # generating a random number between 0 and 1
+            random_number = np.random.rand()
+
+            # initializing a new population
+            new_population = []
+
+            # selecting the individual based on the random number
+            for index, prob in enumerate(self.selection_probs):
+                random_number -= prob
+                if random_number <= 0:
+                    new_population.append(self.population[index])
+
+            return new_population
+        
+        elif selection_type == 'tournament':
+
+            return new_population
 
 
     def crossover(self, parent1, parent2):
