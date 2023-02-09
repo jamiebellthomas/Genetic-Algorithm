@@ -135,7 +135,16 @@ class GeneticAlgorithm():
             Tournament selection
             Selects the best individual from a random sample of individuals.
             """
-
+            def selection(self, t_size=len(self.population)//5):
+                # selecting a random sample of individuals
+                sample = np.random.choice(self.population, t_size, replace=False)
+                # selecting the best individual from the sample
+                selected_individual = max(sample, key=lambda x: x.fitness)
+                selected_population.append(selected_individual)
+                return selected_population
+            
+            for _ in range(len(self.population)):
+                selected_population = selection(self)
 
             return selected_population
 
