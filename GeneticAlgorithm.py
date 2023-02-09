@@ -73,6 +73,9 @@ class GeneticAlgorithm():
             done = False
             fitness = 0
 
+            # initialize a list of fitness values for the entire population
+            self.population_fitness = []
+
             while not done:
                 action = np.argmax(individual.model.predict(observation.reshape(1, -1)))
                 observation, reward, done, info = env.step(action)
@@ -82,11 +85,20 @@ class GeneticAlgorithm():
                 max_fitness = fitness
                 max_individual = individual
 
+            # create a list of fitness values for the entire population
+            self.population_fitness.append(fitness)
+
         return max_individual, max_fitness
 
 
     def selection(self):
-        """ Selection """
+        """ Selection 
+        Roulette wheel selection
+        :param self.population: population of neural networks
+        :param self.population_fitness: fitness values of the population
+        """
+
+
         pass
 
 
