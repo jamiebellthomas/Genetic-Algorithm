@@ -1,12 +1,17 @@
 from GeneticAlgorithm import NeuralNetwork
-
+import random
 import numpy as np
 
 import gym
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Flatten, Input
+
 network = NeuralNetwork(2, 3)
-print(network.model.get_weights())
+
+#print(network.model.get_weights())
+#print(network.model.get_weights()[0].shape)
+#print(network.model.get_weights()[1].shape)
+#print(network.model.get_weights()[2].shape)
+#print(network.model.get_weights()[3].shape)
+
 
 def flatten(individual):
     """ Mutation """
@@ -14,8 +19,16 @@ def flatten(individual):
     weights = individual.model.get_weights()
     weights = [w.flatten() for w in weights]
     weights = np.concatenate(weights)
+    print(type(weights))
     return weights
 
-print (flatten(network))
+def mutate(flattened_weights, mutation_rate):
+    """ Mutation """
+    # Mutate weights
+    for i in range(len(flattened_weights)):
+        flattened_weights[i] *= 1+(random.uniform(-mutation_rate, mutation_rate))
+    print(flattened_weights.shape)
+    return flattened_weights
 
-print (flatten(network).shape)
+flatten(network)
+mutate(flatten(network), 0.1)

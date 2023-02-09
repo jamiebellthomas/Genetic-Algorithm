@@ -1,5 +1,5 @@
 import numpy as np
-
+import random
 import gym
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Flatten, Input
@@ -12,6 +12,7 @@ class NeuralNetwork():
         :param output_size: size of the output layer
         """
         # Input layer with input_size nodes, dense layer with 5 nodes and output layer with output_size nodes
+
         input_layer  = Input(input_size)
         dense_layer1 = Dense(5, activation="relu")
         output_layer = Dense(output_size, activation="linear")
@@ -23,12 +24,13 @@ class NeuralNetwork():
         model.add(output_layer)
 
         # Create random weights
+        # Sets random weights to the model's weights and biases
         weights = model.get_weights()
         weights = [np.random.rand(*w.shape) for w in weights]
         model.set_weights(weights)
 
         self.model = model
-
+        self.layers = model.layers
 
 
 
@@ -73,6 +75,9 @@ class GeneticAlgorithm():
             done = False
             fitness = 0
 
+            # initialize a list of fitness values for the entire population
+            self.population_fitness = []
+
             while not done:
                 action = np.argmax(individual.model.predict(observation.reshape(1, -1)))
                 observation, reward, done, info = env.step(action)
@@ -81,6 +86,9 @@ class GeneticAlgorithm():
             if fitness > max_fitness:
                 max_fitness = fitness
                 max_individual = individual
+
+            # create a list of fitness values for the entire population
+            self.population_fitness.append(fitness)
 
         return max_individual, max_fitness
 
@@ -92,9 +100,62 @@ class GeneticAlgorithm():
         flattened_weights = np.concatenate(flattened_weights)
         return flattened_weights
 
-    def selection(self):
-        """ Selection """
-        pass
+    def selection(self, selection_type):
+        ''' 
+            :param selection_type: type of selection
+            :param self.population: population of neural networks
+            :param self.population_fitness: fitness values of the population
+
+            :return: selected_population
+            :return: selected_individual
+        '''
+        # initializing a new population
+        selected_population = []
+
+        if selection_type == 'roulette_wheel':
+            """
+            Roulette wheel selection 
+            The probability of selecting an individual is proportional to its fitness value.
+            """
+            # computing probabilities for each individual
+            fitness_sum = sum(self.population_fitness)
+            self.selection_probs = [fitness / fitness_sum for fitness in self.population_fitness]
+
+            # generating a random number between 0 and 1 for the population selection
+            random_number = np.random.rand()
+
+            # selecting the population based on the random number
+            def selection(self, random_number=random_number):
+                for index, prob in enumerate(self.selection_probs):
+                    random_number -= prob
+                    # all the individuals with a probability greater than the random number are selected
+                    if random_number <= 0:
+                        selected_population.append(self.population[index])
+
+                    return selected_population
+
+            selected_population = selection(self)
+
+            return selected_population
+
+        
+        elif selection_type == 'tournament':
+            """
+            Tournament selection
+            Selects the best individual from a random sample of individuals.
+            """
+            def selection(self, t_size=len(self.population)//5):
+                # selecting a random sample of individuals
+                sample = np.random.choice(self.population, t_size, replace=False)
+                # selecting the best individual from the sample
+                selected_individual = max(sample, key=lambda x: x.fitness)
+                selected_population.append(selected_individual)
+                return selected_population
+            
+            for _ in range(len(self.population)):
+                selected_population = selection(self)
+
+            return selected_population
 
 
     def crossover(self, parent1, parent2):
@@ -124,11 +185,12 @@ class GeneticAlgorithm():
         return offspring1, offspring2
 
 
-    def mutation(self, individual):
+    def mutate(self,flattened_weights):
         """ Mutation """
-        # Flatten weights
-        weights = individual.model.get_weights()
-        weights = [w.flatten() for w in weights]
+        # Mutate weights
+        for i in range(len(flattened_weights)):
+            flattened_weights[i] *= 1+(random.uniform(-self.mutation_rate, self.mutation_rate))
+        return flattened_weights
         
 
         
