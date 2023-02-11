@@ -1,8 +1,29 @@
 import numpy as np
 import random
 import gym
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, save_model
 from tensorflow.keras.layers import Dense, Activation, Flatten, Input
+
+# Turn off tensorflow warnings
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+
+def save_agent(model, env, generation, version):
+    """ Save model function """
+    print('Saving model...')
+    save_model(model, 'Training/Saved Models/{}_{}_{}.h5'.format(env, generation, version))
+
+
+## Is this different to the Flatten function from Tensorflow?
+def flatten(self,individual):
+        """ Mutation """
+        # Flatten weights
+        flattened_weights = individual.model.get_weights()
+        flattened_weights = [w.flatten() for w in flattened_weights]
+        flattened_weights = np.concatenate(flattened_weights)
+        return flattened_weights
+
 
 class NeuralNetwork():
     """ Neural Network class """
@@ -48,6 +69,7 @@ class GeneticAlgorithm():
         self.crossover_rate = crossover_rate
         self.environment = environment
 
+
     def init_population(self):
         """ Initialize population
         Create a population of neural networks with random weights.
@@ -55,34 +77,50 @@ class GeneticAlgorithm():
         env = self.environment
 
         if env == 'MountainCar-v0':
+            raise ValueError('Environment doesn"t quite work yet. Reward is always < 0 and is too random.')
             agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]                            
+        elif env == 'CartPole-v1':
+            agentPopulation = [NeuralNetwork(4, 2) for _ in range(self.population_size)]
         else:
             raise ValueError('Environment not supported')
         
         self.population = agentPopulation
 
 
-    def fitness(self, population):
-        """ Fitness function 
+    def fitness(self):
+        """ 
+        This function evaluates the fitness of the population. The fitness is currently the sum of rewards.
+        Each individual is loaded and passed through the environment 
         :param individual: individual neural network
         """
+        # Initialize population variables
         max_fitness = 0
-        for index, individual in enumerate(population):
-            print('Status: {}/{}'.format(index, len(population)))
-            env = self.environment
-            env = gym.make(env)
+        max_individual = None
+        self.population_fitness = []
+
+        # Iterate through the population
+        for index, individual in enumerate(self.population):
+            print('Status: {}/{}'.format(index, len(self.population)))
+            
+            # Create a new environment and initialize 
+            env = gym.make(self.environment)
             observation = env.reset()
             done = False
+
+            # Initialize fitness score
             fitness = 0
 
-            # initialize a list of fitness values for the entire population
-            self.population_fitness = []
-
+            # Pass individual through environment. Fitness is the sum of rewards. 
+            # This section can be tampered with a lot
             while not done:
                 action = np.argmax(individual.model.predict(observation.reshape(1, -1)))
                 observation, reward, done, info = env.step(action)
                 fitness += reward
 
+            # Print fitness score
+            print('Fitness: {}'.format(fitness))
+
+            # Update max fitness and individual
             if fitness > max_fitness:
                 max_fitness = fitness
                 max_individual = individual
@@ -92,16 +130,13 @@ class GeneticAlgorithm():
 
         return max_individual, max_fitness
 
-    def flatten(self,individual):
-        """ Mutation """
-        # Flatten weights
-        flattened_weights = individual.model.get_weights()
-        flattened_weights = [w.flatten() for w in flattened_weights]
-        flattened_weights = np.concatenate(flattened_weights)
-        return flattened_weights
 
     def selection(self, selection_type):
         ''' 
+        Function to select the best individuals from the population. 
+
+
+
             :param selection_type: type of selection
             :param self.population: population of neural networks
             :param self.population_fitness: fitness values of the population
@@ -211,11 +246,6 @@ class GeneticAlgorithm():
         return flattened_weights
         
 
-        
-        
-        pass
-
-
     def run(self, num_generations):
         """ Run the genetic algorithm 
         :param num_generations: number of generations
@@ -226,35 +256,28 @@ class GeneticAlgorithm():
             self.init_population()
 
             # Evaluate fitness
-            max_individual, max_fitness = self.fitness(self.population)
+            max_individual, max_fitness = self.fitness()
             
-            # Perform selection
-            selected_population = self.selection('roulette_wheel')
-            '''
-            Example of selection types:
-            selected_population = self.selection('roulette_wheel')
-            selected_population = self.selection('tournament')
-            '''
+            # max_individual.model.save('best_model.h5')  
+            # selected_population = self.selection('roulette_wheel')
+            
 
 
             # Perform crossover
-            offspring1, offspring2 = self.crossover(selected_population)
-
-            # Perform mutation
-            ga.max_individual = self.mutation(ga.max_individual)
+            # offspring1, offspring2 = self.crossover(selected_population)
+            save_agent(max_individual.model, env, '1', 'v1')
             gen += 1
 
-        
 
 
 
 if __name__ == "__main__":
     
     # Create environment
-    env = 'MountainCar-v0'
+    env = 'CartPole-v1'
 
     # Create genetic algorithm
-    ga = GeneticAlgorithm(10, 0.1, 0.7, env)
+    ga = GeneticAlgorithm(1, 0.1, 0.7, env)
 
     # Run genetic algorithm
     ga.run(1)
