@@ -16,10 +16,10 @@ def save_agent(model, env, generation, version):
 
 
 ## Is this different to the Flatten function from Tensorflow?
-def flatten(self,individual):
+def flatten(self,agent):
         """ Mutation """
         # Flatten weights
-        flattened_weights = individual.model.get_weights()
+        flattened_weights = agent.model.get_weights()
         flattened_weights = [w.flatten() for w in flattened_weights]
         flattened_weights = np.concatenate(flattened_weights)
         return flattened_weights
@@ -76,6 +76,7 @@ class GeneticAlgorithm():
          """
         env = self.environment
 
+        print('Initializing population for {}...'.format(env))
         if env == 'MountainCar-v0':
             raise ValueError('Environment doesn"t quite work yet. Reward is always < 0 and is too random.')
             agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]                            
@@ -84,22 +85,23 @@ class GeneticAlgorithm():
         else:
             raise ValueError('Environment not supported')
         
+        print(len(agentPopulation))
         self.population = agentPopulation
 
 
     def fitness(self):
         """ 
         This function evaluates the fitness of the population. The fitness is currently the sum of rewards.
-        Each individual is loaded and passed through the environment 
-        :param individual: individual neural network
+        Each agent is loaded and passed through the environment 
+        :param agent: agent neural network
         """
         # Initialize population variables
         max_fitness = 0
-        max_individual = None
+        max_agent = None
         self.population_fitness = []
 
         # Iterate through the population
-        for index, individual in enumerate(self.population):
+        for index, agent in enumerate(self.population):
             print('Status: {}/{}'.format(index, len(self.population)))
             
             # Create a new environment and initialize 
@@ -110,30 +112,30 @@ class GeneticAlgorithm():
             # Initialize fitness score
             fitness = 0
 
-            # Pass individual through environment. Fitness is the sum of rewards. 
+            # Pass agent through environment. Fitness is the sum of rewards. 
             # This section can be tampered with a lot
             while not done:
-                action = np.argmax(individual.model.predict(observation.reshape(1, -1)))
+                action = np.argmax(agent.model.predict(observation.reshape(1, -1)))
                 observation, reward, done, info = env.step(action)
                 fitness += reward
 
             # Print fitness score
             print('Fitness: {}'.format(fitness))
 
-            # Update max fitness and individual
+            # Update max fitness and agent
             if fitness > max_fitness:
                 max_fitness = fitness
-                max_individual = individual
+                max_agent = agent
 
             # create a list of fitness values for the entire population
             self.population_fitness.append(fitness)
 
-        return max_individual, max_fitness
+        return max_agent, max_fitness
 
 
     def selection(self, selection_type):
         ''' 
-        Function to select the best individuals from the population. 
+        Function to select the best agents from the population. 
 
 
 
@@ -142,7 +144,7 @@ class GeneticAlgorithm():
             :param self.population_fitness: fitness values of the population
 
             :return: selected_population
-            :return: selected_individual
+            :return: selected_agent
         '''
         # initializing a new population
         selected_population = []
@@ -150,9 +152,9 @@ class GeneticAlgorithm():
         if selection_type == 'roulette_wheel':
             """
             Roulette wheel selection 
-            The probability of selecting an individual is proportional to its fitness value.
+            The probability of selecting an agent is proportional to its fitness value.
             """
-            # computing probabilities for each individual
+            # computing probabilities for each agent
             fitness_sum = sum(self.population_fitness)
             self.selection_probs = [fitness / fitness_sum for fitness in self.population_fitness]
 
@@ -163,7 +165,7 @@ class GeneticAlgorithm():
             def selection(self, random_number=random_number):
                 for index, prob in enumerate(self.selection_probs):
                     random_number -= prob
-                    # all the individuals with a probability greater than the random number are selected
+                    # all the agents with a probability greater than the random number are selected
                     if random_number <= 0:
                         selected_population.append(index)
 
@@ -171,29 +173,29 @@ class GeneticAlgorithm():
 
             selected_population = selection(self)
 
-            # a list of indices of the selected individuals from the original population
+            # a list of indices of the selected agents from the original population
             return selected_population
 
         
         elif selection_type == 'tournament':
             """
             Tournament selection
-            Selects the best individual from a random sample of individuals.
+            Selects the best agent from a random sample of agents.
             """
             # chosen size to be around 20% of the population - can be changed
             def selection(self, t_size=len(self.population)//5):
-                # selecting a random sample of indexes of individuals 
-                selected_individuals = random.sample(range(len(self.population)), t_size)
+                # selecting a random sample of indexes of agents 
+                selected_agents = random.sample(range(len(self.population)), t_size)
 
-                # selecting the best individual from the random sample
-                selected_individual = max(selected_individuals, key=lambda x: self.population_fitness[x])
+                # selecting the best agent from the random sample
+                selected_agent = max(selected_agents, key=lambda x: self.population_fitness[x])
 
-                return selected_individual
+                return selected_agent
             
             for _ in range(len(self.population)):
                 selected_population.append(selection(self))
 
-            # a list of indices of the selected individuals from the original population
+            # a list of indices of the selected agents from the original population
             return selected_population
 
 
@@ -256,16 +258,16 @@ class GeneticAlgorithm():
             self.init_population()
 
             # Evaluate fitness
-            max_individual, max_fitness = self.fitness()
+            max_agent, max_fitness = self.fitness()
             
-            # max_individual.model.save('best_model.h5')  
+            # max_agent.model.save('best_model.h5')  
             # selected_population = self.selection('roulette_wheel')
             
 
 
             # Perform crossover
             # offspring1, offspring2 = self.crossover(selected_population)
-            save_agent(max_individual.model, env, '1', 'v1')
+            save_agent(max_agent.model, env, '1', 'v1')
             gen += 1
 
 
