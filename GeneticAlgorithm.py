@@ -4,7 +4,7 @@ import gym
 
 from selection import selection
 from NeuralNetwork import NeuralNetwork
-
+from saving_data import save_generation
 
 def flatten(self,agent):
         """ Mutation 
@@ -21,7 +21,7 @@ def flatten(self,agent):
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
-    def __init__(self, population_size, mutation_rate, crossover_rate, environment):
+    def __init__(self, population_size, mutation_rate, crossover_rate, environment, description):
         """ Constructor 
         
         parameters:
@@ -34,12 +34,15 @@ class GeneticAlgorithm():
                 Crossover rate
             environment: str
                 Environment name corresponding to the OpenAI Gym environment
+            description: str
+                Description of the model. This data is saved to the ModelDetails.csv file.
         """
         self.population_size = population_size
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
         self.environment = environment
         self.population = self.init_population(environment)
+        self.description = description
 
 
     def init_population(self, env):
@@ -169,7 +172,7 @@ class GeneticAlgorithm():
             selected_population = selection(self, 'rank-based-rolette-wheel', population_fitness)
             print(selected_population)
 
-
+            save_generation(self.population, self.description)
             # Perform crossover
             # offspring1, offspring2 = self.crossover(selected_population)
             # save_agent(max_agent.model, env, '1', 'v1')
@@ -184,7 +187,7 @@ if __name__ == "__main__":
     env = 'CartPole-v1'
 
     # Create genetic algorithm
-    ga = GeneticAlgorithm(3, 0.1, 0.7, env)
+    ga = GeneticAlgorithm(3, 0.1, 0.7, env, 'test')
 
     # Run genetic algorithm
     ga.run(1)
