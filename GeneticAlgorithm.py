@@ -8,7 +8,6 @@ from saving_data import save_generation
 
 def flatten(self,agent):
         """ Mutation 
-        Is this different to the Flatten function from Tensorflow?
         """
         # Flatten weights
         flattened_weights = agent.model.get_weights()
@@ -51,7 +50,15 @@ class GeneticAlgorithm():
         Input to the neural network corrsponds to the observation space.
         Output of the neural network corresponds to the action space.
 
+        parameters:
+        ----------------
+            env: str
+                Environment name corresponding to the OpenAI Gym environment
 
+        returns:
+        ----------------
+            agentPopulation: list <NeuralNetwork>
+                List of NeuralNetwork objects representing the population
          """
         env = self.environment
 
@@ -71,11 +78,18 @@ class GeneticAlgorithm():
         """ 
         This function evaluates the fitness of the population. The fitness is currently the sum of rewards.
         Each agent is loaded and passed through the environment 
-        :param agent: agent neural network
+        
+        parameters:
+        ----------------
+            None
+                Population is taken as a class variable
+
+        returns:
+        ----------------
+            population_fitness: list <float>
+                List of fitness scores for each agent in the population
         """
-        # Initialize population fitness list of lists.
-        # The first list contains the models
-        # The second list contains the fitness values
+        # Initialize population fitness list.
         population_fitness = []
 
         # Iterate through the population
