@@ -5,9 +5,18 @@ import gym
 from selection import selection
 from NeuralNetwork import NeuralNetwork
 from saving_data import save_generation
+from evaluate_fitness import evaluate_fitness
+from MutationFlattenUnflatten import flatten, unflatten, mutate
 
 
-
+def flatten_nn(agent):
+    """ Mutation 
+    """
+    # Flatten weights
+    flattened_weights = agent.model.get_weights()
+    flattened_weights = [w.flatten() for w in flattened_weights]
+    flattened_weights = np.concatenate(flattened_weights)
+    return flattened_weights
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
@@ -65,54 +74,6 @@ class GeneticAlgorithm():
         return agentPopulation
 
 
-    def evaluate_fitness(self):
-        """ 
-        This function evaluates the fitness of the population. The fitness is currently the sum of rewards.
-        Each agent is loaded and passed through the environment 
-        
-        parameters:
-        ----------------
-            None
-                Population is taken as a class variable
-
-        returns:
-        ----------------
-            population_fitness: list <float>
-                List of fitness scores for each agent in the population
-        """
-        # Initialize population fitness list.
-        population_fitness = []
-
-        # Iterate through the population
-        for index, agent in enumerate(self.population):
-            print('Status: {}/{}'.format(index+1, len(self.population)))
-            
-            # Create a new environment and initialize variables
-            env = gym.make(self.environment)
-            observation = env.reset()
-            done = False
-
-            # Initialize fitness score
-            fitness = 0
-
-            # Pass agent through environment. Fitness is the sum of rewards. 
-            while not done:
-                # Get action from agent and pass it to the environment
-                action = agent.predict_action(observation)
-                observation, reward, done, info = env.step(action)
-
-                # Decide what type of fitness function to use here
-                ############### This bit can be tampered with a lot ###############
-                fitness += reward
-
-            # Print fitness score
-            agent.fitness = fitness
-            print('Fitness: {}'.format(fitness))
-            population_fitness.append(fitness)
-
-        # Return the population fitness
-        return population_fitness
-
 
     
     def flatten_nn(self,agent):
@@ -133,7 +94,7 @@ class GeneticAlgorithm():
         
     def crossover(self, selected_population):
         """ Crossover
-        This function performs crossover on the selected population.
+        This function performs crossover on the selected population in as many different random way in order to fill the population back up to the original size.
         
         parameters:
         ----------------
@@ -146,61 +107,64 @@ class GeneticAlgorithm():
                 Flattened weights of the offspring
          """
         offspring = []
-    
+        print('the index for nn of the selected populations are' , selected_population)
        
-       # This section loops through whole population and selects two parents at random, and does for every pair
-        # for i in range(len(selected_population)//2):
-        #     parent1 = random.randint(0,len(selected_population)-1)
-        #     parent2 = random.randint(0,len(selected_population)-1)
-        #     if parent1 == parent2:
-        #         parent2 = random.randint(0,len(selected_population)-1)
+        # Crosover from the selected popuplation to fill the population back up to the original size
+        for i in range((self.population_size)//2):
 
-        # for i in range(len(self.population)//2):
+            # This selects the integers for the indexing of two parents at random from the selected population
+            parent1 = selected_population[random.choice(range(len(selected_population)))]
+            parent2 = selected_population[random.choice(range(len(selected_population)))]
+           # This checks if the parents are the same and if so, selects a new parent
+            if parent1 == parent2:
+                parent2 = selected_population[random.choice(range(len(selected_population)))]
 
-        # This selects the integers for the indexing of two parents at random from the selected population
-        parent1 = np.random.choice(selected_population, 1, replace=False)
-        parent2 = np.random.choice(selected_population, 1, replace=False)
-        # This returns the neural network for the parents
-        parent1 = self.population[parent1]
-        parent2 = self.population[parent2]
+            # This finds the neural network for the parents from the population
+            parent1 = self.population[parent1]
+            parent2 = self.population[parent2]
 
-        # This flattens the weights of the parents from a nn to a np array
-        parent1 = self.flatten_nn(parent1)
-        parent2 = self.flatten_nn(parent2)
-        
+            # This flattens the weights of the parents from a nn to a np array
+            parent1 = self.flatten_nn(parent1)
+            parent2 = self.flatten_nn(parent2)
+            
 
-        # This selects a point at random to split the parents
-        split = random.ragendint(0,len(parent1)-1)
-        # This creates the children by combining the parents
-        child1_genes = np.array(parent1[0:split].tolist() + parent2[split:].tolist())
-        child2_genes = np.array(parent2[0:split].tolist() + parent1[split:].tolist())
-                
-        # append the children to the offspring list
-        offspring.append(child1_genes)
-        offspring.append(child2_genes)
-            # agents.extend(offspring)
-            # return agents
-        # pass
+            # This selects a point at random to split the parents
+            split = random.randint(0,len(parent1)-1)
+            # This creates the children by selecting the first half(up to splitting point) of the first parent and 
+            # the second half of the second parent and then inversely for the second child
+            child1_genes = np.array(parent1[0:split].tolist() + parent2[split:].tolist())
+            child2_genes = np.array(parent2[0:split].tolist() + parent1[split:].tolist())
+                    
+            # append the children to the offspring list
+            offspring.append(child1_genes)
+            offspring.append(child2_genes)
+    
+        # print(offspring)
         return offspring
 
 
 
-    def mutate(self,flattened_weights:np.ndarray):
+    def mutate(self,flattened_weights:list):
         """ 
         This function mutates the weights of a given agent by a random amount between -mutation_rate and mutation_rate
 
         parameters: 
-            column vector of weights for a given agent's neural network
+            list of column vectors of weights for each agent
         returns: 
-            mutated weights for the agent
+            mutated neural networks for each agent
         """
+        next_gen = []
+
+        for i in range(self.population_size):   
+            mutated_vector = mutate(flattened_weights[i], self.mutation_rate)
+            new_network = unflatten(mutated_vector, self.population[i])  
+            next_gen.append(new_network)
         
+    
+        return next_gen
         # Mutate weights
-        for i in range(len(flattened_weights)):
-            flattened_weights[i] *= 1+(random.uniform(-self.mutation_rate, self.mutation_rate))
-        return flattened_weights
 
-
+        
 
     def run(self, num_generations):
         """ Run the genetic algorithm 
@@ -211,14 +175,19 @@ class GeneticAlgorithm():
             # Initialize population
 
             # Evaluate fitness
-            population_fitness = self.evaluate_fitness()
+            population_fitness = evaluate_fitness(self)
             
             selected_population = selection(self, 'tournament', population_fitness, num_agents=2)
             print(selected_population)
 
             # save_generation(self.population, self.description)
             # Perform crossover
-            # offspring1, offspring2 = self.crossover(selected_population)
+            offspring = self.crossover(selected_population)
+
+            # Perform mutation
+            mutated_offspring = self.mutate(offspring)
+
+            self.population = mutated_offspring
             # save_agent(max_agent.model, env, '1', 'v1')
             gen += 1
 
@@ -231,8 +200,8 @@ if __name__ == "__main__":
     env = 'CartPole-v1'
 
     # Create genetic algorithm
-    ga = GeneticAlgorithm(3, 0.1, 0.7, env, 'test')
+    ga = GeneticAlgorithm(20, 0.1, 0.7, env, 'Checking if selection works')
 
     # Run genetic algorithm
-    ga.run(1)
+    ga.run(2)
 
