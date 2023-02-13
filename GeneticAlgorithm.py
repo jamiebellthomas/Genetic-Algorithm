@@ -131,12 +131,17 @@ class GeneticAlgorithm():
         
     def crossover(self, selected_population):
         """ Crossover
-        input: index for selected agents for crossover
-
-        ----------------
-
-        output: flattened arrays of weights for crossed over agents
+        This function performs crossover on the selected population.
         
+        parameters:
+        ----------------
+            selected_population: list <int>
+                List of indices of the selected population
+
+        returns:
+        ----------------
+            offspring: list <np.array>
+                Flattened weights of the offspring
          """
         offspring = []
     
@@ -177,21 +182,23 @@ class GeneticAlgorithm():
         return offspring
 
 
+
     def mutate(self,flattened_weights:np.ndarray):
         """ 
         This function mutates the weights of a given agent by a random amount between -mutation_rate and mutation_rate
 
         parameters: 
             column vector of weights for a given agent's neural network
-            mutation_rate: float between 0 and 1 (defined in __init__)
         returns: 
             mutated weights for the agent
         """
+        
         # Mutate weights
         for i in range(len(flattened_weights)):
             flattened_weights[i] *= 1+(random.uniform(-self.mutation_rate, self.mutation_rate))
         return flattened_weights
-        
+
+
 
     def run(self, num_generations):
         """ Run the genetic algorithm 

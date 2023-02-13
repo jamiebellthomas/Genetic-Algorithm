@@ -11,6 +11,8 @@ def selection(GA, selection_type, population_fitness):
 
         parameters:
         ----------------
+            GA: GeneticAlgorithm
+                GeneticAlgorithm object
             selection_type: str
                 Type of selection. Possible values: 'roulette_wheel', 'tournament'
             population_fitness: list <float>
@@ -18,7 +20,7 @@ def selection(GA, selection_type, population_fitness):
 
         returns:
         ----------------
-            selected_population: list
+            selected_population: list <float>
                 List of indices of the selected agents from the original population
 
         '''
@@ -125,9 +127,9 @@ def selection(GA, selection_type, population_fitness):
                 cumulative_distribution.append((agent_index, cumulative_value))
 
             # Selecting agents from the population
-            selected_agents = roulette_wheel(cumulative_distribution, num_agents=2)
+            selected_population = roulette_wheel(cumulative_distribution, num_agents=2)
 
-            return selected_agents
+            return selected_population
             
 
 
