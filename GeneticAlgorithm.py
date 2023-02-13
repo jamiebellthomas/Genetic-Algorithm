@@ -138,8 +138,8 @@ class GeneticAlgorithm():
         output: flattened arrays of weights for crossed over agents
         
          """
-        offspring1 = []
-        offspring2 = []
+        offspring = []
+    
        
        # This section loops through whole population and selects two parents at random, and does for every pair
         # for i in range(len(selected_population)//2):
@@ -148,22 +148,19 @@ class GeneticAlgorithm():
         #     if parent1 == parent2:
         #         parent2 = random.randint(0,len(selected_population)-1)
 
-        # This selects two parents at random from the selected population
+        # for i in range(len(self.population)//2):
+
+        # This selects the integers for the indexing of two parents at random from the selected population
         parent1 = np.random.choice(selected_population, 1, replace=False)
         parent2 = np.random.choice(selected_population, 1, replace=False)
+        # This returns the neural network for the parents
         parent1 = self.population[parent1]
         parent2 = self.population[parent2]
 
-        # This flattens the weights of the parents
-
-        # Someone please check this
-        # I don't think .flatten() works on a neural network (list of arrays) - it only works on single arrays
-        # This is why I made the flatten_nn function (but someone took it out)
-
+        # This flattens the weights of the parents from a nn to a np array
         parent1 = self.flatten_nn(parent1)
         parent2 = self.flatten_nn(parent2)
-        #parent1 = parent1.flatten()
-        #parent2 = parent2.flatten()
+        
 
         # This selects a point at random to split the parents
         split = random.ragendint(0,len(parent1)-1)
@@ -172,12 +169,12 @@ class GeneticAlgorithm():
         child2_genes = np.array(parent2[0:split].tolist() + parent1[split:].tolist())
                 
         # append the children to the offspring list
-        offspring1.append(child1_genes)
-        offspring2.append(child2_genes)
+        offspring.append(child1_genes)
+        offspring.append(child2_genes)
             # agents.extend(offspring)
             # return agents
         # pass
-        return offspring1, offspring2
+        return offspring
 
 
     def mutate(self,flattened_weights:np.ndarray):
