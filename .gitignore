@@ -3,3 +3,4 @@ DQN Test Racecar AP/__pycache__/GameEnv.cpython-38.pyc
 DQN Test Racecar AP/__pycache__/Goals.cpython-38.pyc
 DQN Test Racecar AP/__pycache__/Walls.cpython-38.pyc
 *.pyc
+Training/*

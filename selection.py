@@ -3,7 +3,7 @@ import numpy as np
 
 
 
-def selection(GA, selection_type, population_fitness):
+def selection(GA, selection_type, population_fitness, num_agents):
         ''' 
         Function to select the best agents from the population. 
 
@@ -17,6 +17,8 @@ def selection(GA, selection_type, population_fitness):
                 Type of selection. Possible values: 'roulette_wheel', 'tournament'
             population_fitness: list <float>
                 List of fitness values of the population
+            num_agents: int
+                Number of agents to be selected
 
         returns:
         ----------------
@@ -32,18 +34,16 @@ def selection(GA, selection_type, population_fitness):
             Tournament selection
             Selects the best agent from a random sample of agents.
             """
-            # chosen size to be around 20% of the population - can be changed
-            def selection(self, t_size=len(GA.population)//5):
-                # selecting a random sample of indexes of agents 
-                selected_agents = random.sample(range(len(self.population)), t_size)
 
-                # selecting the best agent from the random sample
-                selected_agent = max(selected_agents, key=lambda x: self.population_fitness[x])
+            for i in range(num_agents):
+                # selecting a random sample of agents from the population
+                tournament_size = 2 # binary tournament
+                tournament = np.random.choice(GA.population, tournament_size, replace=False)
 
-                return selected_agent
-            
-            for _ in range(len(GA.population)):
-                selected_population.append(selection(GA))
+                # selecting the best agent from the tournament
+                tournament_fitness = [agent.fitness for agent in tournament]
+                best_agent = tournament[np.argmax(tournament_fitness)]
+                selected_population.append(best_agent)
 
             # a list of indices of the selected agents from the original population
             return selected_population
@@ -54,24 +54,14 @@ def selection(GA, selection_type, population_fitness):
             In proportional roulette wheel, individuals are selected with a probability that is directly proportional to their 
             fitness values i.e. an individual‟s selection corresponds to a portion of a roulette wheel.
             """
-            # Normalizing the fitness values to create a probability distribution
+            # Normalizing the fitness values to create a cumulative probability distribution
             fitness_sum = sum(population_fitness)
-            probabilities = [fitness / fitness_sum for fitness in population_fitness]
+            norm_fitness = [fitness / fitness_sum for fitness in population_fitness]
+            cum_fitness = np.cumsum(norm_fitness)
+            # a
 
-            # generating a random number between 0 and 1 for the population selection
-            random_number = np.random.rand()
-
-            # selecting the population based on the random number
-            def selection(self, random_number=random_number):
-                for index, prob in enumerate(self.selection_probs):
-                    random_number -= prob
-                    # all the agents with a probability greater than the random number are selected
-                    if random_number <= 0:
-                        selected_population.append(index)
-
-                    return selected_population
-
-            selected_population = selection(GA)
+            # pass into roulette wheel function
+            selected_population = roulette_wheel(cum_fitness, num_agents)
 
             # a list of indices of the selected agents from the original population
             return selected_population
@@ -127,21 +117,21 @@ def selection(GA, selection_type, population_fitness):
                 cumulative_distribution.append((agent_index, cumulative_value))
 
             # Selecting agents from the population
-            selected_population = roulette_wheel(cumulative_distribution, num_agents=2)
+            selected_population = roulette_wheel(cumulative_distribution, num_agents)
 
             return selected_population
             
 
 
 
-def roulette_wheel(cumulative_distribution, num_agents=1):
+def roulette_wheel(cumulative_distribution, num_agents):
     '''
     Function to randomly select an agent from the population based on the cumulative fitness distribution.
 
     parameters:
     ----------------
-        cumulative_distribution: list <float>
-            List of cumulative fitness values of the population
+        cumulative_distribution: list <tuple>
+            Each tuple contains the agents index in the population and its cumulative value.
         num_agents: int
             Number of agents to be selected
     
@@ -164,8 +154,7 @@ def roulette_wheel(cumulative_distribution, num_agents=1):
         random_number = np.random.rand() * total_fitness
 
         for agent_index, cumulative_value in cumulative_distribution:
-            print('Random Number: ', random_number)
-            print('Cumulative Value: ', cumulative_value)
+            
             # Select agent that has a cumulative fitness value greater than the random number and is not already selected
             if random_number < cumulative_value and agent_index not in selected_agents:
                 selected_agents.append(agent_index)
