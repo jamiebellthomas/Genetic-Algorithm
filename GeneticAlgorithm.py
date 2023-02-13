@@ -177,7 +177,7 @@ class GeneticAlgorithm():
             # Evaluate fitness
             population_fitness = evaluate_fitness(self)
             
-            selected_population = selection(self, 'rank-based-rolette-wheel', population_fitness, num_agents=2)
+            selected_population = selection(self, 'tournament', population_fitness, num_agents=2)
             print(selected_population)
 
             # save_generation(self.population, self.description)
