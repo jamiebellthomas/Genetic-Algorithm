@@ -49,5 +49,8 @@ def evaluate_fitness(self):
             print('Fitness: {}'.format(fitness))
             population_fitness.append(fitness)
 
+        # Print the average fitness of the population
+        print('Average fitness: {}'.format(np.mean(population_fitness)))
+
         # Return the population fitness
         return population_fitness

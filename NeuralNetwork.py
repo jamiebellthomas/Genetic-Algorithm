@@ -35,9 +35,6 @@ class NeuralNetwork():
         weights = [np.random.rand(*w.shape) for w in weights]
         model.set_weights(weights)
 
-        # Compile model with mean squared error loss and adam optimizer
-        model.compile(loss="mse", optimizer="adam")
-
         # Assign model to class
         self.model = model
         self.layers = model.layers
