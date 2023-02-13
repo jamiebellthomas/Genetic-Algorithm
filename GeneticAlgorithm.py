@@ -85,7 +85,7 @@ class GeneticAlgorithm():
 
         # Iterate through the population
         for index, agent in enumerate(self.population):
-            print('Status: {}/{}'.format(index, len(self.population)))
+            print('Status: {}/{}'.format(index+1, len(self.population)))
             
             # Create a new environment and initialize variables
             env = gym.make(self.environment)
@@ -96,15 +96,17 @@ class GeneticAlgorithm():
             fitness = 0
 
             # Pass agent through environment. Fitness is the sum of rewards. 
-            # This section can be tampered with a lot
             while not done:
-                thoughts = agent.model.predict(observation.reshape(1, -1))
-                print(thoughts)
-                action = np.argmax(thoughts)
+                # Get action from agent and pass it to the environment
+                action = agent.predict_action(observation)
                 observation, reward, done, info = env.step(action)
+
+                # Decide what type of fitness function to use here
+                ############### This bit can be tampered with a lot ###############
                 fitness += reward
 
             # Print fitness score
+            agent.fitness = fitness
             print('Fitness: {}'.format(fitness))
             population_fitness.append(fitness)
 
@@ -214,7 +216,7 @@ class GeneticAlgorithm():
             selected_population = selection(self, 'tournament', population_fitness, num_agents=2)
             print(selected_population)
 
-            save_generation(self.population, self.description)
+            # save_generation(self.population, self.description)
             # Perform crossover
             # offspring1, offspring2 = self.crossover(selected_population)
             # save_agent(max_agent.model, env, '1', 'v1')

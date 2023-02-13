@@ -35,5 +35,29 @@ class NeuralNetwork():
         weights = [np.random.rand(*w.shape) for w in weights]
         model.set_weights(weights)
 
+        # Compile model with mean squared error loss and adam optimizer
+        model.compile(loss="mse", optimizer="adam")
+
+        # Assign model to class
         self.model = model
         self.layers = model.layers
+
+    # Function that takes the observation of the state as input and returns the action
+    def predict_action(self, observation):
+        """ Predict
+        This function returns the action based on the observation.
+
+        parameters:
+        ----------------
+            observation: np.array
+                Observation array
+
+        returns:
+        ----------------
+            action: int
+                Action to be taken
+        """
+        # Choose the action with the highest value
+        action = np.argmax(self.model.predict(observation.reshape(1, -1)))
+
+        return action
