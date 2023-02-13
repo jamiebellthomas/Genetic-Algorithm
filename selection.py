@@ -25,7 +25,7 @@ def selection(GA, selection_type, population_fitness, num_agents):
         selected_population: list <float>
             List of indices of the selected agents from the original population
 
-    '''
+        '''
     # initializing a new population
     selected_population = []
     
@@ -34,16 +34,27 @@ def selection(GA, selection_type, population_fitness, num_agents):
         Tournament selection
         Selects the best agent from a random sample of agents.
         """
+        population = np.array(list(enumerate(population_fitness)))
 
         for i in range(num_agents):
             # selecting a random sample of agents from the population
             tournament_size = 2 # binary tournament
-            tournament = np.random.choice(GA.population, tournament_size, replace=False)
+
+            # choosing random agents from the population
+            tournament = np.random.choice(range(len(population)), tournament_size, replace=True,)
+            tournament = population[tournament]
 
             # selecting the best agent from the tournament
-            tournament_fitness = [agent.fitness for agent in tournament]
-            best_agent = tournament[np.argmax(tournament_fitness)]
-            selected_population.append(best_agent)
+            best_agent = np.max(tournament[:,1])
+
+            # find index of best agent
+            best_agent_id = tournament[tournament[:,1] == best_agent]
+
+            # remove best agent from population
+            population = population[population[:,1] != best_agent]
+
+            # find index of best agent
+            selected_population.append(int(best_agent_id[0][0]))
 
 
 
