@@ -6,15 +6,6 @@ from selection import selection
 from NeuralNetwork import NeuralNetwork
 from saving_data import save_generation
 
-def flatten(self,agent):
-        """ Mutation 
-        """
-        # Flatten weights
-        flattened_weights = agent.model.get_weights()
-        flattened_weights = [w.flatten() for w in flattened_weights]
-        flattened_weights = np.concatenate(flattened_weights)
-        return flattened_weights
-
 
 
 
@@ -122,7 +113,16 @@ class GeneticAlgorithm():
 
 
     
+    def flatten_nn(self,agent):
+        """ Mutation 
+        """
+        # Flatten weights
+        flattened_weights = agent.model.get_weights()
+        flattened_weights = [w.flatten() for w in flattened_weights]
+        flattened_weights = np.concatenate(flattened_weights)
+        return flattened_weights
 
+        
     def crossover(self, selected_population):
         """ Crossover
         input: index for selected agents for crossover
@@ -146,8 +146,15 @@ class GeneticAlgorithm():
         parent2 = self.population[parent2]
 
         # This flattens the weights of the parents
-        parent1 = self.flatten(parent1)
-        parent2 = self.flatten(parent2)
+
+        # Someone please check this
+        # I don't think .flatten() works on a neural network (list of arrays) - it only works on single arrays
+        # This is why I made the flatten_nn function (but someone took it out)
+
+        parent1 = self.flatten_nn(parent1)
+        parent2 = self.flatten_nn(parent2)
+        #parent1 = parent1.flatten()
+        #parent2 = parent2.flatten()
 
         # This selects a point at random to split the parents
         split = random.ragendint(0,len(parent1)-1)
@@ -164,8 +171,16 @@ class GeneticAlgorithm():
         return offspring1, offspring2
 
 
-    def mutate(self,flattened_weights):
-        """ Mutation """
+    def mutate(self,flattened_weights:np.ndarray):
+        """ 
+        This function mutates the weights of a given agent by a random amount between -mutation_rate and mutation_rate
+
+        parameters: 
+            column vector of weights for a given agent's neural network
+            mutation_rate: float between 0 and 1 (defined in __init__)
+        returns: 
+            mutated weights for the agent
+        """
         # Mutate weights
         for i in range(len(flattened_weights)):
             flattened_weights[i] *= 1+(random.uniform(-self.mutation_rate, self.mutation_rate))

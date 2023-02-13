@@ -1,4 +1,5 @@
-from GeneticAlgorithm import NeuralNetwork
+from NeuralNetwork import NeuralNetwork
+
 import random
 import numpy as np
 
@@ -16,6 +17,7 @@ network = NeuralNetwork(2, 3)
 def flatten(individual):
     """ Mutation """
     # Flatten weights
+    print(type(individual))
     weights = individual.model.get_weights()
     weights = [w.flatten() for w in weights]
     weights = np.concatenate(weights)
@@ -30,5 +32,7 @@ def mutate(flattened_weights, mutation_rate):
     print(flattened_weights.shape)
     return flattened_weights
 
-flatten(network)
-mutate(flatten(network), 0.1)
+#flatten(network)
+#mutate(flatten(network), 0.1)
+
+print (network.flatten())
