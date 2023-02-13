@@ -5,6 +5,7 @@ import gym
 from selection import selection
 from NeuralNetwork import NeuralNetwork
 from saving_data import save_generation
+from evaluate_fitness import evaluate_fitness
 
 
 
@@ -64,52 +65,6 @@ class GeneticAlgorithm():
         
         return agentPopulation
 
-
-    def evaluate_fitness(self):
-        """ 
-        This function evaluates the fitness of the population. The fitness is currently the sum of rewards.
-        Each agent is loaded and passed through the environment 
-        
-        parameters:
-        ----------------
-            None
-                Population is taken as a class variable
-
-        returns:
-        ----------------
-            population_fitness: list <float>
-                List of fitness scores for each agent in the population
-        """
-        # Initialize population fitness list.
-        population_fitness = []
-
-        # Iterate through the population
-        for index, agent in enumerate(self.population):
-            print('Status: {}/{}'.format(index, len(self.population)))
-            
-            # Create a new environment and initialize variables
-            env = gym.make(self.environment)
-            observation = env.reset()
-            done = False
-
-            # Initialize fitness score
-            fitness = 0
-
-            # Pass agent through environment. Fitness is the sum of rewards. 
-            # This section can be tampered with a lot
-            while not done:
-                thoughts = agent.model.predict(observation.reshape(1, -1))
-                print(thoughts)
-                action = np.argmax(thoughts)
-                observation, reward, done, info = env.step(action)
-                fitness += reward
-
-            # Print fitness score
-            print('Fitness: {}'.format(fitness))
-            population_fitness.append(fitness)
-
-        # Return the population fitness
-        return population_fitness
 
 
     
@@ -207,12 +162,12 @@ class GeneticAlgorithm():
             # Initialize population
 
             # Evaluate fitness
-            population_fitness = self.evaluate_fitness()
+            population_fitness = evaluate_fitness(self)
             
-            selected_population = selection(self, 'tournament', population_fitness, num_agents=2)
+            selected_population = selection(self, 'rank-based-rolette-wheel', population_fitness, num_agents=2)
             print(selected_population)
 
-            save_generation(self.population, self.description)
+            # save_generation(self.population, self.description)
             # Perform crossover
             offspring = self.crossover(selected_population)
             # save_agent(max_agent.model, env, '1', 'v1')
@@ -227,7 +182,7 @@ if __name__ == "__main__":
     env = 'CartPole-v1'
 
     # Create genetic algorithm
-    ga = GeneticAlgorithm(4, 0.1, 0.7, env, 'test')
+    ga = GeneticAlgorithm(20, 0.1, 0.7, env, 'Checking if selection works')
 
     # Run genetic algorithm
     ga.run(1)
