@@ -7,7 +7,14 @@ from NeuralNetwork import NeuralNetwork
 from saving_data import save_generation
 
 
-
+def flatten_nn(agent):
+    """ Mutation 
+    """
+    # Flatten weights
+    flattened_weights = agent.model.get_weights()
+    flattened_weights = [w.flatten() for w in flattened_weights]
+    flattened_weights = np.concatenate(flattened_weights)
+    return flattened_weights
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
@@ -111,17 +118,6 @@ class GeneticAlgorithm():
         # Return the population fitness
         return population_fitness
 
-
-    
-    def flatten_nn(self,agent):
-        """ Mutation 
-        """
-        # Flatten weights
-        flattened_weights = agent.model.get_weights()
-        flattened_weights = [w.flatten() for w in flattened_weights]
-        flattened_weights = np.concatenate(flattened_weights)
-        return flattened_weights
-
         
     def crossover(self, selected_population):
         """ Crossover
@@ -151,8 +147,8 @@ class GeneticAlgorithm():
         # I don't think .flatten() works on a neural network (list of arrays) - it only works on single arrays
         # This is why I made the flatten_nn function (but someone took it out)
 
-        parent1 = self.flatten_nn(parent1)
-        parent2 = self.flatten_nn(parent2)
+        parent1 = flatten_nn(parent1)
+        parent2 = flatten_nn(parent2)
         #parent1 = parent1.flatten()
         #parent2 = parent2.flatten()
 
@@ -171,7 +167,7 @@ class GeneticAlgorithm():
         return offspring1, offspring2
 
 
-    def mutate(self,flattened_weights:np.ndarray):
+    def mutate(self,flattened_weights:list):
         """ 
         This function mutates the weights of a given agent by a random amount between -mutation_rate and mutation_rate
 
@@ -181,10 +177,15 @@ class GeneticAlgorithm():
         returns: 
             mutated weights for the agent
         """
-        # Mutate weights
-        for i in range(len(flattened_weights)):
-            flattened_weights[i] *= 1+(random.uniform(-self.mutation_rate, self.mutation_rate))
+        for i in range(self.population_size):
+            #WRITE A NEW MUTATION FUNCTION
+            # THIS WONT WORK
+            for i in range(len(flattened_weights)):
+                flattened_weights[i] *= 1+(random.uniform(-self.mutation_rate, self.mutation_rate))
+        
         return flattened_weights
+        # Mutate weights
+
         
 
     def run(self, num_generations):
