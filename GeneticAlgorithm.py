@@ -114,7 +114,13 @@ class GeneticAlgorithm():
 
     
     def flatten_nn(self,agent):
-        """ Mutation 
+        """ Flatten neural network weights
+
+        input: neural network to be flattened into np array
+
+        ----------------
+
+        output: flattened np array of weights for neural network
         """
         # Flatten weights
         flattened_weights = agent.model.get_weights()
@@ -126,7 +132,10 @@ class GeneticAlgorithm():
     def crossover(self, selected_population):
         """ Crossover
         input: index for selected agents for crossover
-        output: arrays of weights for crossed over agents
+
+        ----------------
+
+        output: flattened arrays of weights for crossed over agents
         
          """
         offspring1 = []
