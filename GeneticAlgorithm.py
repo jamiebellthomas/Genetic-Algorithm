@@ -156,8 +156,8 @@ class GeneticAlgorithm():
         next_gen = []
 
         for i in range(self.population_size):   
-            mutated_network = mutate(flattened_weights[i], self.mutation_rate)
-            new_network = unflatten(mutated_network, self.population[i].model)  
+            mutated_vector = mutate(flattened_weights[i], self.mutation_rate)
+            new_network = unflatten(mutated_vector, self.population[i])  
             next_gen.append(new_network)
         
     

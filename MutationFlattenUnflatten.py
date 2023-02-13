@@ -71,7 +71,7 @@ def unflatten(flattened_weights, network):
     return network
 
 
-
+"""
 original_flattened = flatten(network)
 original_unflattened = unflatten(original_flattened, network)
 
@@ -89,3 +89,4 @@ mutated_unflattened = unflatten(mutated, network)
 print('Original:', original_unflattened.model.get_weights())
 print('Mutated:', mutated_unflattened.model.get_weights())
 print('Delta:', mutated - original_flattened)
+"""
