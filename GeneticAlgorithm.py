@@ -6,6 +6,7 @@ from selection import selection
 from NeuralNetwork import NeuralNetwork
 from saving_data import save_generation
 from evaluate_fitness import evaluate_fitness
+from MutationFlattenUnflatten import flatten, unflatten, mutate
 
 
 def flatten_nn(agent):
@@ -148,17 +149,19 @@ class GeneticAlgorithm():
         This function mutates the weights of a given agent by a random amount between -mutation_rate and mutation_rate
 
         parameters: 
-            column vector of weights for a given agent's neural network
+            list of column vectors of weights for each agent
         returns: 
-            mutated weights for the agent
+            mutated neural networks for each agent
         """
-        for i in range(self.population_size):
-            #WRITE A NEW MUTATION FUNCTION
-            # THIS WONT WORK
-            for i in range(len(flattened_weights)):
-                flattened_weights[i] *= 1+(random.uniform(-self.mutation_rate, self.mutation_rate))
+        next_gen = []
+
+        for i in range(self.population_size):   
+            mutated_network = mutate(flattened_weights[i], self.mutation_rate)
+            new_network = unflatten(mutated_network, self.population[i].model)  
+            next_gen.append(new_network)
         
-        return flattened_weights
+    
+        return next_gen
         # Mutate weights
 
         
@@ -180,6 +183,11 @@ class GeneticAlgorithm():
             # save_generation(self.population, self.description)
             # Perform crossover
             offspring = self.crossover(selected_population)
+
+            # Perform mutation
+            mutated_offspring = self.mutate(offspring)
+
+            self.population = mutated_offspring
             # save_agent(max_agent.model, env, '1', 'v1')
             gen += 1
 
@@ -195,5 +203,5 @@ if __name__ == "__main__":
     ga = GeneticAlgorithm(20, 0.1, 0.7, env, 'Checking if selection works')
 
     # Run genetic algorithm
-    ga.run(1)
+    ga.run(2)
 

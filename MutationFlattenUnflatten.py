@@ -6,16 +6,7 @@ import numpy as np
 import gym
 mutation_rate = 0.2
 network = NeuralNetwork(2, 3)
-#print(network.model.get_weights())
-#for i in range(len(network.model.get_weights())):
-#    print(network.model.get_weights()[i].shape, f'layer {i+1} shape')
-#    print(network.model.get_weights()[i].size, f'layer {i+1} size')
-#print(sum([layer.size for layer in network.model.get_weights()]))
-#print(network.model.get_weights())
-#print(network.model.get_weights()[0].shape)
-#print(network.model.get_weights()[1].shape)
-#print(network.model.get_weights()[2].shape)
-#print(network.model.get_weights()[3].shape)
+
 
 
 def flatten(network):
@@ -80,7 +71,7 @@ def unflatten(flattened_weights, network):
     return network
 
 
-"""
+
 original_flattened = flatten(network)
 original_unflattened = unflatten(original_flattened, network)
 
@@ -98,4 +89,3 @@ mutated_unflattened = unflatten(mutated, network)
 print('Original:', original_unflattened.model.get_weights())
 print('Mutated:', mutated_unflattened.model.get_weights())
 print('Delta:', mutated - original_flattened)
-"""
