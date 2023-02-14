@@ -20,11 +20,13 @@ def flatten_nn(agent):
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
-    def __init__(self, population_size, mutation_rate, crossover_rate, environment, description):
+    def __init__(self, num_generations, population_size, mutation_rate, crossover_rate, environment, description):
         """ Constructor 
         
         parameters:
         ----------------
+            num_generations: int
+                Number of generations to train for
             population_size: int
                 Size of the population
             mutation_rate: float
@@ -36,6 +38,7 @@ class GeneticAlgorithm():
             description: str
                 Description of the model. This data is saved to the ModelDetails.csv file.
         """
+        self.num_generations = num_generations
         self.population_size = population_size
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
@@ -166,13 +169,24 @@ class GeneticAlgorithm():
 
         
 
-    def run(self, num_generations):
-        """ Run the genetic algorithm 
-        :param num_generations: number of generations
+    def run(self):
+        """ 
+        This function runs the genetic algorithm. The population is initialized in the constructor method.
+        In this function, it loops through the number of generations and performs the following steps:
+            1. Evaluate fitness
+            2. Selection
+            3. Crossover
+            4. Mutation
+        
+        The population is saved at the end of looping.
+
+        Potential improvements:
+            - Save generations every n interations
         """
+        
         gen = 0
-        while gen < num_generations:
-            # Initialize population
+        while gen < self.num_generations:
+            print('Generation {}'.format(gen))
 
             # Evaluate fitness
             population_fitness = evaluate_fitness(self)
@@ -188,20 +202,24 @@ class GeneticAlgorithm():
             mutated_offspring = self.mutate(offspring)
 
             self.population = mutated_offspring
-            # save_agent(max_agent.model, env, '1', 'v1')
             gen += 1
 
+        save_generation(self)
 
 
 
 if __name__ == "__main__":
     
-    # Create environment
-    env = 'CartPole-v1'
 
-    # Create genetic algorithm
-    ga = GeneticAlgorithm(20, 0.1, 0.7, env, 'Checking if selection works')
+    ga = GeneticAlgorithm(
+        num_generations=2,
+        population_size=10,
+        mutation_rate=0.1,
+        crossover_rate=0.7,
+        environment='CartPole-v1',
+        description='Testing genetic algorithm'
+    )
 
     # Run genetic algorithm
-    ga.run(2)
+    ga.run()
 
