@@ -46,11 +46,11 @@ def evaluate_fitness(self):
 
             # Print fitness score
             agent.fitness = fitness
-            print('Fitness: {}'.format(fitness))
             population_fitness.append(fitness)
 
         # Print the average fitness of the population
         print('Average fitness: {}'.format(np.mean(population_fitness)))
+        print('Best fitness: {}'.format(np.max(population_fitness)))
 
         # Return the population fitness
         return population_fitness

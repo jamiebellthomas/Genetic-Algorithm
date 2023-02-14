@@ -132,7 +132,7 @@ def selection(GA, selection_type, population_fitness, num_agents):
                 selected_population.append(selected_agent)
 
 
+    print('Population Fitness and indices: ({}, {})'.format(population_fitness, list(enumerate(population_fitness))))
     print('Selected Population indices: ', selected_population)
-    print('Population Fitness: ', population_fitness)
     return selected_population
             
