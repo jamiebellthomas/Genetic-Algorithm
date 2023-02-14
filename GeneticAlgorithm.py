@@ -110,7 +110,6 @@ class GeneticAlgorithm():
                 Flattened weights of the offspring
          """
         offspring = []
-        print('the index for nn of the selected populations are' , selected_population)
        
         # Crosover from the selected popuplation to fill the population back up to the original size
         for i in range((self.population_size)//2):
@@ -192,7 +191,6 @@ class GeneticAlgorithm():
             population_fitness = evaluate_fitness(self)
             
             selected_population = selection(self, 'tournament', population_fitness, num_agents=2)
-            print(selected_population)
 
             # save_generation(self.population, self.description)
             # Perform crossover
