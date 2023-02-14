@@ -20,30 +20,35 @@ def flatten_nn(agent):
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
-    def __init__(self, num_generations, population_size, mutation_rate, crossover_rate, environment, description):
+    def __init__(self, environment, population_size, selection_type, crossover_rate, 
+                mutation_rate, num_generations, description):
         """ Constructor 
         
         parameters:
         ----------------
-            num_generations: int
-                Number of generations to train for
-            population_size: int
-                Size of the population
-            mutation_rate: float
-                Mutation rate
-            crossover_rate: float
-                Crossover rate
             environment: str
                 Environment name corresponding to the OpenAI Gym environment
+            population_size: int
+                Size of the population
+            selection_type: str
+                Selection type. Values can be 'tournament', 'proportional-roulette-wheel', 
+                'rank-based-rolette-wheel', 'elitism'
+            crossover_rate: float
+                Crossover rate
+            mutation_rate: float
+                Mutation rate
+            num_generations: int
+                Number of generations to train for
             description: str
                 Description of the model. This data is saved to the ModelDetails.csv file.
         """
-        self.num_generations = num_generations
-        self.population_size = population_size
-        self.mutation_rate = mutation_rate
-        self.crossover_rate = crossover_rate
         self.environment = environment
+        self.population_size = population_size
         self.population = self.init_population(environment)
+        self.selection_type = selection_type
+        self.crossover_rate = crossover_rate
+        self.mutation_rate = mutation_rate
+        self.num_generations = num_generations
         self.description = description
 
 
@@ -190,15 +195,16 @@ class GeneticAlgorithm():
             # Evaluate fitness
             population_fitness = evaluate_fitness(self)
             
-            selected_population = selection(self, 'tournament', population_fitness, num_agents=2)
+            # Selection
+            selected_population = selection(self, population_fitness, num_agents=2)
 
-            # save_generation(self.population, self.description)
-            # Perform crossover
+            # Crossover
             offspring = self.crossover(selected_population)
 
-            # Perform mutation
+            # Mutation
             mutated_offspring = self.mutate(offspring)
 
+            # Update population and generation
             self.population = mutated_offspring
             gen += 1
 
@@ -210,11 +216,12 @@ if __name__ == "__main__":
     
 
     ga = GeneticAlgorithm(
-        num_generations=2,
-        population_size=10,
-        mutation_rate=0.1,
-        crossover_rate=0.7,
         environment='CartPole-v1',
+        population_size=10,
+        selection_type='elitism',
+        crossover_rate=0.7,
+        mutation_rate=0.1,
+        num_generations=2,
         description='Testing genetic algorithm'
     )
 

@@ -3,7 +3,7 @@ import numpy as np
 
 
 
-def selection(GA, selection_type, population_fitness, num_agents):
+def selection(self, population_fitness, num_agents):
     ''' 
     Function to select the best agents from the population. 
 
@@ -11,10 +11,8 @@ def selection(GA, selection_type, population_fitness, num_agents):
 
     parameters:
     ----------------
-        GA: GeneticAlgorithm
+        self: GeneticAlgorithm
             GeneticAlgorithm object
-        selection_type: str
-            Type of selection. Possible values: 'roulette_wheel', 'tournament'
         population_fitness: list <float>
             List of fitness values of the population
         num_agents: int
@@ -26,6 +24,8 @@ def selection(GA, selection_type, population_fitness, num_agents):
             List of indices of the selected agents from the original population
 
         '''
+    selection_type = self.selection_type
+
     # initializing a new population
     selected_population = []
     
@@ -130,6 +130,20 @@ def selection(GA, selection_type, population_fitness, num_agents):
             
             if selected_agent not in selected_population:
                 selected_population.append(selected_agent)
+
+    elif selection_type == 'elitism':
+        """
+        Elitism selection is a selection method where the best agents are always selected 
+        for the next generation.
+        """
+        # Extracting the indices of agents
+        numbered_fitness = list(enumerate(population_fitness))
+
+        # Sorting the population by fitness
+        sorted_fitness = sorted(numbered_fitness, key=lambda x: x[1], reverse=True)
+
+        for i in range(num_agents):
+            selected_population.append(sorted_fitness[i][0])
 
 
     print('Population Fitness and indices: ({}, {})'.format(population_fitness, list(enumerate(population_fitness))))
