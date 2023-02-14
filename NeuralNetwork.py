@@ -39,6 +39,13 @@ class NeuralNetwork():
         self.model = model
         self.layers = model.layers
 
+        # Assign the weights and biases to the class for easy access
+        self.weights = {}
+        self.biases = {}
+        for i, layer in enumerate(self.layers):
+            self.weights[i] = layer.get_weights()[0]
+            self.biases[i] = layer.get_weights()[1]
+
     # Function that takes the observation of the state as input and returns the action
     def predict_action(self, observation):
         """ Predict
