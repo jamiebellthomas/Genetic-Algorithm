@@ -2,6 +2,7 @@ import numpy as np
 import random
 import gym
 
+from metrics import update_metrics
 
 def evaluate_fitness(self):
         """ 
@@ -18,6 +19,8 @@ def evaluate_fitness(self):
                 Updated GeneticAlgorithm object
             population_fitness: list <float>
                 List of fitness scores for each agent in the population
+            terminated: bool
+                Flag to indicate if the threshold has been met
         """
         # Initialize population fitness list.
         population_fitness = []
@@ -58,6 +61,16 @@ def evaluate_fitness(self):
         self.mean_fitness = int(np.mean(population_fitness))
         self.best_fitness = int(np.max(population_fitness))
         self.best_agent = int(np.argmax(population_fitness))
+        self.all_fitness = population_fitness
+
+        # Update the metrics
+        self = update_metrics(self)
+
+        # If threshold is met, pass terminated flag
+        if self.best_fitness >= self.threshold:
+            terminated = True
+        else:
+            terminated = False
 
         # Return the population fitness
-        return self, population_fitness
+        return self, population_fitness, terminated
