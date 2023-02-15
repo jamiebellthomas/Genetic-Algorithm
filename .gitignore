@@ -5,3 +5,4 @@ DQN Test Racecar AP/__pycache__/Walls.cpython-38.pyc
 *.pyc
 Training/*
 Training/ModelDetails.csv
+*.pyc
