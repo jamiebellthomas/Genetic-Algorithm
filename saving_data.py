@@ -34,7 +34,8 @@ def save_generation(self):
     class_variables['population'] = 'Population saved as h5 files'
 
     with open(os.path.join(path, 'class_variables.json'), 'w') as f:
-        json.dump(class_variables, f)
+        # Format the json file to be human readable, with 4 spaces per indent
+        json.dump(class_variables, f, indent=4)
 
     # Save metrics
     save_metrics(self, path)
