@@ -7,6 +7,7 @@ from NeuralNetwork import NeuralNetwork
 from saving_data import save_generation
 from evaluate_fitness import evaluate_fitness
 from MutationFlattenUnflatten import flatten, unflatten, mutate
+from metrics import initialise_metrics, update_metrics
 
 
 def flatten_nn(agent):
@@ -167,10 +168,7 @@ class GeneticAlgorithm():
             new_network = unflatten(mutated_vector, self.population[i])  
             next_gen.append(new_network)
         
-    
         return next_gen
-        # Mutate weights
-
         
 
     def run(self):
@@ -187,14 +185,20 @@ class GeneticAlgorithm():
         Potential improvements:
             - Save generations every n interations
         """
+        self.generation = 0
+
+        # Initialize metrics
+        self = initialise_metrics(self)
         
-        gen = 0
-        while gen < self.num_generations:
-            print('Generation {}'.format(gen))
+        while self.generation < self.num_generations:
+            print('Generation {}'.format(self.generation))
 
             # Evaluate fitness
-            population_fitness = evaluate_fitness(self)
+            self, population_fitness = evaluate_fitness(self)
             
+            # Update metrics
+            self = update_metrics(self)
+
             # Selection
             selected_population = selection(self, population_fitness, num_agents=2)
 
@@ -206,8 +210,13 @@ class GeneticAlgorithm():
 
             # Update population and generation
             self.population = mutated_offspring
-            gen += 1
+            self.generation += 1
 
+        # Final evaluation
+        evaluate_fitness(self)
+        self = update_metrics(self)
+        
+        # Save data
         save_generation(self)
 
 
@@ -217,7 +226,7 @@ if __name__ == "__main__":
 
     ga = GeneticAlgorithm(
         environment='CartPole-v1',
-        population_size=10,
+        population_size=2,
         selection_type='elitism',
         crossover_rate=0.7,
         mutation_rate=0.1,

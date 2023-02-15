@@ -5,6 +5,8 @@ import json
 
 from tensorflow.keras.models import save_model
 
+from metrics import save_metrics
+
 
 def save_generation(self):
     """ 
@@ -33,6 +35,9 @@ def save_generation(self):
 
     with open(os.path.join(path, 'class_variables.json'), 'w') as f:
         json.dump(class_variables, f)
+
+    # Save metrics
+    save_metrics(self, path)
     
     print('Models saved to {}'.format(path))
 

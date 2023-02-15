@@ -10,11 +10,12 @@ def evaluate_fitness(self):
         
         parameters:
         ----------------
-            None
-                Population is taken as a class variable
-
+            self: GeneticAlgorithm
+                GeneticAlgorithm object
         returns:
         ----------------
+            self: GeneticAlgorithm
+                Updated GeneticAlgorithm object
             population_fitness: list <float>
                 List of fitness scores for each agent in the population
         """
@@ -49,8 +50,14 @@ def evaluate_fitness(self):
             population_fitness.append(fitness)
 
         # Print the average fitness of the population
-        print('Average fitness: {}'.format(np.mean(population_fitness)))
+        print('Mean fitness: {}'.format(np.mean(population_fitness)))
         print('Best fitness: {}'.format(np.max(population_fitness)))
+        print('Best agent index: {}'.format(np.argmax(population_fitness)))
+
+        # Save the population fitness
+        self.mean_fitness = int(np.mean(population_fitness))
+        self.best_fitness = int(np.max(population_fitness))
+        self.best_agent = int(np.argmax(population_fitness))
 
         # Return the population fitness
-        return population_fitness
+        return self, population_fitness
