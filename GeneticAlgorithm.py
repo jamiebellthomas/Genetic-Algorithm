@@ -15,7 +15,7 @@ from crossover import crossover
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
     def __init__(self, environment, population_size, selection_type, crossover_rate, 
-                mutation_rate, num_generations, description):
+                mutation_rate, num_generations, parallel, description):
         """ Constructor 
         
         parameters:
@@ -33,6 +33,8 @@ class GeneticAlgorithm():
                 Mutation rate
             num_generations: int
                 Number of generations to train for
+            parallel: bool
+                Whether to run the genetic algorithm in parallel
             description: str
                 Description of the model. This data is saved to the ModelDetails.csv file.
         """
@@ -44,6 +46,7 @@ class GeneticAlgorithm():
         self.mutation_rate = mutation_rate
         self.num_generations = num_generations
         self.description = description
+        self.parallel = parallel
 
 
     def init_population(self, env):
@@ -131,12 +134,13 @@ if __name__ == "__main__":
 
     ga = GeneticAlgorithm(
         environment='CartPole-v1',
-        population_size=2,
+        population_size=10,
         selection_type='elitism',
         crossover_rate=0.7,
         mutation_rate=0.1,
-        num_generations=2,
-        description='Testing genetic algorithm'
+        num_generations=5,
+        parallel=False,
+        description='Non-parallel time test'
     )
 
     # Run genetic algorithm

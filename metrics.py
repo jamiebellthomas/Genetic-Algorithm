@@ -11,6 +11,7 @@ def initialise_metrics(self):
     self.metrics['best_fitness'] = []
     self.metrics['mean_fitness'] = []
     self.metrics['best_agent'] = []
+    self.metrics['duration'] = []
     self.metrics['best_agent'] = None
 
     return self
@@ -24,6 +25,7 @@ def update_metrics(self):
     self.metrics['generation'].append(self.generation)
     self.metrics['best_fitness'].append(self.best_fitness)
     self.metrics['mean_fitness'].append(self.mean_fitness)
+    self.metrics['duration'].append(self.duration)
     self.metrics['best_agent'] = self.best_agent
 
     return self
