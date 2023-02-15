@@ -8,6 +8,9 @@ from functools import partial
 def evaluate_agent(self, input):
     index, agent = input
 
+    # Print the agent index out of the population size
+    print('-------------------------Evaluating agent {}/{}-------------------------'.format(index+1, self.population_size))
+
     # Create a new environment and initialize variables
     env = gym.make(self.environment)
     observation = env.reset()
