@@ -6,18 +6,10 @@ from selection import selection
 from NeuralNetwork import NeuralNetwork
 from saving_data import save_generation
 from evaluate_fitness import evaluate_fitness
-from MutationFlattenUnflatten import flatten, unflatten, mutate
+from mutation import mutate, flatten
 from metrics import initialise_metrics, update_metrics
 
 
-def flatten_nn(agent):
-    """ Mutation 
-    """
-    # Flatten weights
-    flattened_weights = agent.model.get_weights()
-    flattened_weights = [w.flatten() for w in flattened_weights]
-    flattened_weights = np.concatenate(flattened_weights)
-    return flattened_weights
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
@@ -80,25 +72,7 @@ class GeneticAlgorithm():
         else:
             raise ValueError('Environment not supported')
         
-        return agentPopulation
-
-
-
-    
-    def flatten_nn(self,agent):
-        """ Flatten neural network weights
-
-        input: neural network to be flattened into np array
-
-        ----------------
-
-        output: flattened np array of weights for neural network
-        """
-        # Flatten weights
-        flattened_weights = agent.model.get_weights()
-        flattened_weights = [w.flatten() for w in flattened_weights]
-        flattened_weights = np.concatenate(flattened_weights)
-        return flattened_weights
+        return agentPopulation    
 
         
     def crossover(self, selected_population):
@@ -132,8 +106,8 @@ class GeneticAlgorithm():
             parent2 = self.population[parent2]
 
             # This flattens the weights of the parents from a nn to a np array
-            parent1 = self.flatten_nn(parent1)
-            parent2 = self.flatten_nn(parent2)
+            parent1 = flatten(parent1)
+            parent2 = flatten(parent2)
             
 
             # This selects a point at random to split the parents
@@ -152,23 +126,7 @@ class GeneticAlgorithm():
 
 
 
-    def mutate(self,flattened_weights:list):
-        """ 
-        This function mutates the weights of a given agent by a random amount between -mutation_rate and mutation_rate
 
-        parameters: 
-            list of column vectors of weights for each agent
-        returns: 
-            mutated neural networks for each agent
-        """
-        next_gen = []
-
-        for i in range(self.population_size):   
-            mutated_vector = mutate(flattened_weights[i], self.mutation_rate)
-            new_network = unflatten(mutated_vector, self.population[i])  
-            next_gen.append(new_network)
-        
-        return next_gen
         
 
     def run(self):
@@ -206,7 +164,7 @@ class GeneticAlgorithm():
             offspring = self.crossover(selected_population)
 
             # Mutation
-            mutated_offspring = self.mutate(offspring)
+            mutated_offspring = mutate(offspring)
 
             # Update population and generation
             self.population = mutated_offspring
