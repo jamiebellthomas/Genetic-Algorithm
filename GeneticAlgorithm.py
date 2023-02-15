@@ -72,6 +72,7 @@ class GeneticAlgorithm():
             # agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]                            
             raise ValueError('Environment doesn"t quite work yet. Reward is always < 0 and is too random.')
         elif env == 'CartPole-v1':
+            self.threshold = 500
             agentPopulation = [NeuralNetwork(4, 2) for _ in range(self.population_size)]
         else:
             raise ValueError('Environment not supported')
@@ -102,10 +103,10 @@ class GeneticAlgorithm():
             print('Generation {}'.format(self.generation))
 
             # Evaluate fitness
-            self, population_fitness = evaluate_fitness(self)
-            
-            # Update metrics
-            self = update_metrics(self)
+            self, population_fitness, terminated = evaluate_fitness(self)
+
+            if terminated:
+                break
 
             # Selection
             selected_population = selection(self, population_fitness, num_agents=2)
@@ -118,11 +119,12 @@ class GeneticAlgorithm():
 
             # Update population and generation
             self.population = mutated_offspring
+
             self.generation += 1
 
-        # Final evaluation
-        evaluate_fitness(self)
-        self = update_metrics(self)
+        if not terminated:
+            # Final evaluation
+            evaluate_fitness(self)
         
         # Save data
         save_generation(self)

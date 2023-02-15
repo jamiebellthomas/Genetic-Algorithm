@@ -29,6 +29,7 @@ def evaluate_agent(self, input):
 
     return fitness
 
+from metrics import update_metrics
 
 def evaluate_fitness(self):
         """ 
@@ -45,6 +46,8 @@ def evaluate_fitness(self):
                 Updated GeneticAlgorithm object
             population_fitness: list <float>
                 List of fitness scores for each agent in the population
+            terminated: bool
+                Flag to indicate if the threshold has been met
         """
         start = time.time()
         pool_input = list(enumerate(self.population))
@@ -80,6 +83,16 @@ def evaluate_fitness(self):
         end = time.time()
         self.duration = end - start
 
+        self.all_fitness = population_fitness
+
+        # Update the metrics
+        self = update_metrics(self)
+
+        # If threshold is met, pass terminated flag
+        if self.best_fitness >= self.threshold:
+            terminated = True
+        else:
+            terminated = False
 
         # Return the population fitness
-        return self, population_fitness
+        return self, population_fitness, terminated
