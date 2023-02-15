@@ -2,7 +2,6 @@ DQN Test Racecar AP/__pycache__/ddqn_keras.cpython-38.pyc
 DQN Test Racecar AP/__pycache__/GameEnv.cpython-38.pyc
 DQN Test Racecar AP/__pycache__/Goals.cpython-38.pyc
 DQN Test Racecar AP/__pycache__/Walls.cpython-38.pyc
-*.pyc
 Training/*
 Training/ModelDetails.csv
 *.pyc
