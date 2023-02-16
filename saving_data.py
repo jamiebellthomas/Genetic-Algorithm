@@ -1,35 +1,45 @@
 import time
 import pandas as pd
 import os
+import json
 
 from tensorflow.keras.models import save_model
 
+from metrics import save_metrics
 
-def save_generation(population, description):
+
+def save_generation(self):
     """ 
     Save generation of agents to a folder.
     Possible addition: incorporate a checkpoint to save models during training in case computer says no.
     
     parameters:
     ----------------
-        population: list <NeuralNetwork>
-            List of NeuralNetwork objects representing the population
-        description: str
-            Description of the model. This should include at least the environment name,
-            the number of generations, the population size. Any other hyperparameters
-            required to reproduce the model should also be included.
+        self: GeneticAlgorithm object
+            GeneticAlgorithm object
      """
     print('Saving models...')
-    path = update_model_details(description)
+    path = update_model_details(self.description)
 
     # Save the models
-    for i, agent in enumerate(population):
+    for i, agent in enumerate(self.population):
         filename = 'Agent_{}.h5'.format(i)
         file_path = os.path.join(path, filename)
 
         save_model(agent.model, file_path)
-        print(len(population))
+        print(len(self.population))
 
+    # Save class variables for reproducibility. Format as json file.
+    class_variables = self.__dict__
+    class_variables['population'] = 'Population saved as h5 files'
+
+    with open(os.path.join(path, 'class_variables.json'), 'w') as f:
+        # Format the json file to be human readable, with 4 spaces per indent
+        json.dump(class_variables, f, indent=4)
+
+    # Save metrics
+    save_metrics(self, path)
+    
     print('Models saved to {}'.format(path))
 
 

@@ -3,9 +3,6 @@ from NeuralNetwork import NeuralNetwork
 import random
 import numpy as np
 
-import gym
-mutation_rate = 0.2
-network = NeuralNetwork(2, 3)
 
 
 
@@ -26,7 +23,8 @@ def flatten(network):
     weights = np.concatenate(weights)
     return weights
 
-def mutate(flattened_weights, mutation_rate):
+
+def mutate_gene(flattened_weights, mutation_rate):
     ''' 
     Mutation
     
@@ -44,6 +42,7 @@ def mutate(flattened_weights, mutation_rate):
         mutated[i] = v * (random.uniform(-mutation_rate, mutation_rate) + 1)
     return mutated
     
+
 def unflatten(flattened_weights, network):
     ''' 
     Unflatten weights
@@ -71,22 +70,20 @@ def unflatten(flattened_weights, network):
     return network
 
 
-"""
-original_flattened = flatten(network)
-original_unflattened = unflatten(original_flattened, network)
+def mutate(self,flattened_weights:list):
+    """ 
+    This function mutates the weights of a given agent by a random amount between -mutation_rate and mutation_rate
 
+    parameters: 
+        list of column vectors of weights for each agent
+    returns: 
+        mutated neural networks for each agent
+    """
+    next_gen = []
 
-
-print('Original:', network.model.get_weights())
-print('Original Remade:', original_unflattened.model.get_weights())
-
-
-
-mutated = mutate(original_flattened, 0.1)
-mutated_unflattened = unflatten(mutated, network)
-
-
-print('Original:', original_unflattened.model.get_weights())
-print('Mutated:', mutated_unflattened.model.get_weights())
-print('Delta:', mutated - original_flattened)
-"""
+    for i in range(self.population_size):   
+        mutated_vector = mutate_gene(flattened_weights[i], self.mutation_rate)
+        new_network = unflatten(mutated_vector, self.population[i])  
+        next_gen.append(new_network)
+    
+    return next_gen

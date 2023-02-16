@@ -29,4 +29,8 @@ ID,Date,Path,Description
 28,2023-02-13,Training/Saved Models/0028,test
 29,2023-02-13,Training/Saved Models/0029,test
 30,2023-02-13,Training/Saved Models/0030,test
-0031,2023-02-13,Training/Saved Models/0031,test
+31,2023-02-13,Training/Saved Models/0031,test
+32,2023-02-15,Training/Saved Models/0032,Testing genetic algorithm
+33,2023-02-15,Training/Saved Models/0033,Testing genetic algorithm
+34,2023-02-15,Training/Saved Models/0034,Parallel time test
+0035,2023-02-15,Training/Saved Models/0035,Non-parallel time test
