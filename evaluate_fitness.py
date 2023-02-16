@@ -16,6 +16,10 @@ def evaluate_agent(self, input):
     observation = env.reset()
     done = False
 
+    # Convert observation to a 2D array if it is a tuple
+    if type(observation) == tuple:
+        observation = observation[0]
+
     # Initialize fitness score
     fitness = 0
 
@@ -24,7 +28,12 @@ def evaluate_agent(self, input):
     while not done:
         # Get action from agent and pass it to the environment
         action = agent.predict_action(observation)
-        observation, reward, done, info = env.step(action)
+
+        # Try with 4 outputs if it errors except with 5 outputs this will depend on version of gym
+        try:
+            observation, reward, done, info = env.step(action)
+        except:
+            observation, reward, done, truncate, info = env.step(action)
 
         # Decide what type of fitness function to use here
         ############### This bit can be tampered with a lot ###############

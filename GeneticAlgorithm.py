@@ -94,7 +94,7 @@ class GeneticAlgorithm():
         Potential improvements:
             - Save generations every n interations
         """
-        self.generation = 0
+        self.generation = 1
 
         # Initialize metrics
         self = initialise_metrics(self)
@@ -140,9 +140,9 @@ if __name__ == "__main__":
         selection_type='elitism',
         crossover_rate=0.7,
         mutation_rate=0.1,
-        num_generations=5,
-        parallel=False,
-        description='Non-parallel time test'
+        num_generations=4,
+        parallel=True,
+        description='Parallel Test'
     )
 
     # Run genetic algorithm
