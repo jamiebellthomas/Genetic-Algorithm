@@ -33,7 +33,7 @@ def evaluate_agent(self, input):
         try:
             observation, reward, done, info = env.step(action)
         except:
-            observation, reward, done, truncate, info = env.step(action)
+            observation, reward, done, _, info = env.step(action)
 
         # Decide what type of fitness function to use here
         ############### This bit can be tampered with a lot ###############
@@ -66,9 +66,10 @@ def evaluate_fitness(self):
 
         # Evaluate the fitness of each agent in the population in parallel or serial
         if self.parallel:
-            cores = mp.cpu_count() -1
+            # Create a pool of processes
+            cores = mp.cpu_count() - 1
             print('Evaluating fitness in parallel with {} cores'.format(cores))
-            pool_obj = mp.Pool()
+            pool_obj = mp.Pool(processes=cores)          
 
             # Evaluate the fitness of each agent in the population
             population_fitness = pool_obj.map(partial(evaluate_agent, self), pool_input)

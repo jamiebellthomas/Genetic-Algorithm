@@ -11,7 +11,6 @@ from metrics import initialise_metrics, update_metrics
 from crossover import crossover
 
 
-
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
     def __init__(self, environment, population_size, selection_type, crossover_rate, 
