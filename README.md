@@ -25,6 +25,6 @@ Additionally, install PyTorch from https://pytorch.org/
 ## Custom environment
 Follow the following steps to install the custom environment:
     conda create --name ga_env python=3.10.8
-    pip install numpy pandas
+    pip install numpy pandas matplotlib
     pip install gym[box2d]
     pip install tensorflow

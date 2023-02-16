@@ -9,12 +9,13 @@ from evaluate_fitness import evaluate_fitness
 from mutation import mutate, flatten
 from metrics import initialise_metrics, update_metrics
 from crossover import crossover
+from plotting_data import plot_metrics
 
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
     def __init__(self, environment, population_size, selection_type, crossover_rate, 
-                mutation_rate, num_generations, parallel, description):
+                mutation_rate, num_generations, parallel, plot, description):
         """ Constructor 
         
         parameters:
@@ -34,6 +35,8 @@ class GeneticAlgorithm():
                 Number of generations to train for
             parallel: bool
                 Whether to run the genetic algorithm in parallel
+            plot: bool
+                Whether to plot the metrics
             description: str
                 Description of the model. This data is saved to the ModelDetails.csv file.
         """
@@ -46,6 +49,7 @@ class GeneticAlgorithm():
         self.num_generations = num_generations
         self.description = description
         self.parallel = parallel
+        self.plot = plot
 
 
     def init_population(self, env):
@@ -127,6 +131,10 @@ class GeneticAlgorithm():
         
         # Save data
         save_generation(self)
+
+        # Plot metrics
+        if self.plot:
+            plot_metrics(self)
 
 
 
