@@ -9,13 +9,12 @@ from evaluate_fitness import evaluate_fitness
 from mutation import mutate, flatten
 from metrics import initialise_metrics, update_metrics
 from crossover import crossover
-from plotting_data import plot_metrics
 
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
     def __init__(self, environment, population_size, selection_type, crossover_rate, 
-                mutation_rate, num_generations, parallel, plot, description):
+                mutation_rate, num_generations, parallel, description):
         """ Constructor 
         
         parameters:
@@ -49,7 +48,6 @@ class GeneticAlgorithm():
         self.num_generations = num_generations
         self.description = description
         self.parallel = parallel
-        self.plot = plot
 
 
     def init_population(self, env):
@@ -132,10 +130,6 @@ class GeneticAlgorithm():
         # Save data
         save_generation(self)
 
-        # Plot metrics
-        if self.plot:
-            plot_metrics(self)
-
 
 
 if __name__ == "__main__":
@@ -143,14 +137,13 @@ if __name__ == "__main__":
 
     ga = GeneticAlgorithm(
         environment='CartPole-v1',
-        population_size=15,
+        population_size=4,
         selection_type='elitism',
         crossover_rate=0.7,
         mutation_rate=0.1,
-        num_generations=10,
-        parallel=False,
-        plot=True,
-        description=''
+        num_generations=4,
+        parallel=0,
+        description='Parallel Test'
     )
 
     # Run genetic algorithm
