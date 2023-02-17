@@ -1,6 +1,6 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 import os
+import plotly.graph_objects as go
 
 # Plot metrics
 def plot_metrics(self):
@@ -8,7 +8,7 @@ def plot_metrics(self):
     This function plots the metrics recorded during the genetic algorithm.
     """
     # Plot metrics
-    metrics = pd.DataFrame(self.metrics)
+    plot_all_fitness(self.metrics['all_fitness'])
 
 # Get metrics from file
 def get_metrics_from_file(str_run_id):
@@ -24,16 +24,24 @@ def get_metrics_from_file(str_run_id):
     return metrics
 
 # Plot metrics from file
-def plot_all_fitness(metrics):
+def plot_all_fitness(all_fitness):
     """ plot_all_fitness
     This function plots all the fitness scores recorded during the genetic algorithm.
     It plots the distribution of each generation.
     """
-    # Plot 10 points for each generation
-    num_points = 10
-    
+    # Convert all_fitness to list of strings to list of lists if strings
+    if isinstance(all_fitness[0], str):
+        all_fitness = list(map(lambda x: x[1:-1].split(','), all_fitness))
+        all_fitness = [list(map(float, x)) for x in all_fitness]
+
+    # Plot all fitness using plotly
+    fig = go.Figure()
+    for index, generation in enumerate(all_fitness):
+        fig.add_trace(go.Scatter(x=[index+1]*len(generation),y=generation, name='Generation {}'.format(index+1), mode='markers'))
+
+    fig.show()
     
 # Plot metrics from file
 if __name__ == '__main__':
-    metrics = get_metrics_from_file('0036')
-    plot_all_fitness(metrics)
+    metrics = get_metrics_from_file('0042')
+    plot_all_fitness(metrics['all_fitness'].values)
