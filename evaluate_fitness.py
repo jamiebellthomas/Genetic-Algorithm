@@ -80,7 +80,7 @@ def evaluate_fitness(self):
             for input in pool_input:
                 fitness = evaluate_agent(self, input)
                 population_fitness.append(fitness)
-        
+    
         print('Population fitness: {}'.format(population_fitness))
 
         # Print the average fitness of the population
