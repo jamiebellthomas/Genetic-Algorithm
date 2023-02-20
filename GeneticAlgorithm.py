@@ -149,13 +149,13 @@ if __name__ == "__main__":
 
     ga = GeneticAlgorithm(
         environment='CartPole-v1',
-        population_size=4,
+        population_size=30,
         sparse_reward=0,
         fitness_sharing=1,
         selection_type='elitism',
         crossover_rate=0.7,
         mutation_rate=0.1,
-        num_generations=4,
+        num_generations=6,
         parallel=0,
         plot=1,
         description='Parallel Test'

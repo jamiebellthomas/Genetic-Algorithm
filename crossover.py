@@ -67,7 +67,7 @@ def crossover(self, selected_population):
                 
                 # This selects two points at random to split the parents
                 split1 = random.randint(0,len(parent1)-1)
-                split2 = random.randint(split1+1,len(parent1)-1)
+                split2 = random.randint(split1+1,len(parent1))
                 
                 # This creates the children by selecting the first half(up to splitting point) of the first parent and 
                 # the second half of the second parent and then inversely for the second child
