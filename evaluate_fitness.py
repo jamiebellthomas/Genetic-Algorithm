@@ -117,6 +117,76 @@ def evaluate_agent(self, input):
 
 from metrics import update_metrics
 
+def fitness_sharing(self, population_fitness):
+    ######## FITNESS SHARING ########
+    '''
+    Fitness sharing is a method of preventing premature convergence in genetic algorithms.
+    It is a method of penalizing agents that are too similar to each other. This is done by
+    reducing the fitness of agents that are too similar to each other.
+
+    https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.48.9077&rep=rep1&type=pdf
+
+    The fitness sharing method used here is based on the euclidean distance between agents
+    and will require flattening the agents weights: 
+
+    parameters:
+    ----------------
+        self: GeneticAlgorithm
+            GeneticAlgorithm object
+    returns:
+    ----------------
+        population_fitness: list <float>
+            List of fitness scores for each agent in the population
+
+
+    '''
+    # define fitness sharing parameters - these can be changed
+    shar_param = 0.5 # a parameter that controls the strength of the fitness sharing
+    shar_range = 10 # a euclidean distance between agents
+
+    new_fitness = []
+    print('Applying fitness sharing')
+
+    
+
+    # for each agent in the population
+    for i, agent in enumerate(self.population):
+        
+        denominator = 1
+
+        # retrieve the flattened weights from the agent
+        chosen_agent = agent.weightsnbiases()
+
+        # for each other agent in the population
+        for j, other in enumerate(self.population):
+            # if the agent is not the same as the other agent
+            if i != j:
+                # retrieve the weights from the agent
+                other_agent = other.weightsnbiases()
+
+                # calculate the manhattan distance between the agents 
+                # NOTE: this can be changed to the manhattan distance or maximum distance
+                # ord = 2 is euclidean , ord = 1 is manhattan, ord = np.inf is max distance
+
+                distance = np.linalg.norm(chosen_agent - other_agent, ord=1)
+
+                # if the distance is less than the shar_range
+                if distance < shar_range:
+                    # calculate the fitness sharing term
+                    denominator += (1 - distance/shar_range)**(shar_param)
+
+        # calculate the new fitness
+        new_fitness.append(population_fitness[i]/denominator)
+        
+    # replace the population fitness with the new fitness
+    print('Fitness sharing applied')
+
+    return new_fitness
+
+
+
+
+
 def evaluate_fitness(self):
         """ 
         This function evaluates the fitness of the population. The fitness is currently the sum of rewards.
@@ -155,74 +225,10 @@ def evaluate_fitness(self):
                 fitness = evaluate_agent(self, input)
                 population_fitness.append(fitness)
 
-        ######## FITNESS SHARING ########
-        '''
-        Fitness sharing is a method of preventing premature convergence in genetic algorithms.
-        It is a method of penalizing agents that are too similar to each other. This is done by
-        reducing the fitness of agents that are too similar to each other.
-
-        https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.48.9077&rep=rep1&type=pdf
-
-        The fitness sharing method used here is based on the euclidean distance between agents
-        and will require flattening the agents weights: 
-
-        ############################################################
-        TO BE DISCUSSED move the flattening to the evaluate_fitness.py
-        ############################################################
-
-        parameters:
-        ----------------
-            self: GeneticAlgorithm
-                GeneticAlgorithm object
-        returns:
-        ----------------
-            population_fitness: list <float>
-                List of fitness scores for each agent in the population
-
-
-        '''
+        
+        # apply fitness sharing
         if self.fitness_sharing == True:
-            # import the flatten function
-            from mutation import flatten
-
-            # define fitness sharing parameters - these can be changed
-            shar_param = 0.5 # a parameter that controls the strength of the fitness sharing
-            shar_range = 5 # a euclidean distance between agents
-
-            new_fitness = []
-            print('Applying fitness sharing')
-
-            # for each agent in the population
-            for i, agent in enumerate(self.population):
-                # for each other agent in the population
-                denominator = 1
-                chosen_agent = flatten(agent)
-
-                for j, other in enumerate(self.population):
-                    # if the agent is not the same as the other agent
-                    if i != j:
-                        # retrieve the weights from the agent
-                        other_agent = flatten(other)
-
-                        # calculate the euclidean distance between the agents 
-                        # NOTE: this can be changed to the manhattan distance or maximum distance
-                        # ord = 2 is euclidean , ord = 1 is manhattan, ord = np.inf is max distance
-
-                        distance = np.linalg.norm(chosen_agent - other_agent, ord=2)
-
-                        # if the distance is less than the shar_range
-                        if distance < shar_range:
-                            # calculate the fitness sharing term
-                            denominator += (1 - distance/shar_range)**(shar_param)
-
-                # calculate the new fitness
-                new_fitness.append(population_fitness[i]/denominator)
-                
-            # replace the population fitness with the new fitness
-            population_fitness = new_fitness
-            print('Fitness sharing applied')
-
-
+            population_fitness = fitness_sharing(population_fitness)
 
     
         print('Population fitness: {}'.format(population_fitness))
@@ -253,3 +259,5 @@ def evaluate_fitness(self):
 
         # Return the population fitness
         return self, population_fitness, terminated
+
+
