@@ -54,11 +54,7 @@ class NeuralNetwork():
         self.layer_size = layer_size
 
         # Assign the weights and biases to the class for easy access
-        self.weights = []
-        self.biases = []
-        for i, layer in enumerate(self.layers):
-            self.weights.append(layer.get_weights()[0])
-            self.biases.append(layer.get_weights()[1])
+        self.get_flattened_weights_biases()     
 
 
     # Function that takes the observation of the state as input and returns the action
@@ -80,3 +76,32 @@ class NeuralNetwork():
         action = np.argmax(self.model.predict(observation.reshape(1, -1)))
 
         return action
+
+    def get_flattened_weights_biases(self):
+        """ Get flattened weights
+        This function returns the weights and biases of the neural network as a 1D array.
+
+        returns:
+        ----------------
+            weights: np.array
+                1D array of weights and biases
+        """
+        # Get the weights and biases
+        weights = []
+        biases = []
+
+        for layer in self.layers:
+            weights.append(layer.get_weights()[0])
+            biases.append(layer.get_weights()[1])
+        
+        # Flatten weights and biases
+        weights = [w.flatten() for w in weights]
+        self.weights = np.concatenate(weights)
+
+        biases = [b.flatten() for b in biases]
+        self.biases = np.concatenate(biases)
+
+        # Concatenate weights and biases
+        self.weightsnbiases = np.concatenate((self.weights, self.biases))
+
+        return weights
