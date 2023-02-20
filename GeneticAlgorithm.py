@@ -14,8 +14,8 @@ from plotting_data import plot_metrics
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
-    def __init__(self, environment, population_size, sparse_reward, fitness_sharing, selection_type, crossover_rate, 
-                mutation_rate, num_generations, parallel, plot, description):
+    def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=False, selection_type='elitism', crossover_rate=0.7, 
+                mutation_rate=0.1, num_generations=5, parallel=False, plot=False, description=None):
         """ Constructor 
         
         parameters:
@@ -108,7 +108,7 @@ class GeneticAlgorithm():
         # Initialize metrics
         self = initialise_metrics(self)
         
-        while self.generation < self.num_generations:
+        while self.generation <= self.num_generations:
             print('Generation {}'.format(self.generation))
 
             # Evaluate fitness
@@ -123,6 +123,7 @@ class GeneticAlgorithm():
             # Crossover
             offspring = crossover(self, selected_population)
 
+            print(len(offspring))
             # Mutation
             mutated_offspring = mutate(self, offspring)
 
@@ -149,13 +150,13 @@ if __name__ == "__main__":
 
     ga = GeneticAlgorithm(
         environment='CartPole-v1',
-        population_size=4,
+        population_size=2,
         sparse_reward=0,
         fitness_sharing=1,
         selection_type='elitism',
         crossover_rate=0.7,
         mutation_rate=0.1,
-        num_generations=4,
+        num_generations=6,
         parallel=0,
         plot=1,
         description='Parallel Test'

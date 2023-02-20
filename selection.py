@@ -24,6 +24,10 @@ def selection(self, population_fitness, num_agents):
             List of indices of the selected agents from the original population
 
         '''
+    if num_agents > len(population_fitness):
+        raise ValueError('Number of agents to be selected is greater than the population size')
+
+
     selection_type = self.selection_type
 
     # initializing a new population
