@@ -14,7 +14,7 @@ from plotting_data import plot_metrics
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
-    def __init__(self, environment, population_size, selection_type, crossover_rate, 
+    def __init__(self, environment, population_size, sparse_reward, fitness_sharing, selection_type, crossover_rate, 
                 mutation_rate, num_generations, parallel, plot, description):
         """ Constructor 
         
@@ -24,6 +24,10 @@ class GeneticAlgorithm():
                 Environment name corresponding to the OpenAI Gym environment
             population_size: int
                 Size of the population
+            sparse_reward: bool
+                Whether to use sparse reward
+            fitness_sharing: bool
+                Whether to use fitness sharing
             selection_type: str
                 Selection type. Values can be 'tournament', 'proportional-roulette-wheel', 
                 'rank-based-rolette-wheel', 'elitism'
@@ -43,6 +47,8 @@ class GeneticAlgorithm():
         self.environment = environment
         self.population_size = population_size
         self.population = self.init_population(environment)
+        self.sparse_reward = sparse_reward
+        self.fitness_sharing = fitness_sharing
         self.selection_type = selection_type
         self.crossover_rate = crossover_rate
         self.mutation_rate = mutation_rate
@@ -144,6 +150,8 @@ if __name__ == "__main__":
     ga = GeneticAlgorithm(
         environment='CartPole-v1',
         population_size=4,
+        sparse_reward=0,
+        fitness_sharing=1,
         selection_type='elitism',
         crossover_rate=0.7,
         mutation_rate=0.1,
