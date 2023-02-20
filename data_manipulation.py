@@ -137,5 +137,3 @@ def load_generation(path):
     print('Models loaded from {}'.format(path))
     return class_settings, population
 
-path = 'Training/Saved Models/0040'
-population = load_generation(path)
