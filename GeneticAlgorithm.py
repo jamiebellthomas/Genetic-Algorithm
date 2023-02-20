@@ -118,10 +118,14 @@ class GeneticAlgorithm():
                 break
 
             # Selection
-            selected_population = selection(self, population_fitness, num_agents=2)
+            self = selection(self, population_fitness, num_agents=2)
 
+            # In here selection mutation will occur where self.selected is set to true
+
+            # 
             # Crossover
             offspring = crossover(self, selected_population)
+            # THIS IS GETTING CHANGED ^^ NOT RETURNING ANYTHING, SIMPLY UPDATING SELF
 
             print(len(offspring))
             # Mutation

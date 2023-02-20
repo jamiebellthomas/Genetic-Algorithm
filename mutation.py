@@ -123,7 +123,7 @@ def swap_mutation(chromosome, mutation_rate):
             index1 = i
             index2 = index1
             while index2 == index1 or index2 == i:
-                index2 = int(random.uniform(0,(len(chromosome)-1)))
+                index2 = random.randint(0,(len(chromosome)-1))
             chromosome[index1], chromosome[index2] = chromosome[index2], chromosome[index1]
     return chromosome
 
@@ -135,7 +135,7 @@ def inversion_mutation(chromosome, mutation_rate):
     for i in range(len(chromosome)):
         if random.uniform(0,1) < mutation_rate:
             start_index = i
-            end_index = i + int(random.uniform(1,5))
+            end_index = i + random.randint(1,5)
             chromosome[start_index:end_index] = chromosome[start_index:end_index][::-1]
 
     return chromosome
@@ -149,3 +149,10 @@ def random_reset_mutation(chromosome, mutation_rate):
         if random.uniform(0,1) < mutation_rate:
             chromosome[i] = random.uniform(min(chromosome), max(chromosome))
     return chromosome
+
+def selection_mutation(self):
+    """
+    Selection mutation
+    Takes the best agent and randomly mutates it
+    """
+    return

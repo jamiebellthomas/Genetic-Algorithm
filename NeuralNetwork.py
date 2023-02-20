@@ -60,7 +60,7 @@ class NeuralNetwork():
             self.weights.append(layer.get_weights()[0])
             self.biases.append(layer.get_weights()[1])
 
-
+        self.selected = False
     # Function that takes the observation of the state as input and returns the action
     def predict_action(self, observation):
         """ Predict
