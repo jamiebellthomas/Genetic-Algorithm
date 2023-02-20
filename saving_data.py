@@ -73,8 +73,27 @@ def update_model_details(description):
     date = time.strftime("%Y-%m-%d")
     path = 'Training/Saved Models/' + ID
 
-    # Create a new folder for the model
-    os.mkdir(path)
+    # Create a new folder for the model if it doesn't already exist if it exists, prompt the user to overwrite
+    if os.path.exists(path):
+        print('Model already exists. Overwrite?')
+        print('1. Yes')
+        print('2. No')
+        overwrite = input('Enter 1 or 2: ')
+
+        if overwrite == '1':
+            print('Overwriting model...')
+
+        elif overwrite == '2':
+            print('Exiting...')
+            exit()
+
+        else:
+            print('Invalid input. Exiting...')
+            exit()
+
+    else:
+        # Create a new folder for the model
+        os.mkdir(path)
 
     # Concat the data into the dataframe
     df = pd.concat([df, pd.DataFrame([[ID, date, path, description]], columns=['ID', 'Date', 'Path', 'Description'])])

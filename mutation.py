@@ -49,6 +49,8 @@ def mutate_gene(flattened_weights, mutation_rate):
             flattened_weights = random_reset_mutation(flattened_weights, mutation_rate)
         elif mutation_method == 3:
             flattened_weights = inversion_mutation(flattened_weights, mutation_rate)
+
+    return flattened_weights
         
         
     
