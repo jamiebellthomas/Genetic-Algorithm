@@ -14,7 +14,7 @@ from plotting_data import plot_metrics
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
-    def __init__(self, environment, population_size=5, sparse_reward=False, fitness_sharing=False, selection_type='elitism', crossover_rate=0.7, 
+    def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=False, selection_type='elitism', crossover_rate=0.7, 
                 mutation_rate=0.1, num_generations=5, parallel=False, plot=False, description=None):
         """ Constructor 
         
