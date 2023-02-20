@@ -5,7 +5,7 @@ import numpy as np
 
 class NeuralNetwork():
     """ Neural Network class """
-    def __init__(self, input_size, output_size):
+    def __init__(self, input_size, output_size, settings=None):
         """ 
         Constructor. 
         Possible addition: allow architecture to be a dynamic parameter.
@@ -16,17 +16,27 @@ class NeuralNetwork():
                 Number of input nodes
             output_size: int
                 Number of output nodes
+            settings: dict
+                Dictionary of settings for the neural network
         """
+        if settings is None:
+            layer_size = 5
+            num_layers = 1
+
         # Input layer with input_size nodes, dense layer with 5 nodes and output layer with output_size nodes
 
         input_layer  = Input(input_size)
-        dense_layer1 = Dense(5, activation="relu")
+        dense_layer1 = Dense(layer_size, activation="relu")
         output_layer = Dense(output_size, activation="linear")
         
         # Assign layers to the model
         model = Sequential()
         model.add(input_layer)
-        model.add(dense_layer1)
+
+        # Add dense layers
+        for _ in range(num_layers):
+            model.add(dense_layer1)
+        
         model.add(output_layer)
 
         # Create random weights
@@ -39,12 +49,17 @@ class NeuralNetwork():
         self.model = model
         self.layers = model.layers
 
+        # Store hyperparameters
+        self.num_layers = num_layers
+        self.layer_size = layer_size
+
         # Assign the weights and biases to the class for easy access
         self.weights = {}
         self.biases = {}
         for i, layer in enumerate(self.layers):
             self.weights[i] = layer.get_weights()[0]
             self.biases[i] = layer.get_weights()[1]
+
 
     # Function that takes the observation of the state as input and returns the action
     def predict_action(self, observation):
