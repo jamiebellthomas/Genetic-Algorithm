@@ -87,3 +87,55 @@ def mutate(self,flattened_weights:list):
         next_gen.append(new_network)
     
     return next_gen
+
+def scramble_mutation(chromosome, mutation_rate):
+    """
+    Scramble mutation
+    Takes a block of genes and randomly reorders them
+    """
+    # Take out a list of genes from the chromosome, scramble it, and put it back in
+    gene_indices_to_scramble = []
+    for i in range(len(chromosome)):
+        if random.uniform(0,1) < mutation_rate:
+            gene_indices_to_scramble.append(i)
+    scrambled_indices = random.shuffle(gene_indices_to_scramble)
+    for i in range(len(gene_indices_to_scramble)):
+        chromosome[gene_indices_to_scramble[i]] = chromosome[scrambled_indices[i]]
+    return chromosome
+
+def swap_mutation(chromosome, mutation_rate):
+    """
+    Swap mutation
+    Takes two genes and swaps them
+    """
+    for i in range(len(chromosome)):
+        if random.uniform(0,1) < mutation_rate:
+            index1 = i
+            index2 = index1
+            while index2 == index1 or index2 == i:
+                index2 = int(random.uniform(0,(len(chromosome)-1)))
+            chromosome[index1], chromosome[index2] = chromosome[index2], chromosome[index1]
+    return chromosome
+
+def inversion_mutation(chromosome, mutation_rate):
+    """
+    Inversion mutation
+    Takes a continuous block of genes and reverses their order
+    """
+    for i in range(len(chromosome)):
+        if random.uniform(0,1) < mutation_rate:
+            start_index = i
+            end_index = i + int(random.uniform(1,5))
+            chromosome[start_index:end_index] = chromosome[start_index:end_index][::-1]
+
+    return chromosome
+
+def random_reset_mutation(chromosome, mutation_rate):
+    """
+    Random reset mutation
+    Takes a gene and randomly resets it to a new value within the range of the chromosome
+    """
+    for i in range(len(chromosome)):
+        if random.uniform(0,1) < mutation_rate:
+            chromosome[i] = random.uniform(min(chromosome), max(chromosome))
+    return chromosome
