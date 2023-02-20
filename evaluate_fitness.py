@@ -138,14 +138,14 @@ def fitness_sharing(self, population_fitness):
         denominator = 1
 
         # retrieve the flattened weights from the agent
-        chosen_agent = agent.weightsnbiases()
+        chosen_agent = agent.weightsnbiases
 
         # for each other agent in the population
         for j, other in enumerate(self.population):
             # if the agent is not the same as the other agent
             if i != j:
                 # retrieve the weights from the agent
-                other_agent = other.weightsnbiases()
+                other_agent = other.weightsnbiases
 
                 # calculate the manhattan distance between the agents 
                 # NOTE: this can be changed to the manhattan distance or maximum distance
@@ -211,7 +211,7 @@ def evaluate_fitness(self):
         
         # apply fitness sharing
         if self.fitness_sharing == True:
-            population_fitness = fitness_sharing(population_fitness)
+            population_fitness = fitness_sharing(self, population_fitness)
 
     
         print('Population fitness: {}'.format(population_fitness))
