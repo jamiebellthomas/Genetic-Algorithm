@@ -26,9 +26,8 @@ def crossover(self, selected_population):
         crossover_methods = ['crossover_singlesplit', 'crossover_doublesplit', 'crossover_uniformsplit']
         
         # Crosover from the selected popuplation to fill the population back up to the original size
-        # for i in range((self.population_size)//2):
-        for loop in range(0,2):
-        
+        for i in range((self.population_size)//2):
+            
 
             # This selects the integers for the indexing of two parents at random from the selected population
             parent1 = selected_population[random.choice(range(len(selected_population)))]
@@ -46,7 +45,7 @@ def crossover(self, selected_population):
             parent2 = flatten(parent2)
           
             #randomly select a crossover method
-            crossover_method = 'crossover_uniformsplit' #random.choice(crossover_methods)
+            crossover_method = random.choice(crossover_methods)
             
 
             if crossover_method == 'crossover_singlesplit':
