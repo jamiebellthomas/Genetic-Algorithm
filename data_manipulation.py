@@ -4,8 +4,10 @@ import os
 import json
 
 from tensorflow.keras.models import save_model
+from tensorflow.keras.models import load_model
 
 from metrics import save_metrics
+# from GeneticAlgorithm import GeneticAlgorithm
 
 
 def save_generation(self):
@@ -32,6 +34,8 @@ def save_generation(self):
     # Save class variables for reproducibility. Format as json file.
     class_variables = self.__dict__
     class_variables['population'] = 'Population saved as h5 files'
+    class_variables['env'] = 'Environment object not saved'
+    # TypeError: Object of type TimeLimit is not JSON serializable
 
     with open(os.path.join(path, 'class_variables.json'), 'w') as f:
         # Format the json file to be human readable, with 4 spaces per indent
@@ -41,8 +45,6 @@ def save_generation(self):
     save_metrics(self, path)
     
     print('Models saved to {}'.format(path))
-
-
 
 
 def update_model_details(description):
@@ -102,4 +104,36 @@ def update_model_details(description):
     df.to_csv('Training/ModelDetails.csv', index=False)
 
     return path
+
+
+def load_generation(path):
+    """ 
+    Load a generation of agents from a folder.
+    
+    parameters:
+    ----------------
+        path: str
+            Path of the folder containing the models
+    
+    returns:
+    ----------------
+        class_settings: dict
+            Dictionary of class variables for the GeneticAlgorithm object
+        population: list
+            List of NeuralNetwork objects
+    """
+    print('Loading models...')
+    population = []
+
+    class_settings = json.load(open(os.path.join(path, 'class_variables.json'), 'r'))
+    
+    # Load the models
+    for filename in os.listdir(path):
+        if filename.endswith('.h5'):
+            print('Loading {}'.format(filename))
+            model = load_model(os.path.join(path, filename))
+            population.append(model)
+
+    print('Models loaded from {}'.format(path))
+    return class_settings, population
 

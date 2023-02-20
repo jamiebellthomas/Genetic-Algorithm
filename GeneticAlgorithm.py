@@ -4,7 +4,7 @@ import gym
 
 from selection import selection
 from NeuralNetwork import NeuralNetwork
-from saving_data import save_generation
+from data_manipulation import save_generation
 from evaluate_fitness import evaluate_fitness
 from mutation import mutate, flatten
 from metrics import initialise_metrics, update_metrics
@@ -44,6 +44,7 @@ class GeneticAlgorithm():
             description: str
                 Description of the model. This data is saved to the ModelDetails.csv file.
         """
+        self.env = gym.make(environment)
         self.environment = environment
         self.population_size = population_size
         self.population = self.init_population(environment)
@@ -78,8 +79,9 @@ class GeneticAlgorithm():
 
         print('Initializing population for {}...'.format(env))
         if env == 'MountainCar-v0':
-            # agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]                            
-            raise ValueError('Environment doesn"t quite work yet. Reward is always < 0 and is too random.')
+            self.threshold = 999
+            agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]                            
+            # raise ValueError('Environment doesn"t quite work yet. Reward is always < 0 and is too random.')
         elif env == 'CartPole-v1':
             self.threshold = 500
             agentPopulation = [NeuralNetwork(4, 2) for _ in range(self.population_size)]
@@ -118,10 +120,14 @@ class GeneticAlgorithm():
                 break
 
             # Selection
-            selected_population = selection(self, population_fitness, num_agents=2)
+            self = selection(self, population_fitness, num_agents=2)
 
+            # In here selection mutation will occur where self.selected is set to true
+
+            # 
             # Crossover
             offspring = crossover(self, selected_population)
+            # THIS IS GETTING CHANGED ^^ NOT RETURNING ANYTHING, SIMPLY UPDATING SELF
 
             print(len(offspring))
             # Mutation
@@ -132,9 +138,9 @@ class GeneticAlgorithm():
 
             self.generation += 1
 
-        if not terminated:
-            # Final evaluation
-            evaluate_fitness(self)
+        # if not terminated:
+        #     # Final evaluation
+        #     evaluate_fitness(self)
         
         # Save data
         save_generation(self)
@@ -147,19 +153,12 @@ class GeneticAlgorithm():
 
 if __name__ == "__main__":
     
-
     ga = GeneticAlgorithm(
-        environment='CartPole-v1',
-        population_size=2,
-        sparse_reward=0,
-        fitness_sharing=1,
-        selection_type='elitism',
-        crossover_rate=0.7,
-        mutation_rate=0.1,
+        # environment='CartPole-v1',
+        environment='MountainCar-v0',
+        sparse_reward=True,
         num_generations=6,
-        parallel=0,
-        plot=1,
-        description='Parallel Test'
+        population_size=10
     )
 
     # Run genetic algorithm
