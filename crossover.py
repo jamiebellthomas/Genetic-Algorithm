@@ -8,7 +8,8 @@ from mutation import flatten
 
 def crossover(self, selected_population):
         """ Crossover
-        This function performs crossover on the selected population in as many different random way in order to fill the population back up to the original size.
+        This function performs crossover on the selected population in as many different random way 
+        in order to fill the population back up to the original size.
         
         parameters:
         ----------------
@@ -26,14 +27,13 @@ def crossover(self, selected_population):
         crossover_methods = ['crossover_singlesplit', 'crossover_doublesplit', 'crossover_uniformsplit']
         
         # Crosover from the selected popuplation to fill the population back up to the original size
-        for i in range((self.population_size)//2):
+        while len(offspring) < self.population_size:
             
-
             # This selects the integers for the indexing of two parents at random from the selected population
             parent1 = selected_population[random.choice(range(len(selected_population)))]
             parent2 = selected_population[random.choice(range(len(selected_population)))]
-           # This checks if the parents are the same and if so, selects a new parent
-            if parent1 == parent2:
+            # This checks if the parents are the same and if so, selects a new parent
+            while parent1 == parent2:
                 parent2 = selected_population[random.choice(range(len(selected_population)))]
 
             # This finds the neural network for the parents from the population
@@ -81,7 +81,7 @@ def crossover(self, selected_population):
                 # append the children to the offspring list
                 offspring.append(child1_genes)
                 offspring.append(child2_genes)
-            
+            #
             elif crossover_method == 'crossover_uniformsplit':
                 # perform uniform crossover
                 child1_genes = []
@@ -98,6 +98,7 @@ def crossover(self, selected_population):
                 offspring.append(np.array(child1_genes))
                 offspring.append(np.array(child2_genes))
         
-        
-        # print('the offspring are' , offspring)
+        # Check that the offspring is the correct size
+        if len(offspring) != self.population_size:
+            raise ValueError('The offspring is length {} and should be length {}'.format(len(offspring), self.population_size))
         return offspring
