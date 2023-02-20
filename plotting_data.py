@@ -39,6 +39,17 @@ def plot_all_fitness(all_fitness):
     for index, generation in enumerate(all_fitness):
         fig.add_trace(go.Scatter(x=[index+1]*len(generation),y=generation, name='Generation {}'.format(index+1), mode='markers'))
 
+    # Plot mean fitness as a line
+    mean_fitness = [sum(x)/len(x) for x in all_fitness]
+    fig.add_trace(go.Scatter(x=list(range(1, len(mean_fitness)+1)), y=mean_fitness, name='Mean Fitness', mode='lines', line=dict(color='red')))
+
+    # Set title
+    fig.update_layout(title_text='Fitness Distribution')
+
+    # Label axes
+    fig.update_xaxes(title_text='Generation')
+    fig.update_yaxes(title_text='Fitness')
+
     fig.show()
     
 # Plot metrics from file
