@@ -36,11 +36,21 @@ def mutate_gene(flattened_weights, mutation_rate):
         returns:
             mutated weights: 1D array of weights
     '''
-    mutated = [0] * len(flattened_weights) 
-    # Mutate weights
-    for i,v in enumerate(flattened_weights):
-        mutated[i] = v * (random.uniform(-mutation_rate, mutation_rate) + 1)
-    return mutated
+    # Mutation
+    
+    if random.uniform(0,1) < mutation_rate:
+        # Randomly select a mutation method and apply it
+        mutation_method = random.randint(0,3)
+        if mutation_method == 0:
+            flattened_weights = scramble_mutation(flattened_weights, mutation_rate)
+        elif mutation_method == 1:
+            flattened_weights = swap_mutation(flattened_weights, mutation_rate)
+        elif mutation_method == 2:
+            flattened_weights = random_reset_mutation(flattened_weights, mutation_rate)
+        elif mutation_method == 3:
+            flattened_weights = inversion_mutation(flattened_weights, mutation_rate)
+        
+        
     
 
 def unflatten(flattened_weights, network):
