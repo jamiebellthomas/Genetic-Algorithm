@@ -99,6 +99,7 @@ def evaluate_agent(self, input):
         # if the agent has not received any reward for 500 iterations then enable sparse rewards
         if reward_count > 500:
             self.sparse_reward = True
+            print('Sparse rewards enabled')
  
         # If sparse rewards are enabled then update the frontier
         if self.sparse_reward:
