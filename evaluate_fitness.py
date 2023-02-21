@@ -42,16 +42,18 @@ def sparse_rewards(observation, fitness, frontier):
     for i in range(num_dimensions):
         if observation[i] < frontier[i][0] and frontier[i][0] != 0:
 
+            # as the frontier gets larger, the reward should get smaller
+
             fitness += (abs((frontier[i][0] - observation[i])/ frontier[i][0]) + 1)**2
-            # fitness += abs(frontier[i][0] - observation[i] / frontier[i][0])
+
             # fitness += 1
             frontier[i][0] = observation[i]
 
         elif observation[i] > frontier[i][1] and frontier[i][1] != 0:
 
             fitness += (abs((observation[i] - frontier[i][1])/ frontier[i][1]) + 1)**2
-            # fitness += abs(observation[i] - frontier[i][1] / frontier[i][1])
-            fitness += 1
+
+            # fitness += 1
             frontier[i][1] = observation[i]
 
     return frontier, fitness
