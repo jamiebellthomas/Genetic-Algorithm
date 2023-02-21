@@ -27,6 +27,9 @@ def crossover(self):
     # create a list with three different crossover methods
     crossover_methods = ['crossover_singlesplit', 'crossover_doublesplit', 'crossover_uniformsplit']
 
+    # choose a random crossover method
+    crossover_method = random.choice(crossover_methods)
+
     # This finds the neural network for the parents from the population
     selected_parents = [nn for nn in self.population if nn.selected]
 

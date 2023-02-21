@@ -111,6 +111,7 @@ class GeneticAlgorithm():
         self = initialise_metrics(self)
         
         while self.generation <= self.num_generations:
+            print('----------------------------------------------------------------------')
             print('Generation {}'.format(self.generation))
 
             # Evaluate fitness
