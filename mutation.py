@@ -70,7 +70,7 @@ def mutate(self):
         else:
             agent.weights = mutate_gene(flattened_weights=agent.weights, mutation_rate=self.mutation_rate)
             agent.biases = mutate_gene(flattened_weights=agent.biases, mutation_rate=self.mutation_rate)
-    agent.update_weights_biases()
+        agent.update_weights_biases()
     return self
 
 def scramble_mutation(chromosome, mutation_rate):
