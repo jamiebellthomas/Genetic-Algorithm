@@ -67,6 +67,7 @@ def evaluate_agent(self, input):
     env = self.env
     observation = env.reset()
     done = False
+    truncation = False
 
     # Convert observation to a 2D array if it is a tuple
     if type(observation) == tuple:
@@ -90,26 +91,29 @@ def evaluate_agent(self, input):
             observation, reward, done, info = env.step(action)
         except:
             observation, reward, done, truncation, info = env.step(action)
-            done = truncation
+
 
         # Decide what type of fitness function to use here
         fitness += reward
 
-        reward_count = 0
-        # automatically enable sparse rewards if the agent is not getting any reward after 500 iterations
-        if reward > 0:
-            self.sparse_reward = False
-        else: 
-            reward_count += 1
+        if done or truncation:
+            break
 
-        # if the agent has not received any reward for 500 iterations then enable sparse rewards
-        if reward_count > 500:
-            self.sparse_reward = True
-            print('Sparse rewards enabled')
+        reward_count = 0
+        # # automatically enable sparse rewards if the agent is not getting any reward after 500 iterations
+        # if reward > 0:
+        #     self.sparse_reward = False
+        # else: 
+        #     reward_count += 1
+
+        # # if the agent has not received any reward for 500 iterations then enable sparse rewards
+        # if reward_count > 500:
+        #     self.sparse_reward = True
+        #     print('Sparse rewards enabled')
  
-        # If sparse rewards are enabled then update the frontier
-        if self.sparse_reward:
-            frontier, fitness = sparse_rewards(observation, fitness, frontier)
+        # # If sparse rewards are enabled then update the frontier
+        # if self.sparse_reward:
+        #     frontier, fitness = sparse_rewards(observation, fitness, frontier)
 
         # Print progress
         iter += 1
