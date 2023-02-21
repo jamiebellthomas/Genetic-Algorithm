@@ -42,16 +42,18 @@ def sparse_rewards(observation, fitness, frontier):
     for i in range(num_dimensions):
         if observation[i] < frontier[i][0] and frontier[i][0] != 0:
 
+            # as the frontier gets larger, the reward should get smaller
+
             fitness += (abs((frontier[i][0] - observation[i])/ frontier[i][0]) + 1)**2
-            # fitness += abs(frontier[i][0] - observation[i] / frontier[i][0])
+
             # fitness += 1
             frontier[i][0] = observation[i]
 
         elif observation[i] > frontier[i][1] and frontier[i][1] != 0:
 
             fitness += (abs((observation[i] - frontier[i][1])/ frontier[i][1]) + 1)**2
-            # fitness += abs(observation[i] - frontier[i][1] / frontier[i][1])
-            fitness += 1
+
+            # fitness += 1
             frontier[i][1] = observation[i]
 
     return frontier, fitness
@@ -100,20 +102,13 @@ def evaluate_agent(self, input):
             break
 
         reward_count = 0
-        # # automatically enable sparse rewards if the agent is not getting any reward after 500 iterations
-        # if reward > 0:
-        #     self.sparse_reward = False
-        # else: 
-        #     reward_count += 1
 
-        # # if the agent has not received any reward for 500 iterations then enable sparse rewards
-        # if reward_count > 500:
-        #     self.sparse_reward = True
-        #     print('Sparse rewards enabled')
+        if iter >= 100 and fitness < 0:
+            self.sparse_reward = True 
  
-        # # If sparse rewards are enabled then update the frontier
-        # if self.sparse_reward:
-        #     frontier, fitness = sparse_rewards(observation, fitness, frontier)
+        # If sparse rewards are enabled then update the frontier
+        if self.sparse_reward:
+            frontier, fitness = sparse_rewards(observation, fitness, frontier)
 
         # Print progress
         iter += 1
