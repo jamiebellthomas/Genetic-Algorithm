@@ -152,8 +152,7 @@ def selection(self, population_fitness, num_agents):
         for i in range(num_agents):
             selected_population.append(sorted_fitness[i][0])
 
-
-    print('Population Fitness and indices: ({}, {})'.format( list(enumerate(population_fitness))))
+    # print('Population Fitness and indices: ({})'.format( list(enumerate(population_fitness))))
     print('Selected Population indices: ', selected_population)
     for i in selected_population:
         self.population[i].selected = True
