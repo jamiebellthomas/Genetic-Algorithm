@@ -66,6 +66,9 @@ class NeuralNetwork():
         # Fitness of the network
         self.fitness = 0
 
+        # Store mutation rate for selected networks
+        self.selected_mutation_rate = 0
+
 
     # Function that takes the observation of the state as input and returns the action
     def predict_action(self, observation):
@@ -123,14 +126,14 @@ class NeuralNetwork():
         all_weights = []
         weight_index = 0
         bias_index = 0
-        
+
         # Loop though the layers and update the weights and biases
         for layer in self.layers:
             # Get the layer sizes and dimensions
             layer_sizes = layer.get_weights()[0].size
             layer_dimensions = layer.get_weights()[0].shape
 
-            # Get the weights and biases for the layer
+            # Set the weights and biases for the layer
             all_weights.append(self.weights[weight_index:weight_index+layer_sizes].reshape(layer_dimensions))
             all_weights.append(self.biases[bias_index:bias_index+layer_dimensions[1]].reshape(layer_dimensions[1],))
 
@@ -146,3 +149,6 @@ class NeuralNetwork():
 
         # Reset the fitness
         self.fitness = 0
+
+        # Reset the mutation rate
+        self.selected_mutation_rate = 0

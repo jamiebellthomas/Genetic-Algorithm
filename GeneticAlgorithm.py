@@ -122,20 +122,13 @@ class GeneticAlgorithm():
             # Selection
             self = selection(self, population_fitness, num_agents=2)
 
-            # In here selection mutation will occur where self.selected is set to true
-
-            # 
             # Crossover
-            offspring = crossover(self, selected_population)
-            # THIS IS GETTING CHANGED ^^ NOT RETURNING ANYTHING, SIMPLY UPDATING SELF
+            self = crossover(self)
 
-            print(len(offspring))
             # Mutation
-            mutated_offspring = mutate(self, offspring)
+            self = mutate(self)
 
-            # Update population and generation
-            self.population = mutated_offspring
-
+            # Move to next generation
             self.generation += 1
 
         # if not terminated:
@@ -154,9 +147,9 @@ class GeneticAlgorithm():
 if __name__ == "__main__":
     
     ga = GeneticAlgorithm(
-        # environment='CartPole-v1',
-        environment='MountainCar-v0',
-        sparse_reward=True,
+        environment='CartPole-v1',
+        # environment='MountainCar-v0',
+        sparse_reward=False,
         num_generations=4,
         population_size=2
     )

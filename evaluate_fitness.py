@@ -97,6 +97,9 @@ def evaluate_agent(self, input):
         if iter % 100 == 0:
             print('Iteration: {} | Fitness: {}'.format(iter, fitness))
 
+    # Update the agent fitness
+    agent.fitness = fitness
+
     return fitness
 
 
@@ -160,6 +163,9 @@ def fitness_sharing(self, population_fitness):
 
         # calculate the new fitness
         new_fitness.append(population_fitness[i]/denominator)
+
+        # Add the new fitness to the agent
+        agent.fitness = new_fitness[i]
         
     # replace the population fitness with the new fitness
     print('Fitness sharing applied')
@@ -214,7 +220,7 @@ def evaluate_fitness(self):
             population_fitness = fitness_sharing(self, population_fitness)
 
     
-        print('Population fitness: {}'.format(population_fitness))
+        print('Population fitness and indices: {}'.format( list(enumerate(population_fitness))))
 
         # Print the average fitness of the population
         print('Mean fitness: {}'.format(np.mean(population_fitness)))
