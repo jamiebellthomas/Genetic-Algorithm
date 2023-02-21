@@ -6,3 +6,4 @@ Training/*
 Training/ModelDetails.csv
 *.pyc
 *.h5
+Training\ModelDetails.csv
