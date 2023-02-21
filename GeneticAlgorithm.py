@@ -14,7 +14,7 @@ from plotting_data import plot_metrics
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
-    def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=True, selection_type='elitism', crossover_rate=0.7, 
+    def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=True, num_select_agents=2, selection_type='elitism', crossover_rate=0.7, 
                 mutation_rate=0.1, num_generations=5, parallel=False, plot=False, description=None):
         """ Constructor 
         
@@ -28,6 +28,8 @@ class GeneticAlgorithm():
                 Whether to use sparse reward
             fitness_sharing: bool
                 Whether to use fitness sharing
+            num_selected_agents: int
+                Number of agents to be selected during selection
             selection_type: str
                 Selection type. Values can be 'tournament', 'proportional-roulette-wheel', 
                 'rank-based-rolette-wheel', 'elitism'
@@ -50,6 +52,7 @@ class GeneticAlgorithm():
         self.population = self.init_population(environment)
         self.sparse_reward = sparse_reward
         self.fitness_sharing = fitness_sharing
+        self.num_select_agents = num_select_agents
         self.selection_type = selection_type
         self.crossover_rate = crossover_rate
         self.mutation_rate = mutation_rate
@@ -121,7 +124,7 @@ class GeneticAlgorithm():
                 break
 
             # Selection
-            self = selection(self, population_fitness, num_agents=2)
+            self = selection(self)
 
             # Crossover
             self = crossover(self)

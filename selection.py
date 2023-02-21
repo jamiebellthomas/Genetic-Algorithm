@@ -6,7 +6,7 @@ import numpy as np
 
 
 
-def selection(self, population_fitness, num_agents):
+def selection(self):
     ''' 
     Function to select the best agents from the population. 
 
@@ -27,6 +27,10 @@ def selection(self, population_fitness, num_agents):
             List of indices of the selected agents from the original population
 
         '''
+
+    population_fitness = [agent.fitness for agent in self.population]
+    num_agents = self.num_select_agents
+
     if num_agents > len(population_fitness):
         raise ValueError('Number of agents to be selected is greater than the population size')
 
