@@ -9,7 +9,7 @@ from metrics import update_metrics
 
 def sparse_rewards(observation, fitness, frontier):
     '''
-    This section is for sparse rewards. The idea is to give a reward for each new state that the agent visits. This is done by keeping
+    The idea is to give a reward for each new state that the agent visits. This is done by keeping
     track of the states that the agent has visited.
 
     parameters:
@@ -32,20 +32,25 @@ def sparse_rewards(observation, fitness, frontier):
                 [x1_min, x1_max], # dimension 1
                 [x2_min, x2_max] # dimension 2
                                                 ...]
+
+    rewards will be greater for states that are farther away from the frontier
+    
     '''
     num_dimensions = len(observation)
 
     # update the frontier
     for i in range(num_dimensions):
         if observation[i] < frontier[i][0]:
+
+            fitness += (frontier[i][0] - observation[i])**2
             # fitness += abs(frontier[i][0] - observation[i] / frontier[i][0])
-            fitness += 1
+            # fitness += 1
             frontier[i][0] = observation[i]
         elif observation[i] > frontier[i][1]:
 
-            # give reward for visiting new state
+            fitness += (observation[i] - frontier[i][1])**2
             # fitness += abs(observation[i] - frontier[i][1] / frontier[i][1])
-            fitness += 1
+            # fitness += 1
             frontier[i][1] = observation[i]
 
     return frontier, fitness
@@ -89,6 +94,19 @@ def evaluate_agent(self, input):
         # Decide what type of fitness function to use here
         fitness += reward
 
+        reward_count = 0
+        # automatically enable sparse rewards if the agent is not getting any reward after 500 iterations
+        if reward > 0:
+            self.sparse_reward = False
+        else: 
+            reward_count += 1
+
+        # if the agent has not received any reward for 500 iterations then enable sparse rewards
+        if reward_count > 500:
+            self.sparse_reward = True
+            print('Sparse rewards enabled')
+ 
+        # If sparse rewards are enabled then update the frontier
         if self.sparse_reward:
             frontier, fitness = sparse_rewards(observation, fitness, frontier)
 
