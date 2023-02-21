@@ -114,10 +114,10 @@ def evaluate_agent(self, input):
     # Update the agent fitness
     agent.fitness = fitness
 
-    return fitness
+    return self
 
 
-def fitness_sharing(self, population_fitness):
+def fitness_sharing(self):
     ######## FITNESS SHARING ########
     '''
     Fitness sharing is a method of preventing premature convergence in genetic algorithms.
@@ -144,10 +144,7 @@ def fitness_sharing(self, population_fitness):
     shar_param = 0.5 # a parameter that controls the strength of the fitness sharing
     shar_range = 10 # a euclidean distance between agents
 
-    new_fitness = []
     print('Applying fitness sharing')
-
-    
 
     # for each agent in the population
     for i, agent in enumerate(self.population):
@@ -176,15 +173,13 @@ def fitness_sharing(self, population_fitness):
                     denominator += (1 - distance/shar_range)**(shar_param)
 
         # calculate the new fitness
-        new_fitness.append(population_fitness[i]/denominator)
-
         # Add the new fitness to the agent
-        agent.fitness = new_fitness[i]
+        agent.fitness = agent.fitness/denominator
         
     # replace the population fitness with the new fitness
     print('Fitness sharing applied')
 
-    return new_fitness
+    return self
 
 
 
@@ -219,20 +214,19 @@ def evaluate_fitness(self):
             pool_obj = mp.Pool(processes=cores)          
 
             # Evaluate the fitness of each agent in the population
-            population_fitness = pool_obj.map(partial(evaluate_agent, self), pool_input)
+            pool_obj.map(partial(evaluate_agent, self), pool_input)
 
             pool_obj.close()
         else:
-            population_fitness = []
             for input in pool_input:
-                fitness = evaluate_agent(self, input)
-                population_fitness.append(fitness)
-
+                self = evaluate_agent(self, input)
         
         # apply fitness sharing
         if self.fitness_sharing == True:
-            population_fitness = fitness_sharing(self, population_fitness)
+            self = fitness_sharing(self)
 
+        # Get the fitness of each agent in the population
+        population_fitness = [agent.fitness for agent in self.population]
     
         print('Population fitness and indices: {}'.format( list(enumerate(population_fitness))))
 
@@ -256,12 +250,9 @@ def evaluate_fitness(self):
 
         # If threshold is met, pass terminated flag
         if self.best_fitness >= self.threshold:
-            terminated = True
-        else:
-            terminated = False
-
+            self.terminated = True
 
         # Return the population fitness
-        return self, population_fitness, terminated
+        return self
 
 

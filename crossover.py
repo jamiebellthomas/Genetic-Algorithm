@@ -1,10 +1,5 @@
 import random
 import numpy as np
-from mutation import flatten
-
-import random
-import numpy as np
-from mutation import flatten
 
 def crossover(self):
     """ Crossover

@@ -6,7 +6,7 @@ from selection import selection
 from NeuralNetwork import NeuralNetwork
 from data_manipulation import save_generation
 from evaluate_fitness import evaluate_fitness
-from mutation import mutate, flatten
+from mutation import mutate
 from metrics import initialise_metrics, update_metrics
 from crossover import crossover
 from plotting_data import plot_metrics
@@ -15,7 +15,7 @@ from plotting_data import plot_metrics
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
     def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=True, num_select_agents=2, selection_type='elitism', crossover_rate=0.7, 
-                mutation_rate=0.1, num_generations=5, parallel=False, plot=False, description=None):
+                mutation_rate=0.1, num_generations=5, parallel=False, plot=True, description=None):
         """ Constructor 
         
         parameters:
@@ -60,6 +60,7 @@ class GeneticAlgorithm():
         self.description = description
         self.parallel = parallel
         self.plot = plot
+        self.terminated = False
 
 
     def init_population(self, env):
@@ -118,9 +119,9 @@ class GeneticAlgorithm():
             print('Generation {}'.format(self.generation))
 
             # Evaluate fitness
-            self, population_fitness, terminated = evaluate_fitness(self)
+            self = evaluate_fitness(self)
 
-            if terminated:
+            if self.terminated:
                 break
 
             # Selection
@@ -149,8 +150,8 @@ if __name__ == "__main__":
     ga = GeneticAlgorithm(
         environment='CartPole-v1',
         # environment='MountainCar-v0',
-        num_generations=4,
-        population_size=2
+        num_generations=20,
+        population_size=10
     )
 
     # Run genetic algorithm
