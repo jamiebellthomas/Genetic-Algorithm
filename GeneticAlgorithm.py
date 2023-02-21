@@ -131,10 +131,6 @@ class GeneticAlgorithm():
 
             # Move to next generation
             self.generation += 1
-
-        # if not terminated:
-        #     # Final evaluation
-        #     evaluate_fitness(self)
         
         # Save data
         save_generation(self)
@@ -148,8 +144,8 @@ class GeneticAlgorithm():
 if __name__ == "__main__":
     
     ga = GeneticAlgorithm(
-        # environment='CartPole-v1',
-        environment='MountainCar-v0',
+        environment='CartPole-v1',
+        # environment='MountainCar-v0',
         num_generations=4,
         population_size=2
     )

@@ -77,17 +77,31 @@ def update_model_details(description):
 
     # Create a new folder for the model if it doesn't already exist if it exists, prompt the user to overwrite
     if os.path.exists(path):
-        print('Model already exists. Overwrite?')
-        print('1. Yes')
-        print('2. No')
-        overwrite = input('Enter 1 or 2: ')
+        print('-------------------------------------------------')
+        print('Model {} already exists. Create New Model, Overwrite Model or Discard New Model?'.format(ID))
+        print('-------------------------------------------------')
+        print('1. Create New Model')
+        print('2. Overwrite Model')
+        print('3. Discard New Model')
+        print('-------------------------------------------------')
 
-        if overwrite == '1':
-            print('Overwriting model...')
+        user_input = input('Enter 1, 2 or 3: ')
 
-        elif overwrite == '2':
-            print('Exiting...')
-            exit()
+        if user_input == '1':
+            while os.path.exists(path):
+                ID = int(ID) + 1
+                ID = str(ID).zfill(4)
+                path = 'Training/Saved Models/' + ID
+            
+            print('Creating new model {}...'.format(ID))
+            os.mkdir(path)
+
+        elif user_input == '2':
+            print('Overwriting model {}...'.format(ID))  
+
+        elif user_input == '3':
+            print('Discarding new model...')
+            exit()        
 
         else:
             print('Invalid input. Exiting...')
