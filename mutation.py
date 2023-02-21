@@ -84,6 +84,8 @@ def scramble_mutation(chromosome, mutation_rate):
         if random.uniform(0,1) < mutation_rate:
             gene_indices_to_scramble.append(i)
     scrambled_indices = random.shuffle(gene_indices_to_scramble)
+    if len(gene_indices_to_scramble) == 0:
+        return chromosome
     for i in range(len(gene_indices_to_scramble)):
         chromosome[gene_indices_to_scramble[i]] = chromosome[scrambled_indices[i]]
     return chromosome
