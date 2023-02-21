@@ -23,6 +23,29 @@ def flatten(network):
     weights = np.concatenate(weights)
     return weights
 
+def dynamic_mutation_probability(self):
+    """
+    Dynamic mutation probability
+    For selected agents, the fitness is extracted and normalised. The normalised fitness is then used to calculate the
+    mutation probability for each agent.
+    """
+    max_selected_fitness = -np.inf
+    # Find the maximum fitness of the selected agents
+    for agent in self.population:
+        if agent.selected:
+            if agent.fitness > max_selected_fitness:
+                max_selected_fitness = agent.fitness
+    for agent in self.population:
+        if agent.selected:
+            # Calculate the normalised fitness
+            normalised_fitness = agent.fitness/max_selected_fitness
+            # Calculate the mutation probability
+            agent.selected_mutation_rate = 1 - normalised_fitness
+
+    return self
+            
+    
+    return
 
 def mutate_gene(flattened_weights, mutation_rate):
     ''' 
@@ -82,23 +105,23 @@ def unflatten(flattened_weights, network):
     return network
 
 
-def mutate(self,flattened_weights:list):
-    """ 
-    This function mutates the weights of a given agent by a random amount between -mutation_rate and mutation_rate
-
-    parameters: 
-        list of column vectors of weights for each agent
-    returns: 
-        mutated neural networks for each agent
+def mutate(self):
     """
-    next_gen = []
+    This will mutate the weights of the neural network. The mutation rate is determined by whether the agent weights are selected
+    from the prevoius generation of created by crossover.
 
-    for i in range(self.population_size):   
-        mutated_vector = mutate_gene(flattened_weights[i], self.mutation_rate)
-        new_network = unflatten(mutated_vector, self.population[i])  
-        next_gen.append(new_network)
-    
-    return next_gen
+    Those created by crossover will have a fixed mutation rate defined in the GeneticAlgorithm initialisation, 
+    those selected from the previous generation will have a dynamic mutation rate determined by the fitness of the agent.
+    """
+    for agent in self.population:
+        if agent.selected:
+            agent.weights = mutate_gene(flattened_weights=agent.weights, mutation_rate=agent.selected_mutation_rate)
+            agent.biases = mutate_gene(flattened_weights=agent.biases, mutation_rate=agent.selected_mutation_rate)
+        else:
+            agent.weights = mutate_gene(flattened_weights=agent.weights, mutation_rate=self.mutation_rate)
+            agent.biases = mutate_gene(flattened_weights=agent.biases, mutation_rate=self.mutation_rate)
+    agent.update_weights_biases()
+    return
 
 def scramble_mutation(chromosome, mutation_rate):
     """
