@@ -147,8 +147,8 @@ class GeneticAlgorithm():
 if __name__ == "__main__":
     
     ga = GeneticAlgorithm(
-        environment='CartPole-v1',
-        # environment='MountainCar-v0',
+        # environment='CartPole-v1',
+        environment='MountainCar-v0',
         sparse_reward=False,
         num_generations=4,
         population_size=2

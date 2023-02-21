@@ -95,17 +95,9 @@ def evaluate_agent(self, input):
         # Decide what type of fitness function to use here
         fitness += reward
 
-        reward_count = 0
-        # automatically enable sparse rewards if the agent is not getting any reward after 500 iterations
-        if reward > 0:
-            self.sparse_reward = False
-        else: 
-            reward_count += 1
-
-        # if the agent has not received any reward for 500 iterations then enable sparse rewards
-        if reward_count > 500:
-            self.sparse_reward = True
-            print('Sparse rewards enabled')
+        # if the agent has not received any reward for 100 iterations then enable sparse rewards
+        if iter >= 100 and fitness < 0:
+            self.sparse_reward = True 
  
         # If sparse rewards are enabled then update the frontier
         if self.sparse_reward:
