@@ -26,7 +26,7 @@ def dynamic_mutation_probability(self):
     return self
     
 
-def mutate_gene(flattened_weights, mutation_rate):
+def mutate_gene(flattened_weights, mutation_rate, mutation_method):
     ''' 
     Mutation
     
@@ -34,22 +34,26 @@ def mutate_gene(flattened_weights, mutation_rate):
         ----------------
             flattened_weights: 1D array of weights
             mutation rate: float
+            mutation method: string
         ----------------
         returns:
             mutated weights: 1D array of weights
     '''
     # Mutation
+    # If you want to make the mutations random on each agent in each generation then uncomment the following line
+    
+    # mutation_methods = ['scramble', 'swap', 'random_reset', 'inversion']
+    # mutation_method = random.choice(mutation_methods)
     
     if random.uniform(0,1) < mutation_rate:
-        # Randomly select a mutation method and apply it
-        mutation_method = random.randint(0,3)
-        if mutation_method == 0:
+        # Choose a mutation method
+        if mutation_method == 'scramble':
             flattened_weights = scramble_mutation(flattened_weights, mutation_rate)
-        elif mutation_method == 1:
+        elif mutation_method == 'swap':
             flattened_weights = swap_mutation(flattened_weights, mutation_rate)
-        elif mutation_method == 2:
+        elif mutation_method == 'random_reset':
             flattened_weights = random_reset_mutation(flattened_weights, mutation_rate)
-        elif mutation_method == 3:
+        elif mutation_method == 'inversion':
             flattened_weights = inversion_mutation(flattened_weights, mutation_rate)
 
     return flattened_weights
@@ -63,13 +67,23 @@ def mutate(self):
     Those created by crossover will have a fixed mutation rate defined in the GeneticAlgorithm initialisation, 
     those selected from the previous generation will have a dynamic mutation rate determined by the fitness of the agent.
     """
+    mutation_methods = ['scramble', 'swap', 'random_reset', 'inversion']
+
+    if self.mutation_method == 'random' or self.mutation_method not in mutation_methods:
+        mutation_method = random.choice(mutation_methods)
+        print('Mutation method (random): {}'.format(mutation_method))
+    else:
+        mutation_method = self.mutation_method
+        print('Mutation method: {}'.format(mutation_method))
+    
     for agent in self.population:
         if agent.selected:
-            agent.weights = mutate_gene(flattened_weights=agent.weights, mutation_rate=agent.selected_mutation_rate)
-            agent.biases = mutate_gene(flattened_weights=agent.biases, mutation_rate=agent.selected_mutation_rate)
+            agent.weights = mutate_gene(flattened_weights=agent.weights, mutation_rate=agent.selected_mutation_rate, mutation_method=mutation_method)
+            agent.biases = mutate_gene(flattened_weights=agent.biases, mutation_rate=agent.selected_mutation_rate, mutation_method=mutation_method)
         else:
-            agent.weights = mutate_gene(flattened_weights=agent.weights, mutation_rate=self.mutation_rate)
-            agent.biases = mutate_gene(flattened_weights=agent.biases, mutation_rate=self.mutation_rate)
+            agent.weights = mutate_gene(flattened_weights=agent.weights, mutation_rate=self.mutation_rate, mutation_method=mutation_method)
+            agent.biases = mutate_gene(flattened_weights=agent.biases, mutation_rate=self.mutation_rate, mutation_method=mutation_method)
+
         agent.update_weights_biases()
     return self
 
