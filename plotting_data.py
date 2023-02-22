@@ -54,5 +54,5 @@ def plot_all_fitness(all_fitness):
     
 # Plot metrics from file
 if __name__ == '__main__':
-    metrics = get_metrics_from_file('0037')
+    metrics = get_metrics_from_file('0039')
     plot_all_fitness(metrics['all_fitness'].values)

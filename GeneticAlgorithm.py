@@ -150,8 +150,8 @@ if __name__ == "__main__":
     ga = GeneticAlgorithm(
         environment='CartPole-v1',
         # environment='MountainCar-v0',
-        num_generations=20,
-        population_size=10
+        num_generations=70,
+        population_size=30
     )
 
     # Run genetic algorithm
