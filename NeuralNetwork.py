@@ -5,7 +5,7 @@ import numpy as np
 
 class NeuralNetwork():
     """ Neural Network class """
-    def __init__(self, input_size, output_size, settings=None, model=None):
+    def __init__(self, input_size, output_size, model=None, settings=None):
         """ 
         Constructor. 
         Possible addition: allow architecture to be a dynamic parameter.
@@ -16,21 +16,29 @@ class NeuralNetwork():
                 Number of input nodes
             output_size: int
                 Number of output nodes
-            settings: dict
-                Dictionary of settings for the neural network
             model: tf.keras.Sequential
                 When loading model from file, pass the model to the constructor
         """
         if settings is None:
             layer_size = 5
             num_layers = 1
+            dense_activation = 'relu'
+            output_activation = 'linear'
+            settings = {'layer_size': layer_size, 'num_layers': num_layers, 'dense_activation': dense_activation, 'output_activation': output_activation}
+        else:
+            layer_size = settings['layer_size']
+            num_layers = settings['num_layers']
+            dense_activation = settings['dense_activation']
+            output_activation = settings['output_activation']
 
+        
         # Input layer with input_size nodes, dense layer with 5 nodes and output layer with output_size nodes
 
         input_layer  = Input(input_size)
-        dense_layer1 = Dense(layer_size, activation="relu")
-        output_layer = Dense(output_size, activation="linear")
+        dense_layer = Dense(layer_size, activation=dense_activation)
+        output_layer = Dense(output_size, activation=output_activation)
         
+        # If model is passed to the constructor, use that model else
         if model is None:
             # Assign layers to the model
             model = Sequential()
@@ -38,7 +46,7 @@ class NeuralNetwork():
 
             # Add dense layers
             for _ in range(num_layers):
-                model.add(dense_layer1)
+                model.add(dense_layer)
             
             model.add(output_layer)
 

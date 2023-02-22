@@ -16,7 +16,8 @@ class GeneticAlgorithm():
     """ Genetic Algorithm class """
     def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=True, 
                 num_select_agents=2, selection_type='elitism', crossover_rate=0.7, crossover_method='random',  
-                mutation_rate=0.1, mutation_method='random', num_generations=5, parallel=False, plot=True, description=None):
+                mutation_rate=0.1, mutation_method='random', num_generations=5, parallel=False, plot=True,
+                settings=None, description=None):
         """ Constructor 
         
         parameters:
@@ -49,6 +50,8 @@ class GeneticAlgorithm():
                 Whether to run the genetic algorithm in parallel
             plot: bool
                 Whether to plot the metrics
+            settings: dict
+                Neural network settings. eg layer sizes, activation functions, etc
             description: str
                 Description of the model. This data is saved to the ModelDetails.csv file.
         """
@@ -68,6 +71,7 @@ class GeneticAlgorithm():
         self.description = description
         self.parallel = parallel
         self.plot = plot
+        self.settings = settings
         self.terminated = False
 
 
@@ -92,11 +96,15 @@ class GeneticAlgorithm():
         print('Initializing population for {}...'.format(env))
         if env == 'MountainCar-v0':
             self.threshold = 999
-            agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]                            
+            self.sparse_reward = True
+            agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]
             # raise ValueError('Environment doesn"t quite work yet. Reward is always < 0 and is too random.')
         elif env == 'CartPole-v1':
             self.threshold = 500
             agentPopulation = [NeuralNetwork(4, 2) for _ in range(self.population_size)]
+        elif env == "LunarLander-v2":
+            self.threshold = 200
+            agentPopulation = [NeuralNetwork(8, 4) for _ in range(self.population_size)]
         else:
             raise ValueError('Environment not supported')
         
@@ -156,10 +164,11 @@ class GeneticAlgorithm():
 if __name__ == "__main__":
     
     ga = GeneticAlgorithm(
-        environment='CartPole-v1',
+        # environment='CartPole-v1',
         # environment='MountainCar-v0',
-        num_generations=70,
-        population_size=30
+        environment='LunarLander-v2',
+        num_generations=20,
+        population_size=10
     )
 
     # Run genetic algorithm
