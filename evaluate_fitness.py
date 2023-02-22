@@ -42,7 +42,9 @@ def sparse_rewards(observation, fitness, frontier):
     for i in range(num_dimensions):
         if observation[i] < frontier[i][0] and frontier[i][0] != 0:
 
-            # as the frontier gets larger, the reward should get smaller
+            # looking for the distance between the observation and the starting point 
+            # to make the reward greater for states that are farther away from the frontier
+            
 
             fitness += abs((frontier[i][0] - observation[i])/ frontier[i][0])
 
