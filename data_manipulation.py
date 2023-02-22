@@ -222,7 +222,8 @@ def load(model_ID, total_population=False, render=True):
 
 
     if render:
-        env = gym.make(class_settings['environment'], render_mode="human")
+        env = gym.make(class_settings['environment'])
+        env.render_mode = 'human'
         observation = env.reset()
         env.render()
 
@@ -238,11 +239,17 @@ def load(model_ID, total_population=False, render=True):
                 observation, reward, done, info = env.step(action)
             except:
                 observation, reward, done, truncation, info = env.step(action)
+
             
             # Render the environment
             env.render()
             
-            if truncation:
-                break
+            try: 
+                if done:
+                    break
+            except:
+                if truncation:
+                    break
+            
 
         env.close()
