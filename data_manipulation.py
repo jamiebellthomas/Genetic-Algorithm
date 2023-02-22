@@ -229,7 +229,7 @@ def load(model_ID, total_population=False, render=True):
 
         if type(observation) == tuple:
             observation = observation[0]
-
+        cum_reward = 0
         done = False
         while not done:
             # Get action from agent and pass it to the environment
@@ -237,6 +237,7 @@ def load(model_ID, total_population=False, render=True):
             # Try with 4 outputs if it errors except with 5 outputs this will depend on version of gym
             try:
                 observation, reward, done, info = env.step(action)
+                cum_reward += reward
             except:
                 observation, reward, done, truncation, info = env.step(action)
 
@@ -246,6 +247,7 @@ def load(model_ID, total_population=False, render=True):
             
             try: 
                 if done:
+                    print('Cumulative reward: {}'.format(cum_reward))
                     break
             except:
                 if truncation:
