@@ -64,12 +64,15 @@ def crossover(self):
                     child_weights = np.array(parent2.weights[0:split_weights].tolist() + parent1.weights[split_weights:].tolist())
                     child_biases = np.array(parent2.biases[0:split_biases].tolist() + parent1.biases[split_biases:].tolist())
 
-                # Edit the offspring nn with the new weights and biases
-                offspring_nn[offspring_counter].weights = child_weights
-                offspring_nn[offspring_counter].biases = child_biases
+                try:
+                    # Edit the offspring nn with the new weights and biases
+                    offspring_nn[offspring_counter].weights = child_weights
+                    offspring_nn[offspring_counter].biases = child_biases
 
-                # Increment the offspring counter
-                offspring_counter += num_offspring
+                    # Increment the offspring counter
+                    offspring_counter += num_offspring
+                except:
+                    break
 
 
         elif crossover_method == 'crossover_doublesplit':
@@ -112,12 +115,15 @@ def crossover(self):
                 child_weights = np.array(parent_first.weights[0:split_weights1].tolist() + parent_middle.weights[split_weights1:split_weights2].tolist() + parent_last.weights[split_weights2:].tolist())
                 child_biases = np.array(parent_first.biases[0:split_biases1].tolist() + parent_middle.biases[split_biases1:split_biases2].tolist() + parent_last.biases[split_biases2:].tolist())
 
-                # Edit the offspring nn with the new weights and biases
-                offspring_nn[offspring_counter].weights = child_weights
-                offspring_nn[offspring_counter].biases = child_biases
+                try:
+                    # Edit the offspring nn with the new weights and biases
+                    offspring_nn[offspring_counter].weights = child_weights
+                    offspring_nn[offspring_counter].biases = child_biases
 
-                # Increment the offspring counter
-                offspring_counter += num_offspring
+                    # Increment the offspring counter
+                    offspring_counter += num_offspring
+                except:
+                    break
 
         elif crossover_method == 'crossover_uniformsplit':
             # This performs the crossover on the parents with uniform splits
@@ -141,12 +147,15 @@ def crossover(self):
                     else:
                         child_biases.append(parent2.biases[i])
 
-                # Edit the offspring nn with the new weights and biases
-                offspring_nn[offspring_counter].weights = np.array(child_weights)
-                offspring_nn[offspring_counter].biases = np.array(child_biases)
+                try:
+                    # Edit the offspring nn with the new weights and biases
+                    offspring_nn[offspring_counter].weights = np.array(child_weights)
+                    offspring_nn[offspring_counter].biases = np.array(child_biases)
 
-                # Increment the offspring counter
-                offspring_counter += num_offspring
+                    # Increment the offspring counter
+                    offspring_counter += num_offspring
+                except:
+                    break
 
     # Create the new population by combining the offspring and selected parents lists
     offspring = offspring_nn + selected_parents
