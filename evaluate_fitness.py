@@ -38,21 +38,22 @@ def sparse_rewards(observation, fitness, frontier):
     '''
     num_dimensions = len(observation)
 
-    # update the frontier
     for i in range(num_dimensions):
+        # add random noise to reward to prevent premature convergence
+        noise = random.uniform(-0.05, 0.05)
+
         if observation[i] < frontier[i][0] and frontier[i][0] != 0:
 
             # looking for the distance between the observation and the starting point 
             # to make the reward greater for states that are farther away from the frontier
-            
 
-            fitness += abs((frontier[i][0] - observation[i])/ frontier[i][0])
+            fitness += (abs((frontier[i][0] - observation[i])/ frontier[i][0]))**0.5 + noise
 
             # frontier[i][0] = observation[i]
 
         elif observation[i] > frontier[i][1] and frontier[i][1] != 0:
 
-            fitness += abs((observation[i] - frontier[i][1])/ frontier[i][1])
+            fitness += (abs((observation[i] - frontier[i][1])/ frontier[i][1]))**0.5 + noise
 
             # frontier[i][1] = observation[i]
 
