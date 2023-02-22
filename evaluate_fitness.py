@@ -42,15 +42,19 @@ def sparse_rewards(observation, fitness, frontier):
     for i in range(num_dimensions):
         if observation[i] < frontier[i][0] and frontier[i][0] != 0:
 
-            # as the frontier gets larger, the reward should get smaller
+            # looking for the distance between the observation and the starting point 
+            # to make the reward greater for states that are farther away from the frontier
+            
 
-            fitness += (abs((frontier[i][0] - observation[i])/ frontier[i][0]) + 1)**2
-            frontier[i][0] = observation[i]
+            fitness += abs((frontier[i][0] - observation[i])/ frontier[i][0])
+
+            # frontier[i][0] = observation[i]
 
         elif observation[i] > frontier[i][1] and frontier[i][1] != 0:
 
-            fitness += (abs((observation[i] - frontier[i][1])/ frontier[i][1]) + 1)**2
-            frontier[i][1] = observation[i]
+            fitness += abs((observation[i] - frontier[i][1])/ frontier[i][1])
+
+            # frontier[i][1] = observation[i]
 
     return frontier, fitness
 
@@ -153,6 +157,9 @@ def fitness_sharing(self):
 
         # retrieve the flattened weights from the agent
         chosen_agent = agent.weightsnbiases
+
+        # calculate shar_range as 10% of the length of the agent
+        shar_range = len(chosen_agent)*0.1
 
         # for each other agent in the population
         for j, other in enumerate(self.population):

@@ -14,8 +14,9 @@ from plotting_data import plot_metrics
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
-    def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=True, num_select_agents=2, selection_type='elitism', crossover_rate=0.7, 
-                mutation_rate=0.1, num_generations=5, parallel=False, plot=True, description=None):
+    def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=True, 
+                num_select_agents=2, selection_type='elitism', crossover_rate=0.7, crossover_method='random',  
+                mutation_rate=0.1, mutation_method='random', num_generations=5, parallel=False, plot=True, description=None):
         """ Constructor 
         
         parameters:
@@ -35,8 +36,13 @@ class GeneticAlgorithm():
                 'rank-based-rolette-wheel', 'elitism'
             crossover_rate: float
                 Crossover rate
+            crossover_type: str
+                Crossover type. Values can be 'crossover_singlesplit', 'crossover_doublesplit', 
+                'crossover_uniformsplit' or 'random'
             mutation_rate: float
                 Mutation rate
+            mutation_type: str
+                Mutation type. Values can be 'scramble', 'swap', 'random_reset', 'inversion' or 'random'
             num_generations: int
                 Number of generations to train for
             parallel: bool
@@ -55,7 +61,9 @@ class GeneticAlgorithm():
         self.num_select_agents = num_select_agents
         self.selection_type = selection_type
         self.crossover_rate = crossover_rate
+        self.crossover_method = crossover_method
         self.mutation_rate = mutation_rate
+        self.mutation_method = mutation_method
         self.num_generations = num_generations
         self.description = description
         self.parallel = parallel

@@ -2,10 +2,15 @@ import time
 import pandas as pd
 import os
 import json
+import gym
 
+import tensorflow as tf
 from tensorflow.keras.models import save_model
 from tensorflow.keras.models import load_model
+tf.get_logger().setLevel('ERROR')
 
+
+from NeuralNetwork import NeuralNetwork
 from metrics import save_metrics
 # from GeneticAlgorithm import GeneticAlgorithm
 
@@ -120,7 +125,30 @@ def update_model_details(description):
     return path
 
 
-def load_generation(path):
+def load_generation_details(model_ID):
+    """
+    Load the json file containing the details of the models.
+    
+    parameters:
+    ----------------
+        model_ID: str
+            ID of the model
+
+    returns:
+    ----------------
+        class_settings: dict
+            Dictionary of class variables for the GeneticAlgorithm object
+    """
+    path = 'Training/Saved Models/' + model_ID
+
+    # Load the json file
+    with open(os.path.join(path, 'class_variables.json'), 'r') as f:
+        class_settings = json.load(f)
+
+    return class_settings
+
+
+def load_generation_population(model_ID, index=None):
     """ 
     Load a generation of agents from a folder.
     
@@ -131,23 +159,97 @@ def load_generation(path):
     
     returns:
     ----------------
-        class_settings: dict
-            Dictionary of class variables for the GeneticAlgorithm object
+        population: list
+            List of NeuralNetwork objects
+        index: int
+            Index of specific agent in the population to load
+    """
+    print('Loading models...')
+    path = 'Training/Saved Models/' + model_ID
+
+    population = []
+
+    if index is None:
+        # Load the models
+        for filename in os.listdir(path):
+            if filename.endswith('.h5'):
+                print('Loading {}'.format(filename))
+                model = load_model(os.path.join(path, filename))
+                population.append(model)
+    else:
+        filename = 'Agent_{}.h5'.format(index)
+        model = load_model(os.path.join(path, filename))
+        population.append(model)
+
+    print('Models loaded from {}'.format(path))
+    return population
+
+
+def load(model_ID, total_population=False, render=True):
+    """
+    Loads population of agents from a folder.
+
+    parameters:
+    ----------------
+        model_ID: str
+            ID of the model
+        total_population: bool
+            Whether to load the entire population or just the best agent
+        render: bool
+            Whether to render the environment
+
+    returns:
+    ----------------
         population: list
             List of NeuralNetwork objects
     """
-    print('Loading models...')
-    population = []
+    # Load the class variables
+    class_settings = load_generation_details(model_ID)
 
-    class_settings = json.load(open(os.path.join(path, 'class_variables.json'), 'r'))
-    
-    # Load the models
-    for filename in os.listdir(path):
-        if filename.endswith('.h5'):
-            print('Loading {}'.format(filename))
-            model = load_model(os.path.join(path, filename))
-            population.append(model)
+    if total_population:
+        population_indices = load_generation_population(model_ID)
+        population = []
+        for model in population_indices:
+            population.append(NeuralNetwork(4, 2, model=model))
+        agent = population[class_settings['best_agent']]
 
-    print('Models loaded from {}'.format(path))
-    return class_settings, population
+    else:
+        top_index = class_settings['best_agent']
+        top_agent = load_generation_population(model_ID, top_index)
+        population = []
+        population.append(NeuralNetwork(4, 2, model=top_agent[0]))
+        agent = population[0]
 
+
+    if render:
+        env = gym.make(class_settings['environment'])
+        env.render_mode = 'human'
+        observation = env.reset()
+        env.render()
+
+        if type(observation) == tuple:
+            observation = observation[0]
+
+        done = False
+        while not done:
+            # Get action from agent and pass it to the environment
+            action = agent.predict_action(observation)
+            # Try with 4 outputs if it errors except with 5 outputs this will depend on version of gym
+            try:
+                observation, reward, done, info = env.step(action)
+            except:
+                observation, reward, done, truncation, info = env.step(action)
+
+            
+            # Render the environment
+            env.render()
+            
+            try: 
+                if done:
+                    break
+            except:
+                if truncation:
+                    break
+            
+
+        env.close()
