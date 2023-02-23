@@ -4,7 +4,7 @@ import gym
 
 from selection import selection
 from NeuralNetwork import NeuralNetwork
-from data_manipulation import save_generation
+from data_manipulation import save_generation, update_model_details
 from evaluate_fitness import evaluate_fitness
 from mutation import mutate
 from metrics import initialise_metrics, update_metrics
@@ -130,6 +130,7 @@ class GeneticAlgorithm():
 
         # Initialize metrics
         self = initialise_metrics(self)
+        self = update_model_details(self)
         
         while self.generation <= self.num_generations:
             print('----------------------------------------------------------------------')
@@ -153,8 +154,9 @@ class GeneticAlgorithm():
             # Move to next generation
             self.generation += 1
         
-        # Save data
-        save_generation(self)
+            # Save data
+            save_generation(self)
+
 
         # Plot metrics
         if self.plot:
@@ -168,8 +170,8 @@ if __name__ == "__main__":
         # environment='CartPole-v1',
         environment='MountainCar-v0',
         # environment='LunarLander-v2',
-        num_generations=4,
-        population_size=4
+        num_generations=2,
+        population_size=2
     )
 
     # Run genetic algorithm

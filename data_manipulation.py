@@ -26,18 +26,18 @@ def save_generation(self):
             GeneticAlgorithm object
      """
     print('Saving models...')
-    path = update_model_details(self.description)
+    path = self.path
 
-    # Save the models
+    # Save the models, overwriting the previous generation
     for i, agent in enumerate(self.population):
         filename = 'Agent_{}.h5'.format(i)
         file_path = os.path.join(path, filename)
 
         save_model(agent.model, file_path)
 
-
     # Save class variables for reproducibility. Format as json file.
-    class_variables = self.__dict__
+    class_variables_copy = self.__dict__.copy()
+    class_variables = class_variables_copy
     class_variables['population'] = 'Population saved as h5 files'
     class_variables['env'] = 'Environment object not saved'
     # TypeError: Object of type TimeLimit is not JSON serializable
@@ -52,7 +52,7 @@ def save_generation(self):
     print('Models saved to {}'.format(path))
 
 
-def update_model_details(description):
+def update_model_details(self):
     """ 
     Function appends model details to the ModelDetails.csv file. It also creates a 
     new folder for the agents to be saved to.
@@ -69,6 +69,8 @@ def update_model_details(description):
         path: str
             Path of the model
     """
+    description = self.description
+
     # Read the csv file
     df = pd.read_csv('Training/ModelDetails.csv')
     
@@ -122,7 +124,9 @@ def update_model_details(description):
     # Save the dataframe to a csv file
     df.to_csv('Training/ModelDetails.csv', index=False)
 
-    return path
+    self.path = path
+
+    return self
 
 
 def load_generation_details(model_ID):
