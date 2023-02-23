@@ -96,7 +96,6 @@ class GeneticAlgorithm():
         print('Initializing population for {}...'.format(env))
         if env == 'MountainCar-v0':
             self.threshold = 999
-            self.sparse_reward = True
             agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]
             # raise ValueError('Environment doesn"t quite work yet. Reward is always < 0 and is too random.')
         elif env == 'CartPole-v1':
@@ -105,6 +104,8 @@ class GeneticAlgorithm():
         elif env == "LunarLander-v2":
             self.threshold = 200
             agentPopulation = [NeuralNetwork(8, 4) for _ in range(self.population_size)]
+            
+
         else:
             raise ValueError('Environment not supported')
         
@@ -165,10 +166,10 @@ if __name__ == "__main__":
     
     ga = GeneticAlgorithm(
         # environment='CartPole-v1',
-        # environment='MountainCar-v0',
-        environment='LunarLander-v2',
-        num_generations=20,
-        population_size=10
+        environment='MountainCar-v0',
+        # environment='LunarLander-v2',
+        num_generations=4,
+        population_size=4
     )
 
     # Run genetic algorithm

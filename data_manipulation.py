@@ -34,7 +34,7 @@ def save_generation(self):
         file_path = os.path.join(path, filename)
 
         save_model(agent.model, file_path)
-        print(len(self.population))
+
 
     # Save class variables for reproducibility. Format as json file.
     class_variables = self.__dict__
