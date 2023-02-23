@@ -37,6 +37,9 @@ def selection(self):
 
     selection_type = self.selection_type
 
+    # Print selection type
+    print('Selection type: {}'.format(selection_type))
+
     # initializing a new population
     selected_population = []
     
@@ -52,7 +55,7 @@ def selection(self):
             tournament_size = 2 # binary tournament
 
             # choosing random agents from the population
-            tournament = np.random.choice(range(len(population)), tournament_size, replace=True,)
+            tournament = np.random.choice(range(len(population)), tournament_size, replace=True)
             tournament = population[tournament]
 
             # selecting the best agent from the tournament

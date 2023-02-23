@@ -44,6 +44,10 @@ def plot_all_fitness(all_fitness):
     mean_fitness = [sum(x)/len(x) for x in all_fitness]
     fig.add_trace(go.Scatter(x=list(range(1, len(mean_fitness)+1)), y=mean_fitness, name='Mean Fitness', mode='lines', line=dict(color='red')))
 
+    # Plot best fitness as a dotted line
+    best_fitness = [max(x) for x in all_fitness]
+    fig.add_trace(go.Scatter(x=list(range(1, len(best_fitness)+1)), y=best_fitness, name='Best Fitness', mode='lines', line=dict(color='green', dash='dot')))
+
     # Set title
     fig.update_layout(title_text='Fitness Distribution')
 
