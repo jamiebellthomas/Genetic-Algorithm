@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import plotly.graph_objects as go
+import sys
 
 # Plot metrics
 def plot_metrics(self):
@@ -54,5 +55,5 @@ def plot_all_fitness(all_fitness):
     
 # Plot metrics from file
 if __name__ == '__main__':
-    metrics = get_metrics_from_file('0039')
+    metrics = get_metrics_from_file(sys.argv[1])
     plot_all_fitness(metrics['all_fitness'].values)
