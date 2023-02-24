@@ -75,6 +75,7 @@ class GeneticAlgorithm():
         self.plot = plot
         self.settings = settings
         self.terminated = False
+        self.save_frequency = save_frequency
 
 
     def init_population(self, env):
@@ -174,9 +175,9 @@ if __name__ == "__main__":
         # environment='CartPole-v1',
         environment='MountainCar-v0',
         # environment='LunarLander-v2',
-        num_generations=5,
-        population_size=2,
-        save_frequency=2
+        num_generations=30,
+        population_size=10,
+        save_frequency=5
     )
 
     # Run genetic algorithm
