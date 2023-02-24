@@ -17,7 +17,7 @@ class GeneticAlgorithm():
     def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=True, 
                 num_select_agents=2, selection_type='elitism', crossover_rate=0.7, crossover_method='random',  
                 mutation_rate=0.1, mutation_method='random', num_generations=5, parallel=False, plot=True,
-                settings=None, description=None):
+                settings=None, description=None, save_frequency=2):
         """ Constructor 
         
         parameters:
@@ -54,6 +54,8 @@ class GeneticAlgorithm():
                 Neural network settings. eg layer sizes, activation functions, etc
             description: str
                 Description of the model. This data is saved to the ModelDetails.csv file.
+            save_frequency: int
+                How often to save the model. The model is saved every save_frequency generations.
         """
         self.env = gym.make(environment)
         self.environment = environment
@@ -154,9 +156,11 @@ class GeneticAlgorithm():
             # Move to next generation
             self.generation += 1
         
-            # Save data
-            save_generation(self)
+            # Save population
+            if self.generation % self.save_frequency == 0:
+                save_generation(self)
 
+        save_generation(self)
 
         # Plot metrics
         if self.plot:
@@ -170,8 +174,9 @@ if __name__ == "__main__":
         # environment='CartPole-v1',
         environment='MountainCar-v0',
         # environment='LunarLander-v2',
-        num_generations=2,
-        population_size=2
+        num_generations=5,
+        population_size=2,
+        save_frequency=2
     )
 
     # Run genetic algorithm

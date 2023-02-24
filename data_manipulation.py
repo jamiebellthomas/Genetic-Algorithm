@@ -259,3 +259,5 @@ def load(model_ID, total_population=False, render=True):
             
 
         env.close()
+
+    return population
