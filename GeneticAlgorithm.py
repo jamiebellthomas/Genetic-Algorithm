@@ -75,6 +75,7 @@ class GeneticAlgorithm():
         self.plot = plot
         self.settings = settings
         self.terminated = False
+        self.save_frequency = save_frequency
 
 
     def init_population(self, env):
