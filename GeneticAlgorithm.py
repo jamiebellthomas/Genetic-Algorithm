@@ -14,9 +14,9 @@ from plotting_data import plot_metrics
 
 class GeneticAlgorithm():
     """ Genetic Algorithm class """
-    def __init__(self, environment, population_size=6, sparse_reward=False, fitness_sharing=True, 
-                num_select_agents=2, selection_type='elitism', crossover_rate=0.7, crossover_method='random',  
-                mutation_rate=0.1, mutation_method='random', num_generations=5, parallel=False, plot=True,
+    def __init__(self, environment, population_size=5, sparse_reward=False, fitness_sharing=False, 
+                num_select_agents=2, selection_type='elitism', crossover_rate=0, crossover_method='random',  
+                mutation_rate=0, mutation_method='random', num_generations=5, parallel=False, plot=True,
                 settings=None, description=None, save_frequency=2):
         """ Constructor 
         
@@ -172,12 +172,12 @@ class GeneticAlgorithm():
 if __name__ == "__main__":
     
     ga = GeneticAlgorithm(
-        # environment='CartPole-v1',
-        environment='MountainCar-v0',
+        environment='CartPole-v1',
+        # environment='MountainCar-v0',
         # environment='LunarLander-v2',
-        num_generations=30,
-        population_size=10,
-        save_frequency=5
+        # num_generations=30,
+        # population_size=10,
+        # save_frequency=5
     )
 
     # Run genetic algorithm
