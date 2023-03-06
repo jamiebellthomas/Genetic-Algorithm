@@ -17,7 +17,6 @@ def random_probability(self):
         raise ValueError('Invalid random type')
     return random_rate
 
-
 def randomise_weights(flattened_weights):
     """
     Randomise weights in a 1D array of weights
@@ -29,6 +28,11 @@ def randomise_weights(flattened_weights):
     return flattened_weights    
 
 def random_agent(self):
+    """
+    Random agent
+    Cycles through the population and randomly selects agents to be replaced with a new random agent.
+    Probability of reset occuring definied by random_probability()
+    """
     for agent in self.population:
         if agent.selected == False:
             random_rate = random_probability(self)
