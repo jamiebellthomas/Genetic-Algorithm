@@ -12,8 +12,9 @@ def initialise_metrics(self):
     self.metrics['mean_fitness'] = []
     self.metrics['best_agent'] = []
     self.metrics['duration'] = []
+    self.metrics['total duration'] = []
     self.metrics['all_fitness'] = []
-    self.metrics['best_agent'] = None
+    self.metrics['best_agent'] = []
     return self
 
 
@@ -27,7 +28,13 @@ def update_metrics(self):
     self.metrics['mean_fitness'].append(self.mean_fitness)
     self.metrics['duration'].append(self.duration)
     self.metrics['all_fitness'].append(self.all_fitness)
-    self.metrics['best_agent'] = self.best_agent
+    self.metrics['best_agent'].append(self.best_agent)
+
+    # Update total duration
+    if len(self.metrics['total duration']) == 0:
+        self.metrics['total duration'].append(self.duration)
+    else:
+        self.metrics['total duration'].append(self.duration + self.metrics['total duration'][-1])
 
     return self
 

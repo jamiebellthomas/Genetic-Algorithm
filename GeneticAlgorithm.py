@@ -10,6 +10,7 @@ from mutation import mutate
 from metrics import initialise_metrics, update_metrics
 from crossover import crossover
 from plotting_data import plot_metrics
+from random_agents import random_agent
 
 
 class GeneticAlgorithm():
@@ -17,7 +18,7 @@ class GeneticAlgorithm():
     def __init__(self, environment, population_size=5, sparse_reward=False, fitness_sharing=False, 
                 num_select_agents=2, selection_type='elitism', crossover_rate=0, crossover_method='random',  
                 mutation_rate=0, mutation_method='random', num_generations=5, parallel=False, plot=True,
-                settings=None, description=None, save_frequency=2, random_type='fixed',initial_random_rate=0.1):
+                settings=None, description=None, save_frequency=2, random_type='fixed',initial_random_rate=0):
         """ Constructor 
         
         parameters:
@@ -155,6 +156,9 @@ class GeneticAlgorithm():
 
             # Mutation
             self = mutate(self)
+
+            # Add random agents
+            self = random_agent(self)
 
             # Move to next generation
             self.generation += 1

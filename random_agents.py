@@ -40,4 +40,6 @@ def random_agent(self):
                 agent.weights = randomise_weights(agent.weights)
                 agent.biases = randomise_weights(agent.biases)
                 agent.update_weights_biases()
+
+                print('Random agent added')
     return self
