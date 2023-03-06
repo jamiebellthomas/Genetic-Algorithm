@@ -17,8 +17,8 @@ class GeneticAlgorithm():
     """ Genetic Algorithm class """
     def __init__(self, environment, population_size=5, sparse_reward=False, fitness_sharing=False, 
                 num_select_agents=2, selection_type='elitism', crossover_rate=0, crossover_method='random',  
-                mutation_rate=0, mutation_method='random', num_generations=5, parallel=False, plot=True,
-                settings=None, description=None, save_frequency=2, random_type='fixed',initial_random_rate=0):
+                mutation_rate=0, mutation_method='random', num_generations=2, parallel=False, plot=True,
+                settings=None, description=None, save_frequency=2, random_type='fixed',initial_random_rate=0, run_tests=False):
         """ Constructor 
         
         parameters:
@@ -79,6 +79,7 @@ class GeneticAlgorithm():
         self.save_frequency = save_frequency
         self.random_type = random_type
         self.initial_random_rate = initial_random_rate
+        self.run_tests = run_tests
 
 
     def init_population(self, env):
@@ -168,6 +169,9 @@ class GeneticAlgorithm():
                 save_generation(self)
 
         save_generation(self)
+
+        # Update model details with final generation
+        self = update_model_details(self)
 
         # Plot metrics
         if self.plot:

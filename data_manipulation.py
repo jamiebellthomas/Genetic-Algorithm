@@ -72,59 +72,83 @@ def update_model_details(self):
     description = self.description
 
     # Read the csv file
-    df = pd.read_csv('Training/ModelDetails.csv')
+    if self.run_tests:
+        str_model_details = 'Testing_v1/TestDetails.csv'
+    else:
+        str_model_details = 'Training/ModelDetails.csv'
+
+    df = pd.read_csv(str_model_details)
     
     # Extract the last ID and increment it by 1 to get the new ID
-    ID = int(df['ID'].iloc[-1]) + 1
-    ID = str(ID).zfill(4)
+    try:
+        ID = int(df['ID'].iloc[-1]) + 1
+        ID = str(ID).zfill(4)
+    except:
+        ID = '0000'
 
     # Model details
     date = time.strftime("%Y-%m-%d")
-    path = 'Training/Saved Models/' + ID
+    if self.run_tests:
+        str_model_folder = 'Testing_v1/Test Models/'
+    else:
+        str_model_folder = 'Training/Saved Models/'
+
+    path = str_model_folder + ID
 
     # Create a new folder for the model if it doesn't already exist if it exists, prompt the user to overwrite
-    if os.path.exists(path):
-        print('-------------------------------------------------')
-        print('Model {} already exists. Create New Model, Overwrite Model or Discard New Model?'.format(ID))
-        print('-------------------------------------------------')
-        print('1. Create New Model')
-        print('2. Overwrite Model')
-        print('3. Discard New Model')
-        print('-------------------------------------------------')
+    # Only creates a new folder when the model is first created
+    if self.generation == 0:
+        if os.path.exists(path):
+            print('-------------------------------------------------')
+            print('Model {} already exists. Create New Model, Overwrite Model or Discard New Model?'.format(ID))
+            print('-------------------------------------------------')
+            print('1. Create New Model')
+            print('2. Overwrite Model')
+            print('3. Discard New Model')
+            print('-------------------------------------------------')
 
-        user_input = input('Enter 1, 2 or 3: ')
+            user_input = input('Enter 1, 2 or 3: ')
 
-        if user_input == '1':
-            while os.path.exists(path):
-                ID = int(ID) + 1
-                ID = str(ID).zfill(4)
-                path = 'Training/Saved Models/' + ID
-            
-            print('Creating new model {}...'.format(ID))
-            os.mkdir(path)
+            if user_input == '1':
+                while os.path.exists(path):
+                    ID = int(ID) + 1
+                    ID = str(ID).zfill(4)
+                    path = str_model_folder + ID
+                
+                print('Creating new model {}...'.format(ID))
+                os.mkdir(path)
 
-        elif user_input == '2':
-            print('Overwriting model {}...'.format(ID))  
+            elif user_input == '2':
+                print('Overwriting model {}...'.format(ID))  
 
-        elif user_input == '3':
-            print('Discarding new model...')
-            exit()        
+            elif user_input == '3':
+                print('Discarding new model...')
+                exit()        
+
+            else:
+                print('Invalid input. Exiting...')
+                exit()
 
         else:
-            print('Invalid input. Exiting...')
-            exit()
+            # Create a new folder for the model
+            os.mkdir(path)
 
-    else:
-        # Create a new folder for the model
-        os.mkdir(path)
+    # Only save the model once the training is complete
+    if self.generation >= self.num_generations:
 
-    # Concat the data into the dataframe
-    df = pd.concat([df, pd.DataFrame([[ID, date, path, description]], columns=['ID', 'Date', 'Path', 'Description'])])
+        # Get the model metrics and append them to the dataframe
+        duration = self.metrics['total duration'][-1]
+        best_score = max(self.metrics['best_fitness'])
+        mean_score = self.metrics['mean_fitness'][-1]
 
-    # Save the dataframe to a csv file
-    df.to_csv('Training/ModelDetails.csv', index=False)
+        # Concat the data into the dataframe
+        df = pd.concat([df, pd.DataFrame([[ID, date, best_score, mean_score, duration, path, description]], columns=['ID', 'Date', 'Best Score', 'Mean Score', 'Duration', 'Path', 'Description'])])
+
+        # Save the dataframe to a csv file
+        df.to_csv(str_model_details, index=False)
 
     self.path = path
+    self.ID = ID
 
     return self
 
