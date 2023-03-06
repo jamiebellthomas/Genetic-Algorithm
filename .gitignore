@@ -7,3 +7,4 @@ Training/ModelDetails.csv
 *.pyc
 *.h5
 Training\ModelDetails.csv
+__pycache__/GeneticAlgorithm.cpython-310.pyc
