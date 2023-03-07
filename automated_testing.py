@@ -1,8 +1,10 @@
 import pandas as pd
+import traceback
 from GeneticAlgorithm import GeneticAlgorithm
 
-# Open xlsx file
-test_list = pd.read_excel('Tests_v1.xlsx')
+# Open xlsx file]
+excel_filepath = 'Tests_v1.xlsx'
+test_list = pd.read_excel(excel_filepath)
 
 # Iterate through each test
 for index, test_details in test_list.iterrows():
@@ -89,14 +91,28 @@ for index, test_details in test_list.iterrows():
 
     # Run test
     # Instantiate Genetic Algorithm
-    ga = GeneticAlgorithm(environment=env, population_size=num_agents, sparse_reward=sparse_reward, fitness_sharing=fitness_sharing,
-                            num_select_agents=selected_agents, selection_type=selection_type, crossover_rate=crossover_rate, crossover_method=crossover_type,
-                            mutation_rate=mutation_rate, mutation_method=mutation_type, num_generations=num_generations, parallel=False, plot=True,
-                            settings=None, description=description, save_frequency=5, random_type=random_agent_type,
-                            initial_random_rate=random_agent_rate, run_tests=True)
+    # Add try except and update test_list with error message and line number
+    try:
+        ga = GeneticAlgorithm(environment=env, population_size=num_agents, sparse_reward=sparse_reward, fitness_sharing=fitness_sharing,
+                                num_select_agents=selected_agents, selection_type=selection_type, crossover_rate=crossover_rate, crossover_method=crossover_type,
+                                mutation_rate=mutation_rate, mutation_method=mutation_type, num_generations=num_generations, parallel=False, plot=True,
+                                settings=None, description=description, save_frequency=5, random_type=random_agent_type,
+                                initial_random_rate=random_agent_rate, run_tests=True)
 
-    # Run genetic algorithm
-    ga.run()
+        # Run genetic algorithm
+        ga.run()
+    except Exception as e:
+        # Save traceback to test_list
+        test_list.loc[index, 'Error Message'] = traceback.format_exc()
+        test_list.loc[index, 'Final Mean Score'] = 0
+        test_list.loc[index, 'Final Max Score'] = 0
+        test_list.loc[index, 'Total Runtime'] = 0
+        test_list.loc[index, 'Average Runtime'] = 0
+        print('Error with test {}'.format(id))
+
+        # Save test_list
+        test_list.to_excel(excel_filepath, index=False)
+        continue
 
     # Update test_list
     test_list.loc[index, 'Completed'] = 1
@@ -109,5 +125,5 @@ for index, test_details in test_list.iterrows():
     print('Total Runtime so far: {}'.format(test_list['Total Runtime'].sum()))
 
     # Save test_list
-    test_list.to_excel('Tests_v1.xlsx', index=False)
+    test_list.to_excel(excel_filepath, index=False)
              
