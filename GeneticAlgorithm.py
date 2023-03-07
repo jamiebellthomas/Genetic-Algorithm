@@ -106,7 +106,7 @@ class GeneticAlgorithm():
             agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]
             # raise ValueError('Environment doesn"t quite work yet. Reward is always < 0 and is too random.')
         elif env == 'CartPole-v1':
-            self.threshold = 500
+            self.threshold = 1000
             agentPopulation = [NeuralNetwork(4, 2) for _ in range(self.population_size)]
         elif env == "LunarLander-v2":
             self.threshold = 200

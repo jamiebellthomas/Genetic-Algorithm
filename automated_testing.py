@@ -105,6 +105,9 @@ for index, test_details in test_list.iterrows():
     test_list.loc[index, 'Total Runtime'] = ga.metrics['total duration'][-1]
     test_list.loc[index, 'Average Runtime'] = ga.metrics['total duration'][-1] / num_generations
 
-# Save test_list
-test_list.to_excel('Tests_v1.xlsx', index=False)
+    # Print the total runtime of the test script so far
+    print('Total Runtime so far: {}'.format(test_list['Total Runtime'].sum()))
+
+    # Save test_list
+    test_list.to_excel('Tests_v1.xlsx', index=False)
              

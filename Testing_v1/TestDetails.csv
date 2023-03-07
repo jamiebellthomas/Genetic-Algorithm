@@ -1,1 +1,37 @@
 ID,Date,Path,Description,Best Score,Mean Score,Duration
+0,06/03/2023,Testing_v1/Test Models/0000,Baseline test,5,4,12.7610991
+1,06/03/2023,Testing_v1/Test Models/0001,Increase population size,35,25,103.3739691
+2,06/03/2023,Testing_v1/Test Models/0002,Increase number of generations,5,4,25.97287631
+3,06/03/2023,Testing_v1/Test Models/0003,Increase population size and number of generations,27,15,104.5568094
+4,06/03/2023,Testing_v1/Test Models/0004,Increase population size and number of generations plus,44,28,707.3148258
+5,06/03/2023,Testing_v1/Test Models/0005,Single Point Crossover rate = 0.2,25,12,298.1123252
+6,07/03/2023,Testing_v1/Test Models/0006,Single Point Crossover rate = 0.5,68,32,834.0204339
+7,07/03/2023,Testing_v1/Test Models/0007,Single Point Crossover rate = 0.7,9,6,170.6618681
+8,07/03/2023,Testing_v1/Test Models/0008,Single Point Crossover rate = 0.9,27,16,360.0515678
+9,07/03/2023,Testing_v1/Test Models/0009,Double Point Crossover rate = 0.2,26,13,342.883033
+10,07/03/2023,Testing_v1/Test Models/0010,Double Point Crossover rate = 0.5,136,71,1490.260404
+11,07/03/2023,Testing_v1/Test Models/0011,Double Point Crossover rate = 0.7,10,7,190.7719076
+12,07/03/2023,Testing_v1/Test Models/0012,Double Point Crossover rate = 0.9,53,26,677.2558146
+13,07/03/2023,Testing_v1/Test Models/0013,Uniform Crossover rate = 0.2,60,32,549.5255866
+14,07/03/2023,Testing_v1/Test Models/0014,Uniform Crossover rate = 0.5,182,83,1801.172309
+15,07/03/2023,Testing_v1/Test Models/0015,Uniform Crossover rate = 0.7,97,42,1021.90317
+16,07/03/2023,Testing_v1/Test Models/0016,Uniform Crossover rate = 0.9,9,5,145.7564669
+17,07/03/2023,Testing_v1/Test Models/0017,Random Crossover rate = 0.2,51,31,695.0834792
+18,07/03/2023,Testing_v1/Test Models/0018,Random Crossover rate = 0.5,59,24,586.083564
+19,07/03/2023,Testing_v1/Test Models/0019,Random Crossover rate = 0.7,42,28,645.9092531
+20,07/03/2023,Testing_v1/Test Models/0020,Random Crossover rate = 0.9,60,27,638.2669482
+21,2023-03-07,Testing_v1/Test Models/0021,Scramble mutation rate = 0.1,43,28,666.6037654876709
+22,2023-03-07,Testing_v1/Test Models/0022,Scramble mutation rate = 0.2,157,63,1500.0478057861328
+23,2023-03-07,Testing_v1/Test Models/0023,Scramble mutation rate = 0.5,250,27,442.0760726928711
+24,2023-03-07,Testing_v1/Test Models/0024,Swap mutation rate = 0.1,215,69,1281.828253507614
+25,2023-03-07,Testing_v1/Test Models/0025,Swap mutation rate = 0.2,250,78,1117.778146982193
+26,2023-03-07,Testing_v1/Test Models/0026,Swap mutation rate = 0.5,195,24,497.579952955246
+27,2023-03-07,Testing_v1/Test Models/0027,Inversion mutation rate = 0.1,124,51,722.5147490501404
+28,2023-03-07,Testing_v1/Test Models/0028,Inversion mutation rate = 0.2,250,164,1494.2484638690948
+29,2023-03-07,Testing_v1/Test Models/0029,Inversion mutation rate = 0.5,205,41,570.1489367485046
+30,2023-03-07,Testing_v1/Test Models/0030,Random reset mutation rate = 0.1,43,22,386.1264574527741
+31,2023-03-07,Testing_v1/Test Models/0031,Random reset mutation rate = 0.2,243,83,1335.4860394001007
+32,2023-03-07,Testing_v1/Test Models/0032,Random reset mutation rate = 0.5,205,18,502.3282358646393
+33,2023-03-07,Testing_v1/Test Models/0033,Random Mutation rate = 0.1,120,70,1419.8593928813934
+34,2023-03-07,Testing_v1/Test Models/0034,Random Mutation rate = 0.2,250,146,2026.390106678009
+0035,2023-03-07,Testing_v1/Test Models/0035,Random Mutation rate = 0.5,250,90,1728.0647404193878
