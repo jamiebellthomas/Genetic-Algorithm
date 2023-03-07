@@ -35,6 +35,7 @@ class NeuralNetwork():
         # Input layer with input_size nodes, dense layer with 5 nodes and output layer with output_size nodes
 
         input_layer  = Input(input_size)
+        # Adding multiple dense layers in this format didnt work (only added one and stopped.)
         dense_layer = Dense(layer_size, activation=dense_activation)
         output_layer = Dense(output_size, activation=output_activation)
         
@@ -43,11 +44,9 @@ class NeuralNetwork():
             # Assign layers to the model
             model = Sequential()
             model.add(input_layer)
-
             # Add dense layers
-            for _ in range(num_layers):
-                model.add(dense_layer)
-            
+            for _ in range(num_layers):         
+                model.add(Dense(layer_size, activation=dense_activation))
             model.add(output_layer)
 
             # Create random weights
