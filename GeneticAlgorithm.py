@@ -18,7 +18,7 @@ class GeneticAlgorithm():
     def __init__(self, environment, population_size=5, sparse_reward=False, fitness_sharing=False, 
                 num_select_agents=2, selection_type='elitism', crossover_rate=0, crossover_method='random',  
                 mutation_rate=0, mutation_method='random', num_generations=2, parallel=False, plot=True,
-                settings=None, description=None, save_frequency=2, random_type='fixed',initial_random_rate=0, run_tests=False):
+                settings=None, description=None, save_frequency=2, random_type='fixed',initial_random_rate=0, run_tests=False, str_test_folder=None):
         """ Constructor 
         
         parameters:
@@ -57,6 +57,15 @@ class GeneticAlgorithm():
                 Description of the model. This data is saved to the ModelDetails.csv file.
             save_frequency: int
                 How often to save the model. The model is saved every save_frequency generations.
+            random_type: str
+                Type of random agent. Values can be 'fixed', 'linear', 'exponential', 'gaussian' or None
+            initial_random_rate: float
+                Initial random rate. This is the probability of a random agent being selected.
+            run_tests: bool
+                Whether to run tests
+            str_test_folder: str
+                Folder to save the test results
+
         """
         self.env = gym.make(environment)
         self.environment = environment
@@ -80,6 +89,7 @@ class GeneticAlgorithm():
         self.random_type = random_type
         self.initial_random_rate = initial_random_rate
         self.run_tests = run_tests
+        self.str_test_folder = str_test_folder
 
 
     def init_population(self, env):
@@ -106,7 +116,7 @@ class GeneticAlgorithm():
             agentPopulation = [NeuralNetwork(2, 3) for _ in range(self.population_size)]
             # raise ValueError('Environment doesn"t quite work yet. Reward is always < 0 and is too random.')
         elif env == 'CartPole-v1':
-            self.threshold = 500
+            self.threshold = 1000
             agentPopulation = [NeuralNetwork(4, 2) for _ in range(self.population_size)]
         elif env == "LunarLander-v2":
             self.threshold = 200

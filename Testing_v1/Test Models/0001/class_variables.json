@@ -1,0 +1,150 @@
+{
+    "env": "Environment object not saved",
+    "environment": "CartPole-v1",
+    "population_size": 10,
+    "threshold": 500,
+    "population": "Population saved as h5 files",
+    "sparse_reward": 0,
+    "fitness_sharing": 0,
+    "num_select_agents": 2,
+    "selection_type": "elitism",
+    "crossover_rate": 0,
+    "crossover_method": "random",
+    "mutation_rate": 0,
+    "mutation_method": "random",
+    "num_generations": 5,
+    "description": "Increase population size",
+    "parallel": false,
+    "plot": true,
+    "settings": null,
+    "terminated": false,
+    "save_frequency": 5,
+    "random_type": "fixed",
+    "initial_random_rate": 0,
+    "run_tests": true,
+    "generation": 6,
+    "metrics": {
+        "generation": [
+            1,
+            2,
+            3,
+            4,
+            5
+        ],
+        "best_fitness": [
+            35,
+            31,
+            30,
+            34,
+            35
+        ],
+        "mean_fitness": [
+            10,
+            18,
+            20,
+            21,
+            25
+        ],
+        "best_agent": [
+            8,
+            6,
+            8,
+            9,
+            9
+        ],
+        "duration": [
+            11.604681968688965,
+            20.176299333572388,
+            21.713672399520874,
+            23.666067123413086,
+            26.213248252868652
+        ],
+        "total duration": [
+            11.604681968688965,
+            31.780981302261353,
+            53.49465370178223,
+            77.16072082519531,
+            103.37396907806396
+        ],
+        "all_fitness": [
+            [
+                4.0,
+                29.0,
+                5.0,
+                5.0,
+                5.0,
+                4.0,
+                4.0,
+                5.0,
+                35.0,
+                4.0
+            ],
+            [
+                30.0,
+                4.0,
+                30.0,
+                5.0,
+                24.0,
+                5.0,
+                31.0,
+                4.0,
+                24.0,
+                31.0
+            ],
+            [
+                28.0,
+                5.0,
+                25.0,
+                4.0,
+                26.0,
+                4.0,
+                27.0,
+                26.0,
+                30.0,
+                29.0
+            ],
+            [
+                27.0,
+                5.0,
+                32.0,
+                4.0,
+                27.0,
+                4.0,
+                26.0,
+                26.0,
+                27.0,
+                34.0
+            ],
+            [
+                28.0,
+                4.0,
+                30.0,
+                29.0,
+                26.0,
+                29.0,
+                25.0,
+                28.0,
+                20.0,
+                35.0
+            ]
+        ]
+    },
+    "path": "Testing_v1/Test Models/0001",
+    "ID": "0001",
+    "mean_fitness": 25,
+    "best_fitness": 35,
+    "best_agent": 9,
+    "duration": 26.213248252868652,
+    "all_fitness": [
+        28.0,
+        4.0,
+        30.0,
+        29.0,
+        26.0,
+        29.0,
+        25.0,
+        28.0,
+        20.0,
+        35.0
+    ]
+}

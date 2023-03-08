@@ -1,0 +1,185 @@
+{
+    "env": "Environment object not saved",
+    "environment": "CartPole-v1",
+    "population_size": 5,
+    "threshold": 500,
+    "population": "Population saved as h5 files",
+    "sparse_reward": 0,
+    "fitness_sharing": 0,
+    "num_select_agents": 2,
+    "selection_type": "elitism",
+    "crossover_rate": 0,
+    "crossover_method": "random",
+    "mutation_rate": 0,
+    "mutation_method": "random",
+    "num_generations": 10,
+    "description": "Increase number of generations",
+    "parallel": false,
+    "plot": true,
+    "settings": null,
+    "terminated": false,
+    "save_frequency": 5,
+    "random_type": "fixed",
+    "initial_random_rate": 0,
+    "run_tests": true,
+    "generation": 11,
+    "metrics": {
+        "generation": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+        ],
+        "best_fitness": [
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+        ],
+        "mean_fitness": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+        ],
+        "best_agent": [
+            0,
+            0,
+            0,
+            0,
+            2,
+            1,
+            2,
+            1,
+            0,
+            3
+        ],
+        "duration": [
+            2.9901599884033203,
+            2.5424041748046875,
+            2.751981258392334,
+            2.594235897064209,
+            2.672285795211792,
+            2.441401958465576,
+            2.6965577602386475,
+            2.647430419921875,
+            2.431612730026245,
+            2.204806327819824
+        ],
+        "total duration": [
+            2.9901599884033203,
+            5.532564163208008,
+            8.284545421600342,
+            10.87878131866455,
+            13.551067113876343,
+            15.992469072341919,
+            18.689026832580566,
+            21.33645725250244,
+            23.768069982528687,
+            25.97287631034851
+        ],
+        "all_fitness": [
+            [
+                5.0,
+                5.0,
+                5.0,
+                4.0,
+                4.0
+            ],
+            [
+                5.0,
+                5.0,
+                4.0,
+                5.0,
+                4.0
+            ],
+            [
+                5.0,
+                5.0,
+                4.0,
+                5.0,
+                5.0
+            ],
+            [
+                5.0,
+                4.0,
+                5.0,
+                5.0,
+                4.0
+            ],
+            [
+                4.0,
+                4.0,
+                5.0,
+                5.0,
+                4.0
+            ],
+            [
+                4.0,
+                5.0,
+                5.0,
+                5.0,
+                4.0
+            ],
+            [
+                4.0,
+                4.0,
+                5.0,
+                4.0,
+                5.0
+            ],
+            [
+                4.0,
+                5.0,
+                4.0,
+                5.0,
+                5.0
+            ],
+            [
+                5.0,
+                4.0,
+                4.0,
+                4.0,
+                4.0
+            ],
+            [
+                4.0,
+                4.0,
+                4.0,
+                5.0,
+                5.0
+            ]
+        ]
+    },
+    "path": "Testing_v1/Test Models/0002",
+    "ID": "0002",
+    "mean_fitness": 4,
+    "best_fitness": 5,
+    "best_agent": 3,
+    "duration": 2.204806327819824,
+    "all_fitness": [
+        4.0,
+        4.0,
+        4.0,
+        5.0,
+        5.0
+    ]
+}
