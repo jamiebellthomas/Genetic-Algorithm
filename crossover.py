@@ -23,12 +23,17 @@ def crossover(self):
     crossover_methods = ['crossover_singlesplit', 'crossover_doublesplit', 'crossover_uniformsplit']
 
     # choose a random crossover method
-    if self.crossover_method == 'random' or self.crossover_method not in crossover_methods:
-        crossover_method = random.choice(crossover_methods)
-        print('Crossover method (random): {}'.format(crossover_method))
+    # Implement a crossover rate here by using a random number between 0 and 1 and comparing it to the crossover rate
+    if random.random() < self.crossover_rate:
+        if self.crossover_method == 'random' or self.crossover_method not in crossover_methods:
+            crossover_method = random.choice(crossover_methods)
+            print('Crossover method (random): {}'.format(crossover_method))
+        else:
+            crossover_method = self.crossover_method
+            print('Crossover method: {}'.format(crossover_method))
     else:
-        crossover_method = self.crossover_method
-        print('Crossover method: {}'.format(crossover_method))
+        print('Crossover method: None')
+        crossover_method = None
         
     # This finds the neural network for the parents from the population
     selected_parents = [nn for nn in self.population if nn.selected]
@@ -41,7 +46,6 @@ def crossover(self):
     
     # Crosover from the selected popuplation to fill the population back up to the original size
     while offspring_counter < len(offspring_nn):
-
         # Select the parents for crossover
         parent1 = selected_parents[random.choice(range(len(selected_parents)))]
         parent2 = selected_parents[random.choice(range(len(selected_parents)))]
@@ -70,7 +74,8 @@ def crossover(self):
                     offspring_nn[offspring_counter].biases = child_biases
 
                     # Increment the offspring counter
-                    offspring_counter += num_offspring
+                    # offspring_counter += num_offspring
+                    offspring_counter += 1
                 except:
                     break
 
@@ -121,7 +126,7 @@ def crossover(self):
                     offspring_nn[offspring_counter].biases = child_biases
 
                     # Increment the offspring counter
-                    offspring_counter += num_offspring
+                    offspring_counter += 1
                 except:
                     break
 
@@ -153,13 +158,33 @@ def crossover(self):
                     offspring_nn[offspring_counter].biases = np.array(child_biases)
 
                     # Increment the offspring counter
-                    offspring_counter += num_offspring
+                    offspring_counter += 1
                 except:
                     break
 
+        elif crossover_method == None:
+            for i in range(num_offspring):
+                # pick which parent to copy
+                if random.choice([True, False]):
+                    parent = parent1
+                else:
+                    parent = parent2
+
+                try:
+
+                    # Just append a copy of one parent to the offspring
+                    offspring_nn[offspring_counter].weights = np.array(parent.weights)
+                    offspring_nn[offspring_counter].biases = np.array(parent.biases)
+
+                    offspring_counter += 1
+                except:
+                    break
+         
+
+
+
     # Create the new population by combining the offspring and selected parents lists
     offspring = offspring_nn + selected_parents
-
     # Check that the offspring is the correct size if it is append it to the population
     if len(offspring) != self.population_size:
         raise ValueError('The offspring is length {} and should be length {}'.format(len(offspring), self.population_size))
