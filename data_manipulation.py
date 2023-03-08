@@ -71,9 +71,12 @@ def update_model_details(self):
     """
     description = self.description
 
+    # String for test folder
+    str_test_folder = self.str_test_folder
+
     # Read the csv file
     if self.run_tests:
-        str_model_details = 'Testing_v1/TestDetails.csv'
+        str_model_details = str_test_folder + '/TestDetails.csv'
     else:
         str_model_details = 'Training/ModelDetails.csv'
 
@@ -89,7 +92,7 @@ def update_model_details(self):
     # Model details
     date = time.strftime("%Y-%m-%d")
     if self.run_tests:
-        str_model_folder = 'Testing_v1/Test Models/'
+        str_model_folder = str_test_folder + '/Test Models/'
     else:
         str_model_folder = 'Training/Saved Models/'
 

@@ -2,8 +2,9 @@ import pandas as pd
 import traceback
 from GeneticAlgorithm import GeneticAlgorithm
 
-# Open xlsx file]
-excel_filepath = 'Tests_v1.xlsx'
+# Open xlsx file
+str_test_folder = 'Test_CartPole_v3'
+excel_filepath = 'Test_CartPole_v3.xlsx'
 test_list = pd.read_excel(excel_filepath)
 
 # Iterate through each test
@@ -97,7 +98,7 @@ for index, test_details in test_list.iterrows():
                                 num_select_agents=selected_agents, selection_type=selection_type, crossover_rate=crossover_rate, crossover_method=crossover_type,
                                 mutation_rate=mutation_rate, mutation_method=mutation_type, num_generations=num_generations, parallel=False, plot=True,
                                 settings=None, description=description, save_frequency=5, random_type=random_agent_type,
-                                initial_random_rate=random_agent_rate, run_tests=True)
+                                initial_random_rate=random_agent_rate, run_tests=True, str_test_folder=str_test_folder)
 
         # Run genetic algorithm
         ga.run()

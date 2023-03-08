@@ -9,7 +9,7 @@ def plot_metrics(self):
     This function plots the metrics recorded during the genetic algorithm.
     """
     # Plot metrics
-    plot_all_fitness(self.metrics['all_fitness'], save_plot=self.run_tests, str_run_id=self.ID)
+    plot_all_fitness(self.metrics['all_fitness'], save_plot=self.run_tests, str_run_id=self.ID, str_model_folder=self.str_test_folder)
 
 # Get metrics from file
 def get_metrics_from_file(str_run_id):
@@ -25,7 +25,7 @@ def get_metrics_from_file(str_run_id):
     return metrics
 
 # Plot metrics from file
-def plot_all_fitness(all_fitness, save_plot=False, str_run_id=None):
+def plot_all_fitness(all_fitness, save_plot=False, str_run_id=None, str_model_folder=None):
     """ plot_all_fitness
     This function plots all the fitness scores recorded during the genetic algorithm.
     It plots the distribution of each generation.
@@ -57,7 +57,10 @@ def plot_all_fitness(all_fitness, save_plot=False, str_run_id=None):
 
     # Save figure
     if save_plot:
-        fig.write_image('Testing_v1/Test Graphs/{}_fitness_distribution.png'.format(str_run_id))
+        # Create string for file path using str_model_folder and str_run_id
+        str_file_path = str_model_folder + '/Test Graphs/{}_fitness_distribution.png'.format(str_run_id)
+        # Save figure
+        fig.write_image(str_file_path)
     else:
         fig.show()
     
@@ -65,4 +68,4 @@ def plot_all_fitness(all_fitness, save_plot=False, str_run_id=None):
 if __name__ == '__main__':
     metrics = get_metrics_from_file(sys.argv[1])
     # metrics = get_metrics_from_file('0041')
-    plot_all_fitness(metrics['all_fitness'].values, save_plot=False, str_run_id=None)
+    plot_all_fitness(metrics['all_fitness'].values, save_plot=False, str_run_id=None, str_model_folder=None)
