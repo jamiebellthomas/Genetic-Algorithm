@@ -102,8 +102,8 @@ def evaluate_agent(self, input):
         if done or truncation:
             break
 
-        if iter >= 100 and fitness < 0 and not self.env == 'LunarLander-v2' :
-            self.sparse_reward = True 
+        #if iter >= 100 and fitness < 0 and not self.env == 'LunarLander-v2' :
+        #    self.sparse_reward = True 
  
         # If sparse rewards are enabled then update the frontier
         if self.sparse_reward:

@@ -14,7 +14,7 @@ def random_probability(self):
         random_rate = self.initial_random_rate
     # 2. Linear - linear decay
     elif self.random_type == 'linear':
-        (1-((self.generation-1)/self.num_generations)) * self.initial_random_rate
+        random_rate = (1-((self.generation-1)/self.num_generations)) * self.initial_random_rate
     # 3. Exponential - exponential decay
     elif self.random_type == 'exponential':
         random_rate = self.initial_random_rate * (1-(self.generation/self.num_generations))*np.exp(-self.generation/self.num_generations)
@@ -22,6 +22,7 @@ def random_probability(self):
     elif self.random_type == 'gaussian':
         random_rate = self.initial_random_rate * np.exp(-(self.generation**2/100))
     else:
+        print(self.random_type)
         raise ValueError('Invalid random type')
     # These decays represent the decaying probability of a random agent being replacing an unselected agent in the population
     # Which was created during crossover and mutation

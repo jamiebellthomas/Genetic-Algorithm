@@ -20,8 +20,8 @@ class NeuralNetwork():
                 When loading model from file, pass the model to the constructor
         """
         if settings is None:
-            layer_size = 5
-            num_layers = 1
+            layer_size = 8
+            num_layers = 3
             dense_activation = 'relu'
             output_activation = 'linear'
             settings = {'layer_size': layer_size, 'num_layers': num_layers, 'dense_activation': dense_activation, 'output_activation': output_activation}

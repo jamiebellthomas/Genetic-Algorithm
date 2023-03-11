@@ -3,8 +3,8 @@ import traceback
 from GeneticAlgorithm import GeneticAlgorithm
 
 # Open xlsx file
-str_test_folder = 'Test_CartPole_v3'
-excel_filepath = 'Test_CartPole_v3.xlsx'
+str_test_folder = 'RandomAgentTesting'
+excel_filepath = 'RandomAgentTest.xlsx'
 test_list = pd.read_excel(excel_filepath)
 
 # Iterate through each test

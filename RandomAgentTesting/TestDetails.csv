@@ -1,0 +1,67 @@
+ID,Date,Path,Description,Best Score,Mean Score,Duration
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+0.0,2023-03-09,RandomAgentTesting/Test Models/0000,exponential - initial rate = 0.2,11.0,9.0,165.75811910629272
+1.0,2023-03-09,RandomAgentTesting/Test Models/0001,exponential - initial rate = 0.5,26.0,14.0,192.78465390205383
+2.0,2023-03-09,RandomAgentTesting/Test Models/0002,No random agents,45.0,-118.0,1252.0270652770996
+3.0,2023-03-09,RandomAgentTesting/Test Models/0003,exponential - initial rate = 0.2,45.0,-123.0,1355.5669255256653
+4.0,2023-03-09,RandomAgentTesting/Test Models/0004,exponential - initial rate = 0.5,29.0,-134.0,1438.5843122005465
+5.0,2023-03-10,RandomAgentTesting/Test Models/0005,linear - initial rate = 0.2,13.0,-139.0,1234.379149198532
+6.0,2023-03-10,RandomAgentTesting/Test Models/0006,linear - initial rate = 0.5,34.0,-137.0,1290.645676612854
+7.0,2023-03-10,RandomAgentTesting/Test Models/0007,linear - initial rate = 0.8,27.0,-147.0,1394.290780544281
+8.0,2023-03-10,RandomAgentTesting/Test Models/0008,exponential - initial rate = 0.8,34.0,-132.0,1288.097759962082
+9.0,2023-03-10,RandomAgentTesting/Test Models/0009,gaussian - initial rate = 0.2,32.0,-140.0,1460.3055384159088
+10.0,2023-03-10,RandomAgentTesting/Test Models/0010,gaussian - initial rate = 0.5,44.0,-128.0,1515.9337503910065
+11.0,2023-03-10,RandomAgentTesting/Test Models/0011,gaussian - initial rate = 0.8,46.0,-128.0,1324.3671035766602
+12.0,2023-03-10,RandomAgentTesting/Test Models/0012,fixed - initial rate = 0.2,20.0,-164.0,1311.188044309616
+13.0,2023-03-10,RandomAgentTesting/Test Models/0013,fixed - initial rate = 0.5,37.0,-258.0,2602.433034181595
+0014,2023-03-10,RandomAgentTesting/Test Models/0014,fixed - initial rate = 0.8,42.0,-428.0,1579.1705334186554

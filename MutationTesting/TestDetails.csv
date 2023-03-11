@@ -1,0 +1,69 @@
+ID,Date,Path,Description,Best Score,Mean Score,Duration
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+0.0,2023-03-08,MutationTesting/Test Models/0000,No Mutation,500.0,500.0,3736.1275174617767
+1.0,2023-03-08,MutationTesting/Test Models/0001,No Mutation,258.0,174.0,983.3601133823396
+2.0,2023-03-08,MutationTesting/Test Models/0002,Scramble mutation rate = 0.1,500.0,500.0,2500.6177320480347
+3.0,2023-03-08,MutationTesting/Test Models/0003,Scramble mutation rate = 0.2,158.0,38.0,172.9990725517273
+4.0,2023-03-08,MutationTesting/Test Models/0004,Scramble mutation rate = 0.5,500.0,263.0,1158.7671406269071
+5.0,2023-03-08,MutationTesting/Test Models/0005,Swap mutation rate = 0.1,110.0,39.0,150.03610467910767
+6.0,2023-03-08,MutationTesting/Test Models/0006,Swap mutation rate = 0.2,500.0,268.0,727.8330736160278
+7.0,2023-03-08,MutationTesting/Test Models/0007,Swap mutation rate = 0.5,500.0,181.0,501.0821077823639
+8.0,2023-03-08,MutationTesting/Test Models/0008,Inversion mutation rate = 0.1,90.0,35.0,136.19255876541138
+9.0,2023-03-08,MutationTesting/Test Models/0009,Inversion mutation rate = 0.2,79.0,28.0,148.64145183563232
+10.0,2023-03-08,MutationTesting/Test Models/0010,Inversion mutation rate = 0.5,266.0,89.0,435.4493880271912
+11.0,2023-03-08,MutationTesting/Test Models/0011,Random reset mutation rate = 0.1,11.0,9.0,71.51823830604553
+12.0,2023-03-08,MutationTesting/Test Models/0012,Random reset mutation rate = 0.2,108.0,75.0,275.7940261363983
+13.0,2023-03-08,MutationTesting/Test Models/0013,Random reset mutation rate = 0.5,500.0,240.0,1732.2737090587616
+14.0,2023-03-08,MutationTesting/Test Models/0014,Random Mutation rate = 0.1,48.0,35.0,133.0263843536377
+15.0,2023-03-08,MutationTesting/Test Models/0015,Random Mutation rate = 0.2,500.0,402.0,1911.0815651416776
+0016,2023-03-08,MutationTesting/Test Models/0016,Random Mutation rate = 0.5,500.0,240.0,668.7422575950623
